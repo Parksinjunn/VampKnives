@@ -30,16 +30,33 @@ namespace VampKnives.Items
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.VampireKnives);
-            recipe.AddIngredient(ItemID.Obsidian, 50);
+            recipe.AddIngredient(ItemID.Obsidian, 75);
             recipe.AddIngredient(mod.ItemType("StableCrimsonCrystal"), 2);
             recipe.AddTile(TileID.WorkBenches);
             recipe.SetResult(this);
             recipe.AddRecipe();
 
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.ItemType("VampireKnivesMagic"));
-            recipe.AddIngredient(ItemID.Obsidian, 50);
+            recipe.AddIngredient(ItemID.Obsidian, 75);
             recipe.AddIngredient(mod.ItemType("StableCrimsonCrystal"), 2);
             recipe.AddTile(TileID.WorkBenches);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.VampireKnives);
+            recipe.AddIngredient(ItemID.Obsidian, 75);
+            recipe.AddIngredient(mod.ItemType("StableCrimsonCrystal"), 2);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(mod.ItemType("VampireKnivesMagic"));
+            recipe.AddIngredient(ItemID.Obsidian, 75);
+            recipe.AddIngredient(mod.ItemType("StableCrimsonCrystal"), 2);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
