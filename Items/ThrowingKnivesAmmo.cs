@@ -14,7 +14,6 @@ namespace VampKnives.Items
         public override void SafeSetDefaults()
         {
             item.damage = 1;
-
             item.width = 24;
             item.height = 24;
             item.maxStack = 999;

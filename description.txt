@@ -1,8 +1,22 @@
-Vampire Knives Extended adds around 20 new vampire knife based weapons into the game and a few random pets. You'll want a recipe browser, I finished work on this mod a year ago and just got back to it so there are definitely some bugs. I recently got more time to work on this, so updates will be coming, but realize this mod is mainly just for my friends and I to play with. If anyone wants to update this regularly and take it over feel free, just message me on the forum~!
+Vampire Knives Extended adds many new knives and vampire-based accessories into the game, along with a few random (poorly sprited) pets. You'll want a recipe browser. I will be fixing bugs over the course of the next few days, feel free to join the Discord to give bug reports and what-not ^_^ If anyone wants to update this regularly and take it over feel free, just message me in the discord server~!
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 5 new knives to the game that *should* scale well. 
 
 Recent Changes:
+New town NPC - Arrives after either BoC or EoW is defeated.
+New healing system - The more damage you do, the more Blood Essence you accrue.
+A new crafting table that allows you to craft anything and everything from the mod, and will even decrease the material costs of every item.
+A TON of new knives, more than I could remember.
+A new knife damage class.
+A new armor set, that scales with each boss you defeat.
+A few new accessories to make the new damage class viable.
+MANY Many changes to balance.
+New way to craft the casts, knives, throwing knives, etc. w/out spawning another at random. (For more info on recipes that require casts, hammers, chisels, etc. join the discord, though, a wiki is in the works!)
+Probably a whole lot more I'm forgetting :P
+
+
+
+Past Changes: 
 **IMBUEMENT SYSTEM IS OUT-THE-DOOR, REFUNDS ARE AVAILABLE FOR ANY WHO PREVIOUSLY MADE THESE KNIVES**
 -Added Hoods (Hotkey "P" by default, you can find out more info on the discord)
 -Added Mandable Knives (not finished to completion)
@@ -12,11 +26,10 @@ Recent Changes:
 -Added stone knife sculpt that can be used to create the knife cast
 -Many other small fixes and additions I can't remember at the moment.
 
-I'll be on vacation for the next week or so, so don't expect any updates for a bit (Sorry T.T)
 
 
-Past Changes: 
-Past Knives:
+Old Changes:
+Knives:
 -Added new Tier going all the way up to True Knights Edge
 -Removed crafting recipes for pets to help clear up pocket crafting (Can buy at witch doctor)
 -New Knives:
@@ -45,8 +58,6 @@ Misc. Fixes:
 -Fixed the crafting recipe from Lesser to normal vampire knives to be balanced (requires living tissue dropped by butchers in the solar eclipse event and 10 vicious mushrooms. If you don't want to do that just go get them from the dungeon like in vanilla)
 -Fixed superglue not stacking.
 -Removed honey liquid requirement for bee knives.
-
-Old Changes:
 -Knife Bench now has an inventory to store tools and intermediates
 -Knife Bench is now 2x2 and has a new sprite. 
 -Added Plague-bringer knives for added support with calamity (Check forum post for more info)

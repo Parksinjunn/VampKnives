@@ -298,14 +298,5 @@ namespace VampKnives.Items.Armor
                 item.defense = 14;
             }
         }
-
-        public override void AddRecipes()
-        {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.IronBar, 60);
-            recipe.AddTile(null, "VampTableTile");
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-        }
     }
 }
