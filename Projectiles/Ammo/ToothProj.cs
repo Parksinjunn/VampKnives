@@ -10,6 +10,7 @@ namespace VampKnives.Projectiles.Ammo
     public class ToothProj : KnifeProjectile
     {
         public int ran;
+        public int ranD;
         public override void SetDefaults()
         {
             projectile.width = 26;
@@ -22,10 +23,14 @@ namespace VampKnives.Projectiles.Ammo
             projectile.ignoreWater = false;
             projectile.scale = 0.55f;
             projectile.timeLeft = 300;
-            ran = Main.rand.Next(0,3);
         }
         public override void AI()
         {
+            if(ranD ==0)
+            {
+                ran = Main.rand.Next(0, 3);
+                ranD = 1;
+            }
             //this is projectile dust
             //this make that the projectile faces the right way 
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
@@ -43,17 +48,14 @@ namespace VampKnives.Projectiles.Ammo
         {
             Hoods(n);
         }
-        public override void Kill(int timeLeft)
+        public override bool PreKill(int timeLeft)
         {
-            timeLeft = 60;
-            base.Kill(timeLeft);
+            ranD = 0;
+            return base.PreKill(timeLeft);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.5f);
-            projectile.tileCollide = false;
-            projectile.timeLeft = 60;
-            projectile.velocity *= new Vector2(0.002f, 0.002f);
             return true;
         }
     }
