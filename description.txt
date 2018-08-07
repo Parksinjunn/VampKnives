@@ -1,0 +1,59 @@
+Vampire Knives Extended adds around 20 new vampire knife based weapons into the game and a few random pets. You'll want a recipe browser, I finished work on this mod a year ago and just got back to it so there are definitely some bugs. I recently got more time to work on this, so updates will be coming, but realize this mod is mainly just for my friends and I to play with. If anyone wants to update this regularly and take it over feel free, just message me on the forum~!
+
+Also, there is optional compatibility (included in the mod) with calamity mod that adds 5 new knives to the game that *should* scale well. 
+
+Recent Changes:
+**IMBUEMENT SYSTEM IS OUT-THE-DOOR, REFUNDS ARE AVAILABLE FOR ANY WHO PREVIOUSLY MADE THESE KNIVES**
+-Added Hoods (Hotkey "P" by default, you can find out more info on the discord)
+-Added Mandable Knives (not finished to completion)
+-Finished Light and Dark Knives
+-Added option to convert vampire knives(melee) to magic
+-Added plant fiber drop to plantera
+-Added stone knife sculpt that can be used to create the knife cast
+-Many other small fixes and additions I can't remember at the moment.
+
+I'll be on vacation for the next week or so, so don't expect any updates for a bit (Sorry T.T)
+
+
+Past Changes: 
+Past Knives:
+-Added new Tier going all the way up to True Knights Edge
+-Removed crafting recipes for pets to help clear up pocket crafting (Can buy at witch doctor)
+-New Knives:
+-Fiery Knives (Fiery Greatsword Equivalent)
+-Abyssal Knives (Tier One Abyss Knives)
+-Jungle Knives (Tier One Jungle Knives)
+-Blooming Terror (Plantera Knives)
+-Butchers Knives (Blood Butcherer Equivalent)
+-Rukasu's Tesla Coils (Martian Madness)
+-(The following not finished to completion yet, will be finished in next update)
+-Sengo's Forgotten Blades (Muramasa Equivalent)
+-Light and Dark (BuJeongHan Byeol "Corrupt Star") 
+-Penumbra (Night's Edge)
+-Umbra (True Night's Edge)
+
+Accessories:
+-Extra Finger
+-Mechanical Fingers
+
+Misc. Fixes:
+-Rename Unstable Corruption Crystal
+-Mana Knives craft at inbueing station
+-Super Glue new crimson/corruption based recipes (Shadow Scales and Tissue Samples)
+-New Sprite for Luminite Knives (Renamed "The Moon Lord's Hand")
+-Added better Blooming Terror seeds
+-Fixed the crafting recipe from Lesser to normal vampire knives to be balanced (requires living tissue dropped by butchers in the solar eclipse event and 10 vicious mushrooms. If you don't want to do that just go get them from the dungeon like in vanilla)
+-Fixed superglue not stacking.
+-Removed honey liquid requirement for bee knives.
+
+Old Changes:
+-Knife Bench now has an inventory to store tools and intermediates
+-Knife Bench is now 2x2 and has a new sprite. 
+-Added Plague-bringer knives for added support with calamity (Check forum post for more info)
+-Finished the entire mana knives tier, adding support for all magic based knives
+-Reworked casting system for the iron knives, and added throwing knives(ammo) cast
+-Added a forging hammer for cast making (Process will become more in depth later on)
+-Added a crystal system to make the higher tier knives more difficult and fun to obtain. (More info in forum post)
+-A few balance updates, most importantly, bee knives do very little damage making the user rely more on the bees than the knives itself
+-Made a forum listing for the mod
+-Added a new mold system for the Iron Knives
