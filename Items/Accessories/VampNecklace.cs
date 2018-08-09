@@ -42,7 +42,7 @@ namespace VampKnives.Items.Accessories
             TooltipLine line = new TooltipLine(mod, "Face", "Tier 1");
             line.overrideColor = new Color(210, 0, 0);
             tooltips.Add(line);
-            TooltipLine line3 = new TooltipLine(mod, "Face", "Kills Til Next Upgrade: " + (1000 - p.NeckProgress));
+            TooltipLine line3 = new TooltipLine(mod, "Face", "Kills Til Next Upgrade: " + (750 - p.NeckProgress));
             line3.overrideColor = new Color(255, 0, 0);
             tooltips.Add(line3);
             foreach (TooltipLine line2 in tooltips)

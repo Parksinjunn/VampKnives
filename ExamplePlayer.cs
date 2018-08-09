@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.UI;
 using System;
+using Terraria.ModLoader.IO;
 
 namespace VampKnives
 {
@@ -265,6 +266,16 @@ namespace VampKnives
         void ApplyMyBuff(NPC npc)
         {
             npc.AddBuff(72, 60 * 4); //7 seconds, 60 frames per second, just an example number
+        }
+        public override TagCompound Save()
+        {
+            return new TagCompound {
+				{"NeckProgress", NeckProgress},
+            };
+        }
+        public override void Load(TagCompound tag)
+        {
+            NeckProgress = tag.GetInt("NeckProgress");
         }
         public override void UpdateBadLifeRegen()
         {
