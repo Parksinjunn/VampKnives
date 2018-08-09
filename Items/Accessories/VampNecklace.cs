@@ -30,7 +30,7 @@ namespace VampKnives.Items.Accessories
 
         public override void UpdateEquip(Player player)
         {
-            if (player.GetModPlayer<ExamplePlayer>().NeckProgress == 1000)
+            if (player.GetModPlayer<ExamplePlayer>().NeckProgress == 750)
             {
                 item.SetDefaults(mod.ItemType("VampNecklace2"));
             }

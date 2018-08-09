@@ -2,6 +2,8 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 5 new knives to the game that *should* scale well. 
 
+Hotfix 3: Fixed the Necklace progress not saving on world exit. Reduced cost to compensate players who lost progress.
+
 Recent Changes:
 New town NPC - Arrives after either BoC or EoW is defeated.
 New healing system - The more damage you do, the more Blood Essence you accrue.
