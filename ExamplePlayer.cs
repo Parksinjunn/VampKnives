@@ -116,6 +116,7 @@ namespace VampKnives
         public int KillCount;
         public int NeckProgress;
         public int NeckAdd;
+        public bool Given = false;
 
         public override void ResetEffects()
         {
@@ -271,11 +272,13 @@ namespace VampKnives
         {
             return new TagCompound {
 				{"NeckProgress", NeckProgress},
+                {"Given", Given},
             };
         }
         public override void Load(TagCompound tag)
         {
             NeckProgress = tag.GetInt("NeckProgress");
+            Given = tag.GetBool("Given");
         }
         public override void UpdateBadLifeRegen()
         {

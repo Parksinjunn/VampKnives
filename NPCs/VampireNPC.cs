@@ -10,7 +10,6 @@ namespace VampKnives.NPCs
     [AutoloadHead]
     public class VampireNPC : ModNPC
     {
-        public bool Given;
         public bool IncBPClicked;
         public override string Texture
         {
@@ -90,9 +89,9 @@ namespace VampKnives.NPCs
         public override string GetChat()
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            if (Given == false)
+            if (p.Given == false)
                 return "Young one, interested in an old vampire relic?";
-            if (Given == true && IncBPClicked == false)
+            if (p.Given == true && IncBPClicked == false)
             {
                 return "Sometimes I get the urge to drink from everyone here";
             }
@@ -110,12 +109,12 @@ namespace VampKnives.NPCs
                 IncBPClicked = false;
             }
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            if (Given == false)
+            if (p.Given == false)
             {
                 button = "Sure?";
                 button2 = "N-n-no thanks";
             }
-            if (Given == true)
+            if (p.Given == true)
             {
                 button = Language.GetTextValue("LegacyInterface.28");
                 button2 = ("Increase Blood Points by: " + (p.NeckProgress/10));
@@ -139,20 +138,20 @@ namespace VampKnives.NPCs
                     IncBPClicked = false;
                 }
             }
-            if (Given == false)
+            if (p.Given == false)
             {
                 if (firstButton)
                 {
                     Main.LocalPlayer.QuickSpawnItem(mod.ItemType("VampNecklace"));
-                    Given = true;
+                    p.Given = true;
                 }
                 else
                 {
-                    Given = false;
+                    p.Given = false;
                     Main.npcChatText = "";
                 }
             }
-            if(IncBPClicked == false && Given == true)
+            if(IncBPClicked == false && p.Given == true)
             {
                 if (firstButton)
                 {
