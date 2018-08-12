@@ -232,7 +232,7 @@
     <Compile Include="Items\PlagueWaspKnives.cs" />
     <Compile Include="Items\Misc\TestForGabesbane.cs" />
     <Compile Include="Items\Misc\TestForRetro.cs" />
-    <Compile Include="Items\ThrowingKnivesAmmo.cs" />
+    <Compile Include="Items\Ammo\ThrowingKnivesAmmo.cs" />
     <Compile Include="Items\TrueExcaliburKnives.cs" />
     <Compile Include="Items\TrueShadowKnives.cs" />
     <Compile Include="Items\VampireKnivesMagic.cs" />

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -19,6 +21,30 @@ namespace VampKnives.Items.Materials
             item.value = 5000;
             item.rare = 10;
         }
+        public override bool CloneNewInstances
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public bool crafted;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            TooltipLine line = new TooltipLine(mod, "Face", "Can be turned into shards with a Hammer");
+            line.overrideColor = new Color(86, 86, 86);
+            if (crafted == false)
+                tooltips.Add(line);
+        }
+        public override void OnCraft(Recipe recipe)
+        {
+            crafted = true;
+        }
+        public override void UpdateInventory(Player player)
+        {
+            crafted = true;
+        }
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
@@ -28,7 +54,7 @@ namespace VampKnives.Items.Materials
             recipe.AddRecipe();
 
             HammerRecipe recipe2 = new HammerRecipe(mod);
-            recipe2.AddIngredient(mod.GetItem("CrimsonShard"), 5);
+            recipe2.AddIngredient(mod.GetItem("CrimsonShard"), 4);
             recipe2.SetResult(this);
             recipe2.AddRecipe();
         }

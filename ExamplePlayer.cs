@@ -300,7 +300,7 @@ namespace VampKnives
                 player.lifeRegenTime = 0;
                 player.lifeRegen -= 10;
             }
-            if (DelayTimer == (0-DelayAdd))
+            if (DelayTimer == (DelayAdd))
             {
                 VampDecreaseRate = (float)Math.Pow(VampDecreaseRate * VampDecSlow, 1.5);
                 VampCurrent -= VampDecreaseRate;

@@ -36,7 +36,30 @@ namespace VampKnives.Items.MaterialKnives
             item.autoReuse = true;
             item.shootSpeed = 15f;
         }
-
+        public override bool CloneNewInstances
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public bool crafted;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            TooltipLine line = new TooltipLine(mod, "Face", "Requires a Knife Cast");
+            line.overrideColor = new Color(86, 86, 86);
+            if (crafted == false)
+                tooltips.Add(line);
+        }
+        public override void OnCraft(Recipe recipe)
+        {
+            crafted = true;
+        }
+        public override void UpdateInventory(Player player)
+        {
+            crafted = true;
+        }
         public override void AddRecipes()
         {
             KnifeCastRecipe recipe = new KnifeCastRecipe(mod);

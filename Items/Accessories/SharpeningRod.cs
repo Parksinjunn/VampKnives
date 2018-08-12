@@ -33,8 +33,32 @@ namespace VampKnives.Items.Accessories
             KnifeDamagePlayer modPlayer = KnifeDamagePlayer.ModPlayer(player);
             modPlayer.KnifeDamage += 0.3f;
             modPlayer.KnifeCrit += 15;
+            crafted = true;
         }
-
+        public override bool CloneNewInstances
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public bool crafted;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            TooltipLine line = new TooltipLine(mod, "Face", "Requires a Knife Cast");
+            line.overrideColor = new Color(86, 86, 86);
+            if (crafted == false)
+                tooltips.Add(line);
+        }
+        public override void OnCraft(Recipe recipe)
+        {
+            crafted = true;
+        }
+        public override void UpdateInventory(Player player)
+        {
+            crafted = true;
+        }
         public override void AddRecipes()
         {
             SharpCastRecipe recipe = new SharpCastRecipe(mod);

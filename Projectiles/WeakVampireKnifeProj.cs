@@ -39,18 +39,8 @@ namespace VampKnives.Projectiles
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            int random = Main.rand.Next(0, 5);
             Player owner = Main.player[projectile.owner];
-            int healamnt = 0;
-            healamnt = (int)(projectile.damage * .075);
-            if (healamnt >= 1)
-            {
-                projectile.vampireHeal((int)(projectile.damage), new Vector2(projectile.position.X, projectile.position.Y));
-            }
-            else if(random == 3)
-            {
-                projectile.vampireHeal((int)(projectile.damage)*3, new Vector2(projectile.position.X, projectile.position.Y));
-            }
+            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
             Hoods(n);
         }
 

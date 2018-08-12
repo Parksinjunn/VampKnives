@@ -1,8 +1,10 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace VampKnives.Items
+namespace VampKnives.Items.Ammo
 {
     public class ThrowingKnivesAmmo : KnifeItem
     {
@@ -27,6 +29,30 @@ namespace VampKnives.Items
             item.ammo = item.type;              //The ammo class this ammo belongs to.
         }
 
+        public override bool CloneNewInstances
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public bool crafted;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        { 
+        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            TooltipLine line = new TooltipLine(mod, "Face", "Requires a Throwing Knives Cast");
+            line.overrideColor = new Color(86, 86, 86);
+            if (crafted == false)
+                tooltips.Add(line);
+        }
+        public override void OnCraft(Recipe recipe)
+        {
+            crafted = true;
+        }
+        public override void UpdateInventory(Player player)
+        {
+            crafted = true;
+        }
         public override void AddRecipes()
         {
             DartCastRecipe recipe = new DartCastRecipe(mod);
