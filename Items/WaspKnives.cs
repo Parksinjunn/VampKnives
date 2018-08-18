@@ -42,8 +42,8 @@ namespace VampKnives.Items
 			recipe.AddIngredient(ItemID.LifeFruit, 3);
             recipe.AddIngredient(ItemID.Stinger, 15);
             recipe.AddIngredient(mod.GetItem("BeeKnives"), 1);
-            recipe.AddTile(TileID.ImbuingStation);
-			recipe.SetResult(this);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
 			recipe.AddRecipe();
 
             recipe = new ModRecipe(mod);

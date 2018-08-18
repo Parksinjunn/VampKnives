@@ -44,7 +44,7 @@ namespace VampKnives.Items
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(mod.GetItem("StableCorruptionCrystal"), 1);
             recipe.AddIngredient(mod.GetItem("IronKnives"), 1);
-            recipe.AddTile(TileID.ImbuingStation);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
 			recipe.AddRecipe();
 

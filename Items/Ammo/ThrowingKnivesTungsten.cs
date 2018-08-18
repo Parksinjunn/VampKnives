@@ -39,7 +39,7 @@ namespace VampKnives.Items.Ammo
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Throwing Knives Cast");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -59,13 +59,13 @@ namespace VampKnives.Items.Ammo
             recipe.AddIngredient(ItemID.TungstenBar, 1);
             recipe.AddTile(TileID.Furnaces);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this, 5);
+            recipe.SetResult(this, 15);
             recipe.AddRecipe();
 
             recipe = new DartCastRecipe(mod);
             recipe.AddIngredient(ItemID.TungstenBar, 1);
             recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this, 10);
+            recipe.SetResult(this, 25);
             recipe.AddRecipe();
         }
     }

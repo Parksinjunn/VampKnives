@@ -59,13 +59,13 @@ namespace VampKnives.Items.Ammo
             recipe.AddIngredient(ItemID.SilverBar, 1);
             recipe.AddTile(TileID.Furnaces);
             recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this, 5);
+recipe.SetResult(this, 15);
             recipe.AddRecipe();
 
             recipe = new DartCastRecipe(mod);
             recipe.AddIngredient(ItemID.SilverBar, 1);
             recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this, 10);
+recipe.SetResult(this, 25);
             recipe.AddRecipe();
         }
     }

@@ -22,7 +22,7 @@ namespace VampKnives.Items.Potions
             item.useTime = 15;
             item.UseSound = SoundID.Item3;
             item.maxStack = 30;
-            item.rare = 3;
+            item.rare = 10;
             item.value = Item.buyPrice(gold: 1);
             item.consumable = true;
         }
@@ -31,6 +31,38 @@ namespace VampKnives.Items.Potions
             player.AddBuff(mod.BuffType("MurderPotionBuff"), 1800);
             item.consumable = true;
             return true;
+        }
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.BottledWater, 2);
+            recipe.AddIngredient(ItemID.TissueSample, 4);
+            recipe.AddIngredient(ItemID.Vertebrae, 5);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this, 2);
+            recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.BottledWater, 3);
+            recipe.AddIngredient(ItemID.ShadowScale, 6);
+            recipe.AddIngredient(ItemID.RottenChunk, 5);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this, 3);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.BottledWater, 2);
+            recipe.AddIngredient(ItemID.TissueSample, 4);
+            recipe.AddIngredient(ItemID.Vertebrae, 5);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
+            recipe.SetResult(this, 3);
+            recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.BottledWater, 3);
+            recipe.AddIngredient(ItemID.ShadowScale, 6);
+            recipe.AddIngredient(ItemID.RottenChunk, 5);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
+            recipe.SetResult(this, 4);
+            recipe.AddRecipe();
         }
     }
 }

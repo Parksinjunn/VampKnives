@@ -38,14 +38,14 @@ namespace VampKnives.Items
         public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("CrimsonCrystal"), 1);
+            recipe.AddIngredient(mod.GetItem("StableCrimsonCrystal"), 1);
             recipe.AddIngredient(mod.GetItem("IronKnives"), 1);
-            recipe.AddTile(TileID.ImbuingStation);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
 			recipe.AddRecipe();
 
             recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("CrimsonCrystal"), 1);
+            recipe.AddIngredient(mod.GetItem("StableCrimsonCrystal"), 1);
             recipe.AddIngredient(mod.GetItem("IronKnives"), 1);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);

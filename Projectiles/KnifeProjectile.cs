@@ -15,11 +15,6 @@ namespace VampKnives.Projectiles
 {
     public abstract class KnifeProjectile : ModProjectile
     {
-        public void LifeSteal()
-        {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
-            p.DelayTimer = 60;
-        }
         public void Hoods(NPC n)
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);

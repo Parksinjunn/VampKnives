@@ -99,7 +99,7 @@ namespace VampKnives.Projectiles
                     p.VampCurrent += (int)(damage * 0.40);
                     if (((int)(damage * 0.40)) < 1)
                         p.VampCurrent += 1f;
-                    p.DelayTimer = 60;
+                    p.DelayTimer = 30;
                     int statLifeCalc = (int)((p.HealAccMult)*((p.VampCurrent / 100) + (0.6*((0.000000180527267 * Math.Pow(damage, 4)) - (0.0000551402375 * Math.Pow(damage,3)) + (0.00382482*Math.Pow(damage,2)) + (0.09874884 * damage) + 1.34702863)) + Main.rand.NextFloat(-2,2)));
                     if (statLifeCalc > 1000)
                         statLifeCalc = 1000;

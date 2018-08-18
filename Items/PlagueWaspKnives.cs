@@ -52,7 +52,7 @@ namespace VampKnives.Items
                 recipe.AddIngredient(Calamity.GetItem("ToxicHeart"), 1);
                 recipe.AddIngredient(ItemID.Stinger, 15);
                 recipe.AddIngredient(mod.GetItem("WaspKnives"), 1);
-                recipe.AddTile(TileID.ImbuingStation);
+                recipe.AddTile(mod.GetTile("KnifeBench"));
                 recipe.SetResult(this);
                 recipe.AddRecipe();
 

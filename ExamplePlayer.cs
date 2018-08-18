@@ -300,7 +300,7 @@ namespace VampKnives
                 player.lifeRegenTime = 0;
                 player.lifeRegen -= 10;
             }
-            if (DelayTimer == (DelayAdd))
+            if (DelayTimer == (0-DelayAdd))
             {
                 VampDecreaseRate = (float)Math.Pow(VampDecreaseRate * VampDecSlow, 1.5);
                 VampCurrent -= VampDecreaseRate;
@@ -316,16 +316,6 @@ namespace VampKnives
                 NeckProgress += KillCount;
                 KillCount = 0;
             }
-            //Main.NewText("Progress: " + NeckProgress);
-            //Main.NewText("Kills: " + KillCount);
-            //Main.NewText("" + VampCurrent);
-            //if(dPyroPower)
-            //{
-            //    if(player.statMana > 1)
-            //    player.statMana -= 1;
-            //    if (player.statMana > (player.statMana / 2))
-            //        player.statMana -= 2;
-            //}
         }
 
         public override void UpdateVanityAccessories()
