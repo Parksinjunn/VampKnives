@@ -1,0 +1,45 @@
+﻿KNIVES THAT USE AMMO:
+Iron Knives - 2 damage - uses knife ammo type
+Lead Knives - 2 damage - uses knife ammo type
+Silver Knives - 3 damage - uses knife ammo type
+Tungsten Knives - 3 damage - uses knife ammo type
+Gold Knives - 4 damage - uses knife ammo type
+Platinum Knives - 4 damage - uses knife ammo type
+Demonite Knives - 5 damage - uses knife ammo type
+Crimtane Knives - 5 damage - uses knife ammo type
+Molten Knives - 6 damage - uses knife ammo type
+Cobalt Kunai - 8 damage - uses knife ammo type
+Mythril Knives - 10 damage - uses knife ammo type
+Orichalcum Knives - 10 damage - uses knife ammo type
+Adamantite Knives - 12 damage - uses knife ammo type
+Titanium Knives - 12 damage - uses knife ammo type
+Chlorophyte Knives - 15 damage - uses knife ammo type
+Reaver Head - 8 damage - uses tooth ammo type (only one)
+
+KNIVES THAT DON'T USE AMMO:
+Bee Knives - 12 damage - Upon hitting an enemy or tile there is a chance to spawn bees at the projectile's last known location.
+Butchers Knives - 13 damage - Shoots out knives that stick to enemies and cause DoT. (Knifes sticking AI has been broken for awhile)
+Chain Knives - 25 damage - Shoots out chained knives that reel back in upon hitting a tile or enemy
+Arthur's Kaledvoulc'h - 45 damage - Shoots out excaliburs, no special effects.
+Tormenting Spikes - 18 damage - Shoots spears of flames at enemies; inflicts OnFire! debuff for 5 seconds
+Harpy Knives - 16 damage - Shoots out harpy feathers, no special effects.
+Jungle Knives - 4 damage - Inflicts penetrating poison, around 6 DPS 
+Corrupt Star - 10 damage - Shoots boomerang-like knives with physics drop-off; inherits the machete AI
+Mana Knives - 7 damage - Shoots projectiles that heal mana upon hitting an enemy
+Mandible Knives - 6 damage - Summons a tiny ant-eater from underground to attack your target
+Pillar Knives - 80 damage - Randomly shoots one of the four pillar knives's projectiles
+Nebula Knives - 65 damage - Shoots out a blaze projectile upon hitting an enemy
+Solar Knives - 56 damage - Spawns an explosion upon hitting an enemy
+Stardust Knives - 72 damage - Spawns a mini-stardust homing projectile upon hitting an enemy
+Vortex Knives - 64 damage - Will lay a random amount of alien eggs in any enemies hit, once the enemy is killed, if they still have the vortex debuff, the eggs will hatch leading to a burst of homing larvae spawning.
+Plague Wasp Knives - 56 damage - Spawns wasps that inflict the plague debuff from calamity.
+Rukasus's Bundle o' Tesla Coils - 40 damage - Shoots bolts of lighting that chain off of the enemy.
+Sengos Forgotten Blades - 7 damage - Inflicts Sengos's curse, stealing the player's life (slowly), while creating a spinning knife trap.
+Penumbra - 21 damage - Simple no special effects just shadow knives
+Umbra - 53 damage - Passes through up to 5 enemies
+Arthur's True Kaledvoulc'h - 53 damage - upon hitting an enemy, spawns a true exalibur projectile
+Spectre Glove - 38 damage - Shoots ghastly projectiles that pass through up to two enemies.
+Vampire Knives (Magic is a relic, really just vamp knives that do damage) - 29 damage - Plain Vanilla (mostly) Vampire knives
+Wasp Knives - 31 damage - Spawns even stronger versions of bees
+Lesser Vampire Knives - 7 damage - Early game weak healing knives
+Wyvern Head - 26 damage - Shoots out wyvern feathers (This can [and definitely should] be changed to mini-wyverns later on, but I was unable to sprite one that I thought looked good)
