@@ -30,7 +30,7 @@ namespace VampKnives.Items.Accessories
 
         public override void UpdateEquip(Player player)
         {
-            if (player.GetModPlayer<ExamplePlayer>().NeckProgress == 3000)
+            if (player.GetModPlayer<ExamplePlayer>().NeckProgress == 3750)
             {
                 item.SetDefaults(mod.ItemType("VampNecklace3"));
             }
@@ -42,7 +42,7 @@ namespace VampKnives.Items.Accessories
             TooltipLine line = new TooltipLine(mod, "Face", "Tier 2");
             line.overrideColor = new Color(210, 0, 0);
             tooltips.Add(line);
-            TooltipLine line3 = new TooltipLine(mod, "Face", "Kills Til Next Upgrade: " + (4000 - p.NeckProgress));
+            TooltipLine line3 = new TooltipLine(mod, "Face", "Kills Til Next Upgrade: " + (3750 - p.NeckProgress));
             line3.overrideColor = new Color(255, 0, 0);
             tooltips.Add(line3);
             foreach (TooltipLine line2 in tooltips)

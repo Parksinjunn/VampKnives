@@ -43,3 +43,17 @@ Vampire Knives (Magic is a relic, really just vamp knives that do damage) - 29 d
 Wasp Knives - 31 damage - Spawns even stronger versions of bees
 Lesser Vampire Knives - 7 damage - Early game weak healing knives
 Wyvern Head - 26 damage - Shoots out wyvern feathers (This can [and definitely should] be changed to mini-wyverns later on, but I was unable to sprite one that I thought looked good)
+
+Accessories:
+Extra Finger - Adds an extra thrown knife
+Mechanical Finger - Adds two extra thrown knives
+Makeshift Whetstone - 15% increased knife crit strike chance
+Whetstone - 20% increased knife damage
+Sharpening Rod - 30% increased knife damage + 15% increased knife crit strike chance
+Vampire Necklace 
+	Tier 1: Adds 750 to the player's Max Life Essence
+	Tier 2: Adds 2500 to player's Max Life Essence
+	Tier 3: Adds 4000 to player's Max Life Essence (will still rack up kills that can be traded in for life essence points at Vampire NPC)
+
+Hoods:
+TODO
