@@ -49,12 +49,11 @@ namespace VampKnives.Projectiles
             Mod Calamity = ModLoader.GetMod("CalamityMod");
             if (Calamity != null)
             {
-                Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
                 n.AddBuff(Calamity.BuffType("CrushDepth"), 300); //poisoned 10
-
-                Hoods(n);
             }
+            Player owner = Main.player[projectile.owner];
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+                Hoods(n);
         }
     }
 }

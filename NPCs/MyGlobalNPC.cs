@@ -129,6 +129,10 @@ namespace VampKnives.NPCs
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MechanicalFingers"));
             }
+            if (npc.type == NPCID.Mothron)
+            {
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BrokenHeroKnives"));
+            }
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
