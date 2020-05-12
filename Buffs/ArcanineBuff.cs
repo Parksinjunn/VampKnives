@@ -19,7 +19,7 @@ namespace VampKnives.Buffs /*This is the namespace and it states where the class
         public override void Update(Player player, ref int buffIndex) //Here is where we override Update, which is run every tick.
         {
             player.buffTime[buffIndex] = 18000; //Sets the time left to 10000 ticks. This number doesn't matter as it is re-run every tick.
-            player.GetModPlayer<ExamplePlayer>(mod).Arcanine = true; //This sets Arcanine in ExamplePlayer to TRUE
+            player.GetModPlayer<ExamplePlayer>().Arcanine = true; //This sets Arcanine in ExamplePlayer to TRUE
             bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("Arcanine")] <= 0; //This sets the bool pPNS to Arcanine (so, TRUE)
 
             //This if statement checks if the bool pPNS is true or false, AND, cross checks to make sure it is checking for the right player (so multiple people can have the same pet in MP)

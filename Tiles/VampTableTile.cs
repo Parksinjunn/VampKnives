@@ -148,7 +148,7 @@ namespace VampKnives.Tiles
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 16, mod.ItemType("VampTable"));
+            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<Items.VampTable>());
         }
     }
 }

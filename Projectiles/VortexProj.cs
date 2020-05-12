@@ -38,7 +38,7 @@ namespace VampKnives.Projectiles
         {
             Player owner = Main.player[projectile.owner];
             Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            n.AddBuff(mod.BuffType("VortexDebuff"), 360);
+            n.AddBuff(ModContent.BuffType<Buffs.VortexDebuff>(), 360);
 
             Hoods(n);
         }

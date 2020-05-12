@@ -4,13 +4,17 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using VampKnives.Items.Armor;
+using VampKnives.Items.Materials;
+using static Terraria.ModLoader.ModContent;
+
 
 namespace VampKnives.NPCs
 {
     [AutoloadHead]
     public class VampireNPC : ModNPC
     {
-        public bool IncBPClicked;
+        public bool SkinShopClicked;
         public override string Texture
         {
             get
@@ -91,11 +95,11 @@ namespace VampKnives.NPCs
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             if (p.Given == false)
                 return "Young one, interested in an old vampire relic?";
-            if (p.Given == true && IncBPClicked == false)
+            if (p.Given == true && SkinShopClicked == false)
             {
                 return "Sometimes I get the urge to drink from everyone here";
             }
-            if (IncBPClicked == true)
+            if (SkinShopClicked == true)
                 return ("This will reset your kill progress for the necklace. (If you have tier 3 reseting won't affect you). Gain: " + (p.NeckProgress / 10) + " BP  Click again to continue");
             else
                 return "who pie is?";
@@ -106,7 +110,7 @@ namespace VampKnives.NPCs
             timer++;
             if(timer == 300)
             {
-                IncBPClicked = false;
+                SkinShopClicked = false;
             }
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             if (p.Given == false)
@@ -117,32 +121,18 @@ namespace VampKnives.NPCs
             if (p.Given == true)
             {
                 button = Language.GetTextValue("LegacyInterface.28");
-                button2 = ("Increase Blood Points by: " + (p.NeckProgress/10));
+                button2 = ("Open Skin Shop");
             }
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            if (IncBPClicked == true)
-            {
-                if(firstButton)
-                {
-                    IncBPClicked = false;
-                }
-                else
-                {
-                    p.NeckAdd += p.NeckProgress / 10;
-                    p.VampMax += p.NeckProgress / 10;
-                    p.NeckProgress = 0;
-                    IncBPClicked = false;
-                }
-            }
             if (p.Given == false)
             {
                 if (firstButton)
                 {
-                    Main.LocalPlayer.QuickSpawnItem(mod.ItemType("VampNecklace"));
+                    Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<Items.Accessories.VampNecklace>());
                     p.Given = true;
                 }
                 else
@@ -151,7 +141,7 @@ namespace VampKnives.NPCs
                     Main.npcChatText = "";
                 }
             }
-            if(IncBPClicked == false && p.Given == true)
+            if(SkinShopClicked == false && p.Given == true)
             {
                 if (firstButton)
                 {
@@ -159,58 +149,67 @@ namespace VampKnives.NPCs
                 }
                 else
                 {
-                    Main.npcChatText = ("This will reset your kill progress for the necklace. (If you have tier 3 reseting won't affect you). Gain: " + (p.NeckProgress / 10) + " BP  Click again to continue");
-                    IncBPClicked = true;
+                    SkinShopClicked = true;
                 }
+            }
+            if (SkinShopClicked == true)
+            {
+                Main.playerInventory = true;
+                // remove the chat window...
+                Main.npcChatText = "";
+                // and start an instance of our UIState.
+                GetInstance<VampKnives>().VampireUserInterface.SetState(new UI.SkinInventory());
             }
         }
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-            shop.item[nextSlot].SetDefaults(mod.ItemType("PsionicHood"));
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicHood>());
             nextSlot++;
-            shop.item[nextSlot].SetDefaults(mod.ItemType("PsionicChestplate"));
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicChestplate>());
             nextSlot++;
-            shop.item[nextSlot].SetDefaults(mod.ItemType("PsionicLeggings"));
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicLeggings>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.VampNecklaces.VampNecklaceBee>());
             nextSlot++;
             if (NPC.downedSlimeKing)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("SuperGlue"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Superglue>());
                 nextSlot++;
             }
             if(NPC.downedBoss2)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("CorruptionCrystal"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<CorruptionCrystal>());
                 nextSlot++;
-                shop.item[nextSlot].SetDefaults(mod.ItemType("CorruptionShard"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<CorruptionShard>());
                 nextSlot++;
-                shop.item[nextSlot].SetDefaults(mod.ItemType("CrimsonCrystal"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<CrimsonCrystal>());
                 nextSlot++;
-                shop.item[nextSlot].SetDefaults(mod.ItemType("CrimsonShard"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<CrimsonShard>());
                 nextSlot++;
             }
             if(NPC.downedPlantBoss)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("PlantFiber"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<PlantFiber>());
                 nextSlot++;
-                shop.item[nextSlot].SetDefaults(mod.ItemType("TransmutersHood"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<TransmutersHood>());
                 nextSlot++;
                 if (Main.eclipse)
                 {
-                    shop.item[nextSlot].SetDefaults(mod.ItemType("LivingTissue"));
+                    shop.item[nextSlot].SetDefaults(ModContent.ItemType<LivingTissue>());
                     nextSlot++;
                 }
             }
             if(NPC.downedGolemBoss && Main.eclipse)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("BrokenHeroKnives"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.BrokenHeroKnives>());
                 nextSlot++;
             }
             if(NPC.downedBoss3)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType("SengosForgottenBlades"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.SengosForgottenBlades>());
                 nextSlot++;
-                shop.item[nextSlot].SetDefaults(mod.ItemType("ExtraFinger"));
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.ExtraFinger>());
                 nextSlot++;
             }
         }

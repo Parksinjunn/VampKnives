@@ -40,7 +40,7 @@ namespace VampKnives.Items.Materials
             }
             if (stack >= 5)
             {
-                Item.NewItem(Main.LocalPlayer.getRect(), mod.ItemType("CorruptionCrystal"));
+                Item.NewItem(Main.LocalPlayer.getRect(), ModContent.ItemType<CorruptionCrystal>());
 
                 return false;
             }
@@ -52,7 +52,7 @@ namespace VampKnives.Items.Materials
             stack = item.stack;
             if (item.stack == 5)
             {
-                item.SetDefaults(mod.ItemType("CorruptionCrystal"));
+                item.SetDefaults(ModContent.ItemType<CorruptionCrystal>());
             }
             base.UpdateInventory(player);
         }

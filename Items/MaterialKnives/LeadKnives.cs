@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Items.Ammo;
 
 namespace VampKnives.Items.MaterialKnives
 {
@@ -30,7 +31,7 @@ namespace VampKnives.Items.MaterialKnives
             item.shoot = mod.ProjectileType("DartAnim");
             item.autoReuse = true;
             item.shootSpeed = 15f;
-            item.useAmmo = mod.ItemType("ThrowingKnivesAmmo");
+            item.useAmmo = ModContent.ItemType<ThrowingKnivesAmmo>();
         }
         public override bool CloneNewInstances
         {

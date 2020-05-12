@@ -2,6 +2,7 @@ using Terraria.DataStructures;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Misc
 {
@@ -18,7 +19,7 @@ namespace VampKnives.Items.Misc
         {
             item.CloneDefaults(ItemID.Carrot);
             item.shoot = mod.ProjectileType("LinkBunny");
-            item.buffType = mod.BuffType("LinkBuff");
+            item.buffType = ModContent.BuffType<LinkBuff>();
             item.noUseGraphic = true;
         }
 

@@ -78,15 +78,15 @@ namespace VampKnives.UI
             }
             //Main.NewText("" + frame);
             if (frame == 0)
-                Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/0"), drawPosition, sourceRectangle, Color.White);
+                Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/0"), drawPosition, sourceRectangle, Color.White);
             if (frame == 1)
-                Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/1"), drawPosition, sourceRectangle, Color.White);
+                Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/1"), drawPosition, sourceRectangle, Color.White);
             if (frame == 2)
-                Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/2"), drawPosition, sourceRectangle, Color.White);
+                Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/2"), drawPosition, sourceRectangle, Color.White);
             if (frame == 3)
-                Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/3"), drawPosition, sourceRectangle, Color.White);
+                Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/3"), drawPosition, sourceRectangle, Color.White);
             if (frame == 4)
-                Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/4"), drawPosition, sourceRectangle, Color.White);
+                Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/4"), drawPosition, sourceRectangle, Color.White);
         }
         public override void Update(GameTime gameTime)
         {

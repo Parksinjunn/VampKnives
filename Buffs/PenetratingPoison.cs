@@ -18,12 +18,12 @@ namespace VampKnives.Buffs
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer<ExamplePlayer>(mod).PenetratingPoison = true;
+            player.GetModPlayer<ExamplePlayer>().PenetratingPoison = true;
         }
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            npc.GetGlobalNPC<MyGlobalNPC>(mod).PenetratingPoison = true;
+            npc.GetGlobalNPC<MyGlobalNPC>().PenetratingPoison = true;
         }
     }
 }

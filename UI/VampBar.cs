@@ -26,12 +26,12 @@ namespace VampKnives.UI
             VampMainPanel.OnMouseDown += new UIElement.MouseEvent(DragStart);
             VampMainPanel.OnMouseUp += new UIElement.MouseEvent(DragEnd);
 
-            var BgTexture = ModLoader.GetTexture("VampKnives/UI/VampBarBg");
+            var BgTexture = ModContent.GetTexture("VampKnives/UI/VampBarBg");
             UIImage VampBarBg = new UIImage(BgTexture);
             VampBarBg.Width.Set(57, 0f);
             VampBarBg.Height.Set(93, 0f);
 
-            var BarTexture = ModLoader.GetTexture("VampKnives/UI/VampBar");
+            var BarTexture = ModContent.GetTexture("VampKnives/UI/VampBar");
             UIImage VampBar = new UIImage(BarTexture);
             VampBar.Width.Set(57, 0f);
             VampBar.Height.Set(93, 0f);

@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Potions
 {
@@ -28,7 +29,7 @@ namespace VampKnives.Items.Potions
         }
         public override bool UseItem(Player player)
         {
-            player.AddBuff(mod.BuffType("MurderPotionBuff"), 1800);
+            player.AddBuff(ModContent.BuffType<MurderPotionBuff>(), 1800);
             item.consumable = true;
             return true;
         }

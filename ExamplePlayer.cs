@@ -115,8 +115,9 @@ namespace VampKnives
         public bool VampNecklace = false;
         public int KillCount;
         public int NeckProgress;
-        public int NeckAdd;
+        public float NeckAdd;
         public bool Given = false;
+        public string KillText;
 
         public override void ResetEffects()
         {
@@ -163,7 +164,14 @@ namespace VampKnives
             MageAccessoryPrevious = MageAccessory;
             MageAccessory = MageHideVanity = MageForceVanity = MagePower = false;
             Mage = false;
-            VampMax = 1000 + NeckAdd;
+            if (VampNecklace == true)
+            {
+                VampMax = 1000 * NeckAdd;
+            }
+            else
+            {
+                VampMax = 1000;
+            }
             VampDecreaseRate = 2f;
             VampDecSlow = 1f;
             VampNecklace = false;
@@ -323,47 +331,47 @@ namespace VampKnives
             for (int n = 13; n < 18 + player.extraAccessorySlots; n++)
             {
                 Item item = player.armor[n];
-                if (item.type == mod.ItemType<Items.Armor.PyromancersHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.PyromancersHood>())
                 {
                     pyroHideVanity = false;
                     pyroForceVanity = true;
                 }
-                if(item.type == mod.ItemType<Items.Armor.DarkPyromancersHood>())
+                if(item.type == ModContent.ItemType<Items.Armor.DarkPyromancersHood>())
                 {
                     dPyroHideVanity = false;
                     dPyroForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.TransmutersHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.TransmutersHood>())
                 {
                     TransmuterHideVanity = false;
                     TransmuterForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.InvokersHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.InvokersHood>())
                 {
                     InvokerHideVanity = false;
                     InvokerForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.TechnomancersHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.TechnomancersHood>())
                 {
                     TechnomancerHideVanity = false;
                     TechnomancerForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.PartyHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.PartyHood>())
                 {
                     PartyHideVanity = false;
                     PartyForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.ShamansHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.ShamansHood>())
                 {
                     ShamanHideVanity = false;
                     ShamanForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.WitchDoctorHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.WitchDoctorHood>())
                 {
                     WitchDoctorHideVanity = false;
                     WitchDoctorForceVanity = true;
                 }
-                if (item.type == mod.ItemType<Items.Armor.MagesHood>())
+                if (item.type == ModContent.ItemType<Items.Armor.MagesHood>())
                 {
                     MageHideVanity = false;
                     MageForceVanity = true;
@@ -376,39 +384,39 @@ namespace VampKnives
             // Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
             if (HoodKeyPressed == true && pyroAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.PyroHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.PyroHoodBuff>(), 60, true);
             }
             if(HoodKeyPressed == true && dPyroAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.DPyroHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.DPyroHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && TransmuterAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.TransmuterHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.TransmuterHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && InvokerAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.InvokerHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.InvokerHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && TechnomancerAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.TechnomancerHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.TechnomancerHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && PartyAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.PartyHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.PartyHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && ShamanAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.ShamanHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.ShamanHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && WitchDoctorAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.WitchDoctorHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.WitchDoctorHoodBuff>(), 60, true);
             }
             if (HoodKeyPressed == true && MageAccessory)
             {
-                player.AddBuff(mod.BuffType<Buffs.MageHoodBuff>(), 60, true);
+                player.AddBuff(ModContent.BuffType<Buffs.MageHoodBuff>(), 60, true);
             }
         }
         public override void FrameEffects()

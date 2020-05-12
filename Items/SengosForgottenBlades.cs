@@ -70,7 +70,7 @@ namespace VampKnives.Items
                 Projectile.NewProjectile(position.X, position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, knockBack, player.whoAmI);
             }
 
-            player.AddBuff(mod.BuffType("SengosCurseBuff"), 180);
+            player.AddBuff(ModContent.BuffType<Buffs.SengosCurseBuff>(), 180);
 
             return false;
         }

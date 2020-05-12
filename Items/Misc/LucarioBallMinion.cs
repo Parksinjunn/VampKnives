@@ -16,7 +16,7 @@ namespace VampKnives.Items.Misc
         //{
         //    item.CloneDefaults(ItemID.Carrot);
         //    item.shoot = mod.ProjectileType("LucarioMinion");
-        //    item.buffType = mod.BuffType("LucarioBuffMinion");
+        //    item.buffType = ModContent.BuffType("LucarioBuffMinion");
         //}
 
         ////public override void AddRecipes()

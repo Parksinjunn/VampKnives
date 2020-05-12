@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Misc
 {
@@ -16,7 +17,7 @@ namespace VampKnives.Items.Misc
         {
             item.CloneDefaults(ItemID.Carrot);
             item.shoot = mod.ProjectileType("CobaltBunny");
-            item.buffType = mod.BuffType("CobaltBuff");
+            item.buffType = ModContent.BuffType<CobaltBuff>();
         }
 
         public override void UseStyle(Player player)

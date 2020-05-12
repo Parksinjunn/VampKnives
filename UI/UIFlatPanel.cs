@@ -16,7 +16,7 @@ namespace VampKnives.UI
         public UIFlatPanel()
         {
             if (_backgroundTexture == null)
-                _backgroundTexture = ModLoader.GetTexture("VampKnives/UI/Bg");
+                _backgroundTexture = ModContent.GetTexture("VampKnives/UI/Bg");
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)

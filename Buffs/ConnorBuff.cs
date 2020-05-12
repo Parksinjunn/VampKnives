@@ -17,7 +17,7 @@ namespace VampKnives.Buffs
         {
             player.buffTime[buffIndex] = 18000;
             player.GetModPlayer<ExamplePlayer>().hasMyBuff = true;
-            player.GetModPlayer<ExamplePlayer>(mod).Connor = true;
+            player.GetModPlayer<ExamplePlayer>().Connor = true;
             bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ConnorAnim")] <= 0;
             if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
             {

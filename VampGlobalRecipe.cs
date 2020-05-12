@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
+using VampKnives.Items.Materials;
 
 namespace VampKnives
 {
@@ -13,7 +12,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("Chisel")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<Chisel>()))
                 return true;
             else
                 return false;
@@ -27,7 +26,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("Hammer")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<Hammer>()))
                 return true;
             else
                 return false;
@@ -41,7 +40,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("Hammer")) && Main.LocalPlayer.HasItem(mod.ItemType("Chisel")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<Hammer>()) && Main.LocalPlayer.HasItem(ModContent.ItemType<Chisel>()))
                 return true;
             else
                 return false;
@@ -55,7 +54,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("DartCast")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<DartCast>()))
                 return true;
             else
                 return false;
@@ -69,7 +68,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("IronKnivesMold")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<IronKnivesMold>()))
                 return true;
             else
                 return false;
@@ -83,7 +82,7 @@ namespace VampKnives
 
         public override bool RecipeAvailable()
         {
-            if (Main.LocalPlayer.HasItem(mod.ItemType("SharpeningRodCast")))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<SharpeningRodCast>()))
                 return true;
             else
                 return false;

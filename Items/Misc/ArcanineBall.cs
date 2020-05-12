@@ -1,5 +1,7 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Misc
 {
@@ -15,7 +17,7 @@ namespace VampKnives.Items.Misc
         {
             item.CloneDefaults(ItemID.Carrot);
             item.shoot = mod.ProjectileType("Arcanine");
-            item.buffType = mod.BuffType("ArcanineBuff");
+            item.buffType = ModContent.BuffType<ArcanineBuff>();
         }
 
         public override void UseStyle(Player player)

@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Items.Accessories;
+using VampKnives.Items.BossDrops;
+using VampKnives.Items.Materials;
 
 namespace VampKnives.NPCs
 {
@@ -63,40 +66,40 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.Plantera)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BloomingTerror"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<BloomingTerror>());
                 for (int x = 0; x < 5; x++)
                 {
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Superglue"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Superglue>());
                 }
                 for (int x = 0; x < Main.rand.Next(45, 76); x++)
                 {
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PlantFiber"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PlantFiber>());
                 }
             }
             if (npc.type == NPCID.MartianTurret)
             {
                 if (Main.rand.Next(50) == 4)
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("RukasusTeslaKnives"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.RukasusTeslaKnives>());
             }
             if (npc.type == NPCID.CultistBoss)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MagesHood"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.MagesHood>());
             }
             if (npc.type == NPCID.BrainofCthulhu)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CrimsonCrystal"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonCrystal>());
             }
             if (npc.type == NPCID.Butcher)
             {
                 if (NPC.downedPlantBoss == true)
                 {
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("LivingTissue"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LivingTissue>());
                 }
             }
             if (npc.type == NPCID.EaterofWorldsHead)
             {
                 if (Main.rand.Next(6) == 0)
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CorruptionCrystal"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionCrystal>());
 
             }
             if (npc.type == NPCID.EaterofSouls)
@@ -104,65 +107,65 @@ namespace VampKnives.NPCs
                 Random random = new Random();
                 int ran = random.Next(0, 11);
                 if (ran == 5)
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CorruptionShard"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionShard>());
             }
             if (npc.type == NPCID.FaceMonster)
             {
                 Random random = new Random();
                 int ran = random.Next(0, 11);
                 if (ran == 5)
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CrimsonShard"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
             }
             if (npc.type == NPCID.MoonLordCore)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("LuminiteKnives"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LuminiteKnives>());
             }
             if (npc.type == NPCID.KingSlime)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Superglue"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Superglue>());
             }
             if (npc.type == NPCID.SkeletronHead)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ExtraFinger"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<ExtraFinger>());
             }
             if (npc.type == NPCID.SkeletronPrime)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MechanicalFingers"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<MechanicalFingers>());
             }
             if (npc.type == NPCID.Mothron)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BrokenHeroKnives"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.BrokenHeroKnives>());
             }
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
             if (type == NPCID.WitchDoctor)
             {
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.MudkipBall>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.MudkipBall>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.LucarioBall>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.LucarioBall>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.ArcanineBall>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.ArcanineBall>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.EeveeBall>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.EeveeBall>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.Bagutte>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.Bagutte>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.MasterSword>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.MasterSword>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
 
-                shop.item[nextSlot].SetDefaults(mod.ItemType<Items.Misc.ConnorPet>());
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.ConnorPet>());
                 shop.item[nextSlot].shopCustomPrice = new int?(100000);
                 nextSlot++;
             }
@@ -236,7 +239,7 @@ namespace VampKnives.NPCs
                 for (int i = 0; i < 1000; i++)
                 {
                     Projectile p = Main.projectile[i];
-                    if (p.active && p.type == mod.ProjectileType<Projectiles.ButchersKnivesProj>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI)
+                    if (p.active && p.type == ModContent.ProjectileType<Projectiles.ButchersKnivesProj>() && p.ai[0] == 1f && p.ai[1] == npc.whoAmI)
                     {
                         exampleKnifeCount++;
                     }

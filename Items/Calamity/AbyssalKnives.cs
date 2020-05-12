@@ -57,7 +57,7 @@ namespace VampKnives.Items.Calamity
             if (Calamity != null)
             {
                 ModRecipe recipe = new ModRecipe(mod);
-                recipe.AddIngredient(mod.ItemType("BrokenHeroKnives"), 1);
+                recipe.AddIngredient(ModContent.ItemType<BrokenHeroKnives>(), 1);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "Lumenite", 10);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "DepthCells", 10);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "Tenebris", 5);
@@ -66,7 +66,7 @@ namespace VampKnives.Items.Calamity
                 recipe.AddRecipe();
 
                 recipe = new ModRecipe(mod);
-                recipe.AddIngredient(mod.ItemType("BrokenHeroKnives"), 1);
+                recipe.AddIngredient(ModContent.ItemType<BrokenHeroKnives>(), 1);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "Lumenite", 8);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "DepthCells", 8);
                 recipe.AddIngredient(ModLoader.GetMod("CalamityMod"), "Tenebris", 4);

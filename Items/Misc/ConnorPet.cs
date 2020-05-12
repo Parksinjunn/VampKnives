@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Misc
 {
@@ -16,7 +17,7 @@ namespace VampKnives.Items.Misc
         {
             item.CloneDefaults(ItemID.CompanionCube);
             item.shoot = mod.ProjectileType("ConnorAnim");
-            item.buffType = mod.BuffType("ConnorBuff");
+            item.buffType = ModContent.BuffType<ConnorBuff>();
         }
 
         public override void UseStyle(Player player)

@@ -39,12 +39,12 @@ namespace VampKnives.Tiles
             disableSmartCursor = true;
             adjTiles = new int[] { TileID.Containers };
             chest = "Knife Workbench";
-            //chestDrop = mod.ItemType("KnifeWorkbenchItem");
+            //chestDrop = ModContent.ItemType("KnifeWorkbenchItem");
         }
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 64, 32, mod.ItemType("KnifeBenchItem"));
+            Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.KnifeBenchItem>());
         }
 
         public override bool HasSmartInteract()
@@ -87,7 +87,7 @@ namespace VampKnives.Tiles
         //    Chest.DestroyChest(i, j);
         //}
 
-        public override void RightClick(int i, int j)
+        public override bool NewRightClick(int i, int j)
         {
             Player player = Main.LocalPlayer;
             Tile tile = Main.tile[i, j];
@@ -157,6 +157,7 @@ namespace VampKnives.Tiles
                     Recipe.FindRecipes();
                 }
             }
+            return true;
         }
 
         public override void MouseOver(int i, int j)
@@ -184,7 +185,7 @@ namespace VampKnives.Tiles
                 player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Knife Workbench";
                 if (player.showItemIconText == "Knife Workbench")
                 {
-                    player.showItemIcon2 = mod.ItemType("KnifeBenchItem");
+                    player.showItemIcon2 = ModContent.ItemType<Items.KnifeBenchItem>();
                     player.showItemIconText = "";
                 }
             }

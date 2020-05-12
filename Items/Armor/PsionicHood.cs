@@ -167,7 +167,7 @@ namespace VampKnives.Items.Armor
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == mod.ItemType("PsionicChestplate") && legs.type == mod.ItemType("PsionicLeggings");
+            return body.type == ModContent.ItemType<PsionicChestplate>() && legs.type == ModContent.ItemType<PsionicLeggings>();
         }
 
         public override void UpdateArmorSet(Player player)

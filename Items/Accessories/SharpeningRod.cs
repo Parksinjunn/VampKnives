@@ -31,7 +31,7 @@ namespace VampKnives.Items.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             KnifeDamagePlayer modPlayer = KnifeDamagePlayer.ModPlayer(player);
-            modPlayer.KnifeDamage += 0.3f;
+            modPlayer.knifeDamageMult += 0.3f;
             modPlayer.KnifeCrit += 15;
             crafted = true;
         }

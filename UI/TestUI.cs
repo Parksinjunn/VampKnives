@@ -19,7 +19,7 @@ namespace VampKnives.UI
             var innerDimensionsRectangle = GetDimensions().ToRectangle();
             Vector2 drawPosition = innerDimensionsRectangle.BottomLeft() - new Vector2(0, innerDimensionsRectangle.Height * percentage);
             Rectangle sourceRectangle = new Rectangle(0, 0, innerDimensionsRectangle.Width, (int)(innerDimensionsRectangle.Height * percentage));
-            Main.spriteBatch.Draw(ModLoader.GetTexture("VampKnives/UI/VampBarFiller"), drawPosition, sourceRectangle, Color.White);
+            Main.spriteBatch.Draw(ModContent.GetTexture("VampKnives/UI/VampBarFiller"), drawPosition, sourceRectangle, Color.White);
         } 
     }
 }

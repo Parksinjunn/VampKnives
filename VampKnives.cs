@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using VampKnives.UI;
 using Terraria.UI;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace VampKnives
 {
@@ -18,6 +19,8 @@ namespace VampKnives
         private WarningMessage warning;
         //private UserInterface WarningMessage;
         internal UserInterface WarningMessagePerson;
+        internal UserInterface VampireUserInterface;
+        internal UserInterface VampireUserInterface2;
         //private UserInterface VampBarInterface;
         //public VampBar vampbar;
         //private VampResource VampResource;
@@ -128,7 +131,9 @@ namespace VampKnives
                 //warning = new WarningMessage();
                 //WarningMessage.visible = true;
                 //customResources2.SetState(warning);
-                
+
+                VampireUserInterface = new UserInterface();
+                VampireUserInterface2 = new UserInterface();
 
 
                 //WarningMessage = new UserInterface();
@@ -137,6 +142,11 @@ namespace VampKnives
                 //WarningMessagePerson = new UserInterface();
             }
             base.Load();
+        }
+        public override void UpdateUI(GameTime gameTime)
+        {
+            VampireUserInterface?.Update(gameTime);
+            VampireUserInterface2?.Update(gameTime);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
@@ -153,6 +163,21 @@ namespace VampKnives
                     }
                     return true;
                 }));
+            }
+            int inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+            if (inventoryIndex != -1)
+            {
+                layers.Insert(inventoryIndex, new LegacyGameInterfaceLayer(
+                    "ExampleMod: Example Person UI",
+                    delegate
+                    {
+                        // If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
+                        VampireUserInterface.Draw(Main.spriteBatch, new GameTime());
+                        VampireUserInterface2.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
             }
         }
         public override void Unload()

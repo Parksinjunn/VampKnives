@@ -25,7 +25,7 @@ namespace VampKnives.Buffs
             if (p.HoodIsVisible == true && p.WitchDoctorAccessoryPrevious)
             {
                 p.WitchDoctorPower = true;
-                player.GetModPlayer<ExamplePlayer>(mod).ShrunkenHead = true;
+                player.GetModPlayer<ExamplePlayer>().ShrunkenHead = true;
                 bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ShrunkenHead")] <= 0;
                 if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
                 {

@@ -18,14 +18,15 @@ namespace VampKnives.Items
         // Vanilla only really has damage multipliers in code
         // And crit and knockback is usually just added to
         // As a modder, you could make separate variables for multipliers and simple addition bonuses
-        public float Multiplier = 1f;
+        public float knifeDamageMult = 1f;
         public float KnifeDamage = 1f;
         public float KnifeKnockback = 0f;
         public int KnifeCrit = 0;
+        public int knifeDamageAdd = 0;
 
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
-            KnifeDamage = KnifeDamage * Multiplier;
+            KnifeDamage = KnifeDamage * knifeDamageMult;
         }
         public override void ResetEffects()
         {
@@ -41,7 +42,7 @@ namespace VampKnives.Items
         {
             KnifeDamage = 1f;
             KnifeKnockback = 0f;
-            Multiplier = 1f;
+            knifeDamageMult = 1f;
             KnifeCrit = 0;
         }
     }

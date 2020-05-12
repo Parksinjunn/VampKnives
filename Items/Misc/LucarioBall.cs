@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Buffs;
 
 namespace VampKnives.Items.Misc
 {
@@ -16,7 +17,7 @@ namespace VampKnives.Items.Misc
         {
             item.CloneDefaults(ItemID.Carrot);
             item.shoot = mod.ProjectileType("Lucario");
-            item.buffType = mod.BuffType("LucarioBuff");
+            item.buffType = ModContent.BuffType<LucarioBuff>();
         }
 
         public override void UseStyle(Player player)

@@ -44,7 +44,7 @@ namespace VampKnives.Items.Materials
             }
             if (stack >= 5)
             {
-                Item.NewItem(Main.LocalPlayer.getRect(), mod.ItemType("CrimsonCrystal"));
+                Item.NewItem(Main.LocalPlayer.getRect(), ModContent.ItemType<CrimsonCrystal>());
 
                 return false;
             }
@@ -56,7 +56,7 @@ namespace VampKnives.Items.Materials
             stack = item.stack;
             if (item.stack == 5)
             {
-                item.SetDefaults(mod.ItemType("CrimsonCrystal"));
+                item.SetDefaults(ModContent.ItemType<CrimsonCrystal>());
             }
             base.UpdateInventory(player);
         }

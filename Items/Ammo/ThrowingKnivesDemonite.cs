@@ -26,7 +26,7 @@ namespace VampKnives.Items.Ammo
             item.rare = 1;
             item.shoot = mod.ProjectileType("DemoniteProj");   //The projectile shoot when your weapon using this ammo
             item.shootSpeed = 6f;                  //The speed of the projectile
-            item.ammo = mod.ItemType("ThrowingKnivesAmmo");              //The ammo class this ammo belongs to.
+            item.ammo = ModContent.ItemType<ThrowingKnivesAmmo>();              //The ammo class this ammo belongs to.
         }
 
         public override bool CloneNewInstances

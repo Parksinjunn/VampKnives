@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using VampKnives.Items;
 using VampKnives;
+using VampKnives.Buffs;
 
 namespace VampKnives.Projectiles
 {
@@ -17,7 +18,7 @@ namespace VampKnives.Projectiles
     {
         public void Hoods(NPC n)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod);
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             int effectLength = Main.rand.Next(300,600);
             if (p.pyro == true && p.HoodKeyPressed == false)
             {
@@ -25,7 +26,7 @@ namespace VampKnives.Projectiles
             }
             if (p.pyro == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("Hellfire"), effectLength);
+                n.AddBuff(ModContent.BuffType<Hellfire>(), effectLength);
             }
             if (p.dPyro == true && p.HoodKeyPressed == false)
             {
@@ -33,7 +34,7 @@ namespace VampKnives.Projectiles
             }
             if (p.dPyro == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("CursedFire"), effectLength);
+                n.AddBuff(ModContent.BuffType<CursedFire>(), effectLength);
             }
             if (p.Transmuter == true && p.HoodKeyPressed == false)
             {
@@ -41,7 +42,7 @@ namespace VampKnives.Projectiles
             }
             if (p.Transmuter == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("GildedCurse"), 60);
+                n.AddBuff(ModContent.BuffType<GildedCurse>(), 60);
             }
             if (p.Invoker == true && p.HoodKeyPressed == false)
             {
@@ -49,7 +50,7 @@ namespace VampKnives.Projectiles
             }
             if (p.Invoker == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("IchorUproar"), effectLength);
+                n.AddBuff(ModContent.BuffType<IchorUproar>(), effectLength);
             }
             if (p.Mage == true && p.HoodKeyPressed == false)
             {
@@ -73,7 +74,7 @@ namespace VampKnives.Projectiles
             }
             if (p.Party == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("PartyBuff"), effectLength);
+                n.AddBuff(ModContent.BuffType<PartyBuff>(), effectLength);
                 //Projectile.NewProjectile(n.position.X, n.position.Y, 0, 0, 289, 0, 8, projectile.owner); //Creates a new Projectile
             }
             if (p.Shaman == true && p.HoodKeyPressed == false)
@@ -82,7 +83,7 @@ namespace VampKnives.Projectiles
             }
             if (p.Shaman == true && p.HoodKeyPressed == true)
             {
-                n.AddBuff(mod.BuffType("PenetratingPoison"), effectLength);
+                n.AddBuff(ModContent.BuffType<PenetratingPoison>(), effectLength);
             }
             if (p.WitchDoctor == true && p.HoodKeyPressed == false)
             {

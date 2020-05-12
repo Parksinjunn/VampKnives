@@ -34,7 +34,7 @@ namespace VampKnives.Projectiles
 		public override void AI()
 		{
 			Player player = Main.player[projectile.owner];
-			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>(mod);
+			ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
 			if (player.dead)
 			{
 				modPlayer.Link = false;

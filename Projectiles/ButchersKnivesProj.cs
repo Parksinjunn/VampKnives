@@ -107,7 +107,7 @@ namespace VampKnives.Projectiles
                 (target.Center - projectile.Center) *
                 0.75f; // Change velocity based on delta center of targets (difference between entity centers)
             projectile.netUpdate = true; // netUpdate this knive
-            target.AddBuff(mod.BuffType<Buffs.BleedingOut>(), 900); // Adds the Exampleknive debuff for a very small DoT
+            target.AddBuff(ModContent.BuffType<Buffs.BleedingOut>(), 900); // Adds the Exampleknive debuff for a very small DoT
 
             projectile.damage = 0; // Makes sure the sticking knives do not deal damage anymore
 

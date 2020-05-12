@@ -3,6 +3,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Items.Ammo;
 
 namespace VampKnives.Items.MaterialKnives
 {
@@ -30,7 +31,7 @@ namespace VampKnives.Items.MaterialKnives
             item.shoot = mod.ProjectileType("ToothProj");
             item.autoReuse = true;
             item.shootSpeed = 15f;
-            item.useAmmo = mod.ItemType("ThrowingTeeth");
+            item.useAmmo = ModContent.ItemType<ThrowingTeeth>();
         }
 
         public override void AddRecipes()
