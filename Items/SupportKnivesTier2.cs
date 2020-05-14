@@ -18,7 +18,7 @@ namespace VampKnives.Items
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 29;
+            item.damage = 19;
             item.width = 40;
             item.height = 40;
             item.useTime = 15;
@@ -33,20 +33,20 @@ namespace VampKnives.Items
             item.shoot = mod.ProjectileType("SupportKnivesProj2");
             item.shootSpeed = 15f;
         }
+        //Made with silver and hallowed bars
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
 
-        //public override void AddRecipes()
-        //{
-        //    ModRecipe recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ItemID.VampireKnives, 1);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
-
-        //    recipe.AddIngredient(this);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(ItemID.VampireKnives);
-        //    recipe.AddRecipe();
-        //}
+            recipe.AddIngredient(this);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(ItemID.VampireKnives);
+            recipe.AddRecipe();
+        }
     }
 
 }

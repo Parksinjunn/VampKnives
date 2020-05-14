@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 
 namespace VampKnives.Items
 {
-    public class SupportKnivesTier3 : KnifeItem
+    public class SupportKnivesTier3 : KnifeItemSupportScaler
     {
         public override void SetStaticDefaults()
         {
@@ -36,20 +36,33 @@ namespace VampKnives.Items
             item.shoot = mod.ProjectileType("SupportKnivesProj3");
             item.shootSpeed = 15f;
         }
+        public override void UpdateInventory(Player player)
+        {
+            KnifeSupportDamagePlayer d = player.GetModPlayer<KnifeSupportDamagePlayer>();
+            if (NPC.downedBoss3)
+            {
+                d.knifeSupportDamageMult = 2f;
+                item.value = Item.sellPrice(0, 2, 0, 0);
+            }
+            if(NPC.downedQueenBee)
+            {
+                d.knifeSupportDamageMult = 2f;
+            }
+        }
+        //Made with spectre bars
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
 
-        //public override void AddRecipes()
-        //{
-        //    ModRecipe recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ItemID.VampireKnives, 1);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
-
-        //    recipe.AddIngredient(this);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(ItemID.VampireKnives);
-        //    recipe.AddRecipe();
-        //}
+            recipe.AddIngredient(this);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(ItemID.VampireKnives);
+            recipe.AddRecipe();
+        }
     }
 
 }
