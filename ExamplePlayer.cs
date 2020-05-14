@@ -119,6 +119,10 @@ namespace VampKnives
         public bool Given = false;
         public string KillText;
 
+        public bool IsTrueSupport;
+        public bool IsSupportKeyPressed;
+        public float TrueSupportBuff;
+
         public override void ResetEffects()
         {
             Connor = false;
@@ -178,6 +182,8 @@ namespace VampKnives
             HealAccMult = 1f;
             DelayAdd = 0;
             ArmorSet = false;
+            IsTrueSupport = false;
+            TrueSupportBuff = 1f;
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -378,9 +384,12 @@ namespace VampKnives
                 }
             }
         }
-
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
+            if(IsSupportKeyPressed)
+            {
+                player.AddBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>(), 60, true);
+            }
             // Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
             if (HoodKeyPressed == true && pyroAccessory)
             {
@@ -504,6 +513,20 @@ namespace VampKnives
                     HoodKeyPressed = false;
                     HoodIsVisible = false;
                 }
+            }
+            if(VampKnives.SupportHotKey.JustPressed)
+            {
+                if(IsSupportKeyPressed == false)
+                {
+                    IsSupportKeyPressed = true;
+                    IsTrueSupport = true;
+                }
+                else
+                {
+                    IsSupportKeyPressed = false;
+                    IsTrueSupport = false;
+                }
+
             }
         }
     }

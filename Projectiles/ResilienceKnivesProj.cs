@@ -15,44 +15,49 @@ namespace VampKnives.Projectiles
         public float OwnerPositionX;
         public float OwnerPositionY;
         public float distance;
+        public bool Hit;
         List<Projectile> killlist = new List<Projectile>();
         public override void SetDefaults()
         {
             projectile.width = 56;
             projectile.height = 34;
+            projectile.knockBack = 60;
             projectile.friendly = true;
             projectile.penetrate = 5;                     
             projectile.hostile = false;
             projectile.magic = true;                 
-            projectile.tileCollide = true;                
             projectile.ignoreWater = true;
             projectile.timeLeft = 600;
-            projectile.localNPCHitCooldown = 2;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 40;
 
         }
         public bool StopRotation = false;
         public bool GotPlayerPosition = false;
         public Vector2 ProjectileBack;
         public Vector2 ProjectileFront;
+        int ProjHits = 0;
+        bool Stopped = false;
         public override void AI()
         {
             ProjectileBack = new Vector2( (projectile.Center.X - ((float)Math.Sin(projectile.rotation) * projectile.width / 2)), projectile.Center.Y + ((float)Math.Cos(projectile.rotation) * projectile.height / 2));
             ProjectileFront = new Vector2((projectile.Center.X + ((float)Math.Sin(projectile.rotation) * projectile.width / 2)), projectile.Center.Y - ((float)Math.Cos(projectile.rotation) * projectile.height / 2));
-            int dust = Dust.NewDust(projectile.Hitbox.BottomRight(), 1, 1, 183, 0f, 0f, 0, default(Color), 1.5f);
-            Main.dust[dust].noGravity = true;
-            Main.dust[dust].velocity *= 0;
-            int dust2 = Dust.NewDust(projectile.Hitbox.BottomLeft(), 1, 1, 183, 0f, 0f, 0, Color.Blue, 1.5f);
-            Main.dust[dust2].noGravity = true;
-            Main.dust[dust2].velocity *= 0;
-            int dust3 = Dust.NewDust(projectile.Hitbox.TopRight(), 1, 1, 183, 0f, 0f, 0, Color.Blue, 1.5f);
-            Main.dust[dust3].noGravity = true;
-            Main.dust[dust3].velocity *= 0;
-            int dust4 = Dust.NewDust(projectile.Hitbox.TopLeft(), 1, 1, 183, 0f, 0f, 0, Color.Blue, 1.5f);
-            Main.dust[dust4].noGravity = true;
-            Main.dust[dust4].velocity *= 0;
+            //int dust = Dust.NewDust(ProjectileBack, 1, 1, 175, 0f, 0f, 0, default(Color), 1.5f);
+            //Main.dust[dust].noGravity = true;
+            //Main.dust[dust].velocity *= 0;
+            //int dust2 = Dust.NewDust(ProjectileFront, 1, 1, 180, 0f, 0f, 0, Color.Blue, 1.5f);
+            //Main.dust[dust2].noGravity = true;
+            //Main.dust[dust2].velocity *= 0;
+            //int dust3 = Dust.NewDust(projectile.Hitbox.TopRight(), 1, 1, 183, 0f, 0f, 0, Color.Blue, 1.5f);
+            //Main.dust[dust3].noGravity = true;
+            //Main.dust[dust3].velocity *= 0;
+            //int dust4 = Dust.NewDust(projectile.Hitbox.TopLeft(), 1, 1, 183, 0f, 0f, 0, Color.Blue, 1.5f);
+            //Main.dust[dust4].noGravity = true;
+            //Main.dust[dust4].velocity *= 0;
 
             Player owner = Main.player[projectile.owner];
-            if(GotPlayerPosition == false)
+            Random rand = new Random();
+            if (GotPlayerPosition == false)
             {
                 OwnerPositionX = owner.position.X + (float)owner.width * 0.5f;
                 OwnerPositionY = owner.position.Y + (owner.height / 2);
@@ -68,8 +73,40 @@ namespace VampKnives.Projectiles
                     Projectile ProJ = Main.projectile[s];
                     if (Colliding(projectile.Hitbox, ProJ.Hitbox) == true)
                     {
-                        Main.NewText("HIT");
+                        for (int b = 0; b < 10; b++)
+                        {
+                            double YRand = rand.Next(1, 5)*rand.NextDouble();
+                            double XRand = rand.Next(1, 3)*rand.NextDouble();
+                            int numdust2 = Dust.NewDust(ProJ.position, 6, 6, 25, 0f, 0f, 100, Color.Brown, 1f);
+                            Dust ProjHitDust = Main.dust[numdust2];
+                            ProjHitDust.velocity = new Vector2((0.01f) * -ProJ.velocity.X * (float)(b/XRand), (0.1f) * -ProJ.velocity.Y * (float)(b/YRand));
+                            ProjHitDust.noGravity = false;
+                        }
+                        ProjHits += 1;
                         ProJ.Kill();
+                        if(ProjHits > 5)
+                        {
+                            projectile.Kill();
+                            for (int num641 = 0; num641 < 50; num641++)
+                            {
+                                int numdust = Dust.NewDust(projectile.Center, 6, 6, 268, 0f, 0f, 100, Color.Brown, 1f);
+                                Dust projdust = Main.dust[numdust];
+                                float num646 = projdust.velocity.X;
+                                float y3 = projdust.velocity.Y;
+                                if (num646 == 0f && y3 == 0f)
+                                {
+                                    num646 = 1f;
+                                }
+                                float num647 = (float)Math.Sqrt(num646 * num646 + y3 * y3);
+                                num647 = 4f / num647;
+                                num646 *= num647;
+                                y3 *= num647;
+                                projdust.velocity *= 0.5f;
+                                projdust.velocity.X += num646;
+                                projdust.scale = 1.3f;
+                            }
+                        }
+
                         //if (killlist.Contains(ProJ))
                         //{
                         //    killlist.Remove(ProJ);
@@ -119,6 +156,11 @@ namespace VampKnives.Projectiles
                 }
             }
         }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            projectile.velocity *= 0.5f;
+            return false;
+        }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             bool flag;
@@ -164,27 +206,17 @@ namespace VampKnives.Projectiles
             return flag;
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            //Main.NewText("TestNumber: " + (ProjectileFront * new Vector2(1 + (float)Math.Log(n.Size.X), 1 + (float)Math.Log(n.Size.Y))));
-            //Main.NewText("TestNumberVector: " + new Vector2(1 + (float)Math.Log(n.Size.X), 1 + (float)Math.Log(n.Size.Y)));
-            float DifferenceDistanceFrontX = ProjectileFront.X - n.Center.X;
-            float DifferenceDistanceFrontY = ProjectileFront.Y - n.Center.Y;
-            float NPCDistanceFront = (float)System.Math.Sqrt((double)(DifferenceDistanceFrontX * DifferenceDistanceFrontX + DifferenceDistanceFrontY * DifferenceDistanceFrontY));
-            float DifferenceDistanceBackX = ProjectileBack.X - n.Center.X;
-            float DifferenceDistanceBackY = ProjectileBack.Y - n.Center.Y;
-            float NPCDistanceBack = (float)System.Math.Sqrt((double)(DifferenceDistanceBackX * DifferenceDistanceBackX + DifferenceDistanceBackY * DifferenceDistanceBackY));
-            if(NPCDistanceFront > NPCDistanceBack)
+            knockback = 60;
+            double DirChk = target.Center.X - projectile.Center.X;
+            if (DirChk > 0)
             {
-                n.position = ProjectileFront + (n.Size*(float)Math.Sin(projectile.rotation));
-                n.velocity.X = (float)(Math.Sin(projectile.rotation) * Math.Log(Math.Abs((n.velocity.X * (float)Math.Log(n.Size.X)))));
-                n.velocity.Y = (float)(Math.Sin(projectile.rotation) * Math.Log(Math.Abs((n.velocity.Y * (float)Math.Log(n.Size.X)))));
+                hitDirection = 1;
             }
             else
             {
-                n.position = ProjectileFront + (n.Size * (float)Math.Sin(projectile.rotation));
-                n.velocity.X = (float)(Math.Sin(projectile.rotation) * Math.Log(Math.Abs((n.velocity.X * (float)Math.Log(n.Size.X)))));
-                n.velocity.Y = (float)(Math.Sin(projectile.rotation) * Math.Log(Math.Abs((n.velocity.Y * (float)Math.Log(n.Size.X)))));
+                hitDirection = -1;
             }
         }
     }

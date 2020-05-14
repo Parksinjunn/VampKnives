@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -23,6 +24,12 @@ namespace VampKnives.Items.Calamity
                 Tooltip.SetDefault("Please enable Calamity");
             }
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            TooltipLine line3 = new TooltipLine(mod, "Face", "Each barrier can reflect 5 projectiles before it crumbles");
+            line3.overrideColor = new Color(150, 75, 0);
+            tooltips.Add(line3);
+        }
         public override void SafeSetDefaults()
         {
             item.damage = 1;
@@ -35,7 +42,7 @@ namespace VampKnives.Items.Calamity
             item.noMelee = true;
             //item.knockBack = 15;
             item.value = Item.sellPrice(0, 1, 15, 0);
-            item.rare = -2;
+            item.rare = 3;
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("ResilienceKnivesProj");

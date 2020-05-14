@@ -6,6 +6,7 @@ using VampKnives.UI;
 using Terraria.UI;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using VampKnives.Projectiles;
 
 namespace VampKnives
 {
@@ -13,6 +14,7 @@ namespace VampKnives
     {
         internal static VampKnives instance;
         public static ModHotKey HoodUpDownHotkey;
+        public static ModHotKey SupportHotKey;
         public UserInterface customRecources;
         public UserInterface customResources2;
         private VampBar vampBar;
@@ -109,6 +111,7 @@ namespace VampKnives
         {
             instance = this;
             HoodUpDownHotkey = RegisterHotKey("HoodUpDown", "P");
+            SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
             if (!Main.dedServ)
             {
                 // Add certain equip textures
@@ -183,6 +186,7 @@ namespace VampKnives
         public override void Unload()
         {
             HoodUpDownHotkey = null;
+            SupportHotKey = null;
             instance = null;
             base.Unload();
         }
@@ -212,6 +216,7 @@ namespace VampKnives
             {
                 Main.LocalPlayer.GetModPlayer<ExamplePlayer>().NeckProgress++;
             }
+
             //if (idVariable == Packet4)
             //{
             //    Main.NewText("Packet4 Read");
