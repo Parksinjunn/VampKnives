@@ -14,7 +14,7 @@ namespace VampKnives.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Support Knives 3");
+            DisplayName.SetDefault("Tier 3 Support Knives");
             Tooltip.SetDefault("Its daggers produce orbs that heal other players");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 12));
         }
@@ -39,14 +39,57 @@ namespace VampKnives.Items
         public override void UpdateInventory(Player player)
         {
             KnifeSupportDamagePlayer d = player.GetModPlayer<KnifeSupportDamagePlayer>();
+            if (NPC.downedBoss1)
+            {
+                d.knifeSupportDamageMult = 1.1f;
+            }
+            if (NPC.downedBoss2)
+            {
+                d.knifeSupportDamageMult = 1.3f;
+            }
+            if (NPC.downedQueenBee)
+            {
+                d.knifeSupportDamageMult = 1.4f;
+            }
             if (NPC.downedBoss3)
             {
-                d.knifeSupportDamageMult = 2f;
-                item.value = Item.sellPrice(0, 2, 0, 0);
+                d.knifeSupportDamageMult = 1.5f;
             }
-            if(NPC.downedQueenBee)
+            if (Main.hardMode)
             {
                 d.knifeSupportDamageMult = 2f;
+            }
+            if (NPC.downedMechBoss1)
+            {
+                d.knifeSupportDamageMult = 2.2f;
+            }
+            if (NPC.downedMechBoss2)
+            {
+                d.knifeSupportDamageMult = 2.4f;
+            }
+            if (NPC.downedMechBoss3)
+            {
+                d.knifeSupportDamageMult = 2.6f;
+            }
+            if (NPC.downedPlantBoss)
+            {
+                d.knifeSupportDamageMult = 2.8f;
+            }
+            if (NPC.downedGolemBoss)
+            {
+                d.knifeSupportDamageMult = 2.9f;
+            }
+            if (NPC.downedFishron)
+            {
+                d.knifeSupportDamageMult = 3f;
+            }
+            if (NPC.downedAncientCultist)
+            {
+                d.knifeSupportDamageMult = 3.1f;
+            }
+            if (NPC.downedTowers)
+            {
+                d.knifeSupportDamageMult = 3.2f;
             }
         }
         //Made with spectre bars
@@ -54,13 +97,9 @@ namespace VampKnives.Items
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 5);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe.AddIngredient(this);
-            recipe.AddTile(mod.GetTile("KnifeBench"));
-            recipe.SetResult(ItemID.VampireKnives);
             recipe.AddRecipe();
         }
     }

@@ -13,7 +13,7 @@ namespace VampKnives.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Support Knives 1");
+            DisplayName.SetDefault("Tier 1 Support Knives");
             Tooltip.SetDefault("Its daggers produce orbs that heal other players");
         }
         public override void SafeSetDefaults()
@@ -36,15 +36,13 @@ namespace VampKnives.Items
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("StableCrimsonCrystal"), 1);
-            recipe.AddIngredient(mod.GetItem("IronKnives"), 1);
+            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 5);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("StableCrimsonCrystal"), 1);
-            recipe.AddIngredient(mod.GetItem("IronKnives"), 1);
+            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 5);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();

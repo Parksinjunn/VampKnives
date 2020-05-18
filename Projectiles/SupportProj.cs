@@ -9,8 +9,13 @@ namespace VampKnives.Projectiles
 {
     public class SupportProj : KnifeProjectile
     {
+        Player Decide;
+        int Decision;
+        int LowestLife = 500;
         public override void SetDefaults()
         {
+            Player owner = Main.player[projectile.owner];
+
             projectile.Name = "Vampire Healing";
             projectile.width = 2;
             projectile.height = 2;
@@ -21,9 +26,24 @@ namespace VampKnives.Projectiles
             projectile.ignoreWater = true;
             //projectile.light = 0.5f;
             projectile.timeLeft = 3600;
+            Decision = 0;
+            Main.NewText("working");
+            for (int g = 0; g < Main.ActivePlayersCount; g++)
+            {
+                Decide = Main.player[g];
+                int TempStatLife = Decide.statLife;
+                Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
+                if (TempStatLife < LowestLife && Decide != owner)
+                {
+                    LowestLife = TempStatLife;
+                    Decision = g;
+                    Main.NewText("working");
+                }
+            }
         }
         public override void AI()
         {
+
             Lighting.AddLight(projectile.Center, 0.2f, 0.5f, 0.8f);
 
             projectile.localAI[0] += 1f;
@@ -66,18 +86,6 @@ namespace VampKnives.Projectiles
                 Player owner = Main.player[projectile.owner];
                 if(owner.HasBuff(mod.BuffType("TrueSupportDebuff")) == true)
                 {
-                    int Decision = 0;
-                    for (int g = 0; g < Main.ActivePlayersCount; g++)
-                    {
-                        Player Decide = Main.player[g];
-                        int TempStatLife = Decide.statLife;
-                        int LowestLife = 500;
-                        if (TempStatLife < LowestLife && Decide != owner)
-                        {
-                            LowestLife = TempStatLife;
-                            Decision = g;
-                        }
-                    }
                     Player Target = Main.player[Decision];
                     float shootToX = Target.position.X + (float)Target.width * 0.5f - projectile.Center.X;
                     float shootToY = Target.position.Y + (Target.height / 2) - projectile.Center.Y;
