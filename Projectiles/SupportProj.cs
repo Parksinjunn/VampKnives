@@ -26,20 +26,6 @@ namespace VampKnives.Projectiles
             projectile.ignoreWater = true;
             //projectile.light = 0.5f;
             projectile.timeLeft = 3600;
-            Decision = 0;
-            Main.NewText("working");
-            for (int g = 0; g < Main.ActivePlayersCount; g++)
-            {
-                Decide = Main.player[g];
-                int TempStatLife = Decide.statLife;
-                Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
-                if (TempStatLife < LowestLife && Decide != owner)
-                {
-                    LowestLife = TempStatLife;
-                    Decision = g;
-                    Main.NewText("working");
-                }
-            }
         }
         public override void AI()
         {
@@ -84,7 +70,19 @@ namespace VampKnives.Projectiles
             for (int i = 0; i < 200; i++)
             {
                 Player owner = Main.player[projectile.owner];
-                if(owner.HasBuff(mod.BuffType("TrueSupportDebuff")) == true)
+                for (int g = 0; g < Main.ActivePlayersCount; g++)
+                {
+                    Decide = Main.player[g];
+                    int TempStatLife = Decide.statLife;
+                    //Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
+                    if (TempStatLife < LowestLife && Decide != owner)
+                    {
+                        LowestLife = TempStatLife;
+                        Decision = g;
+                        Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
+                    }
+                }
+                if (owner.HasBuff(mod.BuffType("TrueSupportDebuff")) == true)
                 {
                     Player Target = Main.player[Decision];
                     float shootToX = Target.position.X + (float)Target.width * 0.5f - projectile.Center.X;
@@ -125,16 +123,16 @@ namespace VampKnives.Projectiles
                 }
                 else
                 {
-                    int Decision = 0;
                     for (int g = 0; g < Main.ActivePlayersCount; g++)
                     {
-                        Player Decide = Main.player[g];
+                        Decide = Main.player[g];
                         int TempStatLife = Decide.statLife;
-                        int LowestLife = 500;
-                        if (TempStatLife < LowestLife && Decide != owner)
+                        //Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
+                        if (TempStatLife < LowestLife)
                         {
                             LowestLife = TempStatLife;
                             Decision = g;
+                            Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
                         }
                     }
                     Player Target = Main.player[Decision];

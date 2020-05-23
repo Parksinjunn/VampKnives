@@ -23,6 +23,8 @@ namespace VampKnives
         internal UserInterface WarningMessagePerson;
         internal UserInterface VampireUserInterface;
         internal UserInterface VampireUserInterface2;
+        //public static ModPacket MyPacket;
+        //public static int MyPacketIdentifier;
         //private UserInterface VampBarInterface;
         //public VampBar vampbar;
         //private VampResource VampResource;
@@ -216,6 +218,10 @@ namespace VampKnives
             {
                 Main.LocalPlayer.GetModPlayer<ExamplePlayer>().NeckProgress++;
             }
+            //if(idVariable == MyPacketIdentifier)
+            //{
+
+            //}
 
             //if (idVariable == Packet4)
             //{

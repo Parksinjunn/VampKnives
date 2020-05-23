@@ -20,7 +20,6 @@ namespace VampKnives.Buffs
             if (Main.rand.Next(50) == 5)
                 p.KnifeDamage = p.KnifeDamage * 10;
             p.KnifeCrit = (int)(p.KnifeCrit * .01);
-            base.Update(player, ref buffIndex);
         }
     }
 }

@@ -29,8 +29,7 @@ namespace VampKnives.Items
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 2.75f;
-            item.value = Item.sellPrice(0, 20, 0, 0);
-            item.rare = 8;
+            item.rare = 9;
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("SupportKnivesProj3");
@@ -61,44 +60,56 @@ namespace VampKnives.Items
             }
             if (NPC.downedMechBoss1)
             {
-                d.knifeSupportDamageMult = 2.2f;
+                d.knifeSupportDamageMult = 2.3f;
             }
             if (NPC.downedMechBoss2)
             {
-                d.knifeSupportDamageMult = 2.4f;
+                d.knifeSupportDamageMult = 2.6f;
             }
             if (NPC.downedMechBoss3)
             {
-                d.knifeSupportDamageMult = 2.6f;
+                d.knifeSupportDamageMult = 2.9f;
             }
             if (NPC.downedPlantBoss)
             {
-                d.knifeSupportDamageMult = 2.8f;
+                d.knifeSupportDamageMult = 3.2f;
             }
             if (NPC.downedGolemBoss)
             {
-                d.knifeSupportDamageMult = 2.9f;
+                d.knifeSupportDamageMult = 3.3f;
             }
             if (NPC.downedFishron)
             {
-                d.knifeSupportDamageMult = 3f;
+                d.knifeSupportDamageMult = 3.5f;
             }
             if (NPC.downedAncientCultist)
             {
-                d.knifeSupportDamageMult = 3.1f;
+                d.knifeSupportDamageMult = 3.6f;
             }
             if (NPC.downedTowers)
             {
-                d.knifeSupportDamageMult = 3.2f;
+                d.knifeSupportDamageMult = 3.7f;
+            }
+            if(NPC.downedMoonlord)
+            {
+                d.knifeSupportDamageMult = 4.0f;
             }
         }
         //Made with spectre bars
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.VampireKnives, 1);
-            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 5);
+            recipe.AddIngredient(mod.GetItem("SupportKnivesTier2"), 1);
+            recipe.AddIngredient(mod.GetItem("PlantFiber"), 17);
+            recipe.AddIngredient(ItemID.SpectreBar, 20);
             recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe.AddIngredient(mod.GetItem("SupportKnivesTier2"), 1);
+            recipe.AddIngredient(mod.GetItem("PlantFiber"), 13);
+            recipe.AddIngredient(ItemID.SpectreBar, 16);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

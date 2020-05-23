@@ -26,8 +26,7 @@ namespace VampKnives.Items
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 2.75f;
-            item.value = Item.sellPrice(0, 20, 0, 0);
-            item.rare = 8;
+            item.rare = 9;
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("SupportKnivesProj2");
@@ -37,14 +36,16 @@ namespace VampKnives.Items
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddIngredient(mod.GetItem("SupportKnivesTier1"), 1);
+            recipe.AddIngredient(ItemID.HallowedBar, 17);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
 
-            recipe.AddIngredient(this);
-            recipe.AddTile(mod.GetTile("KnifeBench"));
-            recipe.SetResult(ItemID.VampireKnives);
+            recipe.AddIngredient(mod.GetItem("SupportKnivesTier1"), 1);
+            recipe.AddIngredient(ItemID.HallowedBar, 15);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
+            recipe.SetResult(this);
             recipe.AddRecipe();
         }
     }

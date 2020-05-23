@@ -13,6 +13,8 @@ namespace VampKnives
     {
         public bool PenetratingPoison = false;
         public bool SengosCurse = false;
+        public bool TitaniumDefenseBuff = false;
+        public bool ShroomiteBuff = false;
 
         private const int saveVersion = 0;
         public int Packet1 = 11;
@@ -184,6 +186,8 @@ namespace VampKnives
             ArmorSet = false;
             IsTrueSupport = false;
             TrueSupportBuff = 1f;
+            TitaniumDefenseBuff = false;
+            ShroomiteBuff = false;
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -208,6 +212,8 @@ namespace VampKnives
         {
             PenetratingPoison = false;
             SengosCurse = false;
+            TitaniumDefenseBuff = false;
+            ShroomiteBuff = false;
         }
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {

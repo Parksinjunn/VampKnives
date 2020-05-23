@@ -26,13 +26,13 @@ namespace VampKnives.Items.Calamity
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine line3 = new TooltipLine(mod, "Face", "Each barrier can reflect 5 projectiles before it crumbles");
+            TooltipLine line3 = new TooltipLine(mod, "Face", "Each barrier reflects projectiles almost endlessly");
             line3.overrideColor = new Color(150, 75, 0);
             tooltips.Add(line3);
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 1;
+            item.damage = 10;
             item.width = 50;
             item.height = 50;
             item.useTime = 20;
@@ -40,7 +40,6 @@ namespace VampKnives.Items.Calamity
             item.noUseGraphic = true;
             item.useStyle = 1;
             item.noMelee = true;
-            //item.knockBack = 15;
             item.value = Item.sellPrice(0, 1, 15, 0);
             item.rare = 3;
             item.UseSound = SoundID.Item39;
@@ -52,7 +51,7 @@ namespace VampKnives.Items.Calamity
         {
             int numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
             Random random = new Random();
-            int ran = 50;
+            int ran = 65;
             float spread = MathHelper.ToRadians(ran);
             float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
             double startAngle = Math.Atan2(speedX, speedY) - spread / 2;

@@ -199,6 +199,7 @@ namespace VampKnives.NPCs
         public bool ichorUproar = false;
         public bool partyBuff = false;
         public bool potentPoison = false;
+        public bool ShroomitePoison = false;
 
         public override void ResetEffects(NPC npc)
         {
@@ -211,6 +212,7 @@ namespace VampKnives.NPCs
             partyBuff = false;
             potentPoison = false;
             VortexBuff = false;
+            ShroomitePoison = false;
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
@@ -226,6 +228,21 @@ namespace VampKnives.NPCs
                     if (damage < 6)
                     {
                         damage = 6;
+                    }
+                }
+            }
+            if(ShroomitePoison)
+            {
+                for (int x = 0; x < 5; x++)
+                {
+                    if (npc.lifeRegen > 0)
+                    {
+                        npc.lifeRegen = 0;
+                    }
+                    npc.lifeRegen -= 18;
+                    if (damage < 9)
+                    {
+                        damage = 11 + Main.rand.Next(-3,4);
                     }
                 }
             }
@@ -296,7 +313,11 @@ namespace VampKnives.NPCs
                 Main.dust[DustID2].noGravity = true;
                 int DustID3 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 244, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 10, Color.LightGreen, 1.8f);
                 Main.dust[DustID3].noGravity = true;
-                //this make that the npc faces the right way 
+            }
+            if (ShroomitePoison)
+            {
+                int DustID2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 1, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 10, new Color(126,138,255), 1.8f);
+                Main.dust[DustID2].noGravity = true;
             }
             if (bleedingOut)
             {

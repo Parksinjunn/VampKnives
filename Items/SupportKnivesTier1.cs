@@ -26,8 +26,7 @@ namespace VampKnives.Items
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 2.75f;
-            item.value = Item.sellPrice(0, 20, 0, 0);
-            item.rare = 8;
+            item.rare = 9;
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("SupportKnivesProj1");
@@ -42,7 +41,7 @@ namespace VampKnives.Items
             recipe.SetResult(this);
             recipe.AddRecipe();
             recipe.AddIngredient(ItemID.VampireKnives, 1);
-            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 5);
+            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 3);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();
