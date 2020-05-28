@@ -39,18 +39,14 @@ namespace VampKnives.Tiles
             disableSmartCursor = true;
             adjTiles = new int[] { TileID.Containers };
             chest = "Knife Workbench";
-            //chestDrop = ModContent.ItemType("KnifeWorkbenchItem");
+            chestDrop = ModContent.ItemType<Items.KnifeBenchItem>();
         }
 
-        public override void KillMultiTile(int i, int j, int frameX, int frameY)
-        {
-            Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.KnifeBenchItem>());
-        }
+        public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
 
-        public override bool HasSmartInteract()
-        {
-            return true;
-        }
+        public override bool HasSmartInteract() => true;
+
+        public override bool IsLockedChest(int i, int j) => false;
 
         public string MapChestName(string name, int i, int j)
         {
@@ -81,11 +77,11 @@ namespace VampKnives.Tiles
             num = 1;
         }
 
-        //public override void KillMultiTile(int i, int j, int frameX, int frameY)
-        //{
-        //    Item.NewItem(i * 16, j * 16, 32, 32, chestDrop);
-        //    Chest.DestroyChest(i, j);
-        //}
+        public override void KillMultiTile(int i, int j, int frameX, int frameY)
+        {
+            Item.NewItem(i * 16, j * 16, 32, 32, chestDrop);
+            Chest.DestroyChest(i, j);
+        }
 
         public override bool NewRightClick(int i, int j)
         {

@@ -21,12 +21,13 @@ namespace VampKnives.UI
         private readonly float _scale;
         internal Func<Item, bool> ValidItemFunc;
 
-        public SkinInventoryItemSlots(int Iteration, int context = ItemSlot.Context.ChestItem, float scale = 1f)
+        public SkinInventoryItemSlots(int Iteration, int context = ItemSlot.Context.ShopItem, float scale = 1f)
         {
             VampireNecklaceType VNType = Main.LocalPlayer.GetModPlayer<VampireNecklaceType>();
-            _context = context;
+            _context = ItemSlot.Context.ShopItem;
             _scale = scale;
             Item = new Item();
+            Main.NewText("" + context);
 
             switch(Iteration)
             {
@@ -101,15 +102,13 @@ namespace VampKnives.UI
                     Item.SetDefaults(0);
                     break;
             }
-
-
             Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
             Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            float oldScale = Main.inventoryScale;
+            //float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
 
@@ -132,7 +131,7 @@ namespace VampKnives.UI
             Vector2 downMove = new Vector2(0, 50);
             ItemSlot.Draw(spriteBatch, ref Item, _context, rectangle.TopLeft());
 
-            Main.inventoryScale = oldScale;
+            //Main.inventoryScale = oldScale;
         }
     }
 }

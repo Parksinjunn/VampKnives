@@ -100,7 +100,7 @@ namespace VampKnives.NPCs
                 return "Sometimes I get the urge to drink from everyone here";
             }
             if (SkinShopClicked == true)
-                return ("This will reset your kill progress for the necklace. (If you have tier 3 reseting won't affect you). Gain: " + (p.NeckProgress / 10) + " BP  Click again to continue");
+                return ("Sometimes I get the urge to drink from everyone here");
             else
                 return "who pie is?";
         }
@@ -141,7 +141,7 @@ namespace VampKnives.NPCs
                     Main.npcChatText = "";
                 }
             }
-            if(SkinShopClicked == false && p.Given == true)
+            if(p.Given == true)
             {
                 if (firstButton)
                 {

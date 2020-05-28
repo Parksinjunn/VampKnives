@@ -11,6 +11,7 @@ namespace VampKnives.UI
     {
         public static bool visible = false;
         public UIPanel VampMainPanel;
+        public UIPanel RecipePage;
 
         public override void OnInitialize()
         {
@@ -50,8 +51,18 @@ namespace VampKnives.UI
             VampMainPanel.Append(bp);
 
             VampMainPanel.Append(VampBar);
-            base.Append(VampMainPanel);
 
+            RecipePage = new UIPanel();
+            RecipePage.Left.Set(Main.screenWidth + Main.screenHeight / 2, 0f);
+            RecipePage.Width.Set(800f,0f);
+            RecipePage.Height.Set(1080f, 0f);
+
+            var RecipePageTexture = ModContent.GetTexture("VampKnives/UI/RecipePaper");
+            UIImage RecipePageTex = new UIImage(RecipePageTexture);
+            RecipePageTex.Width.Set(800f, 0f);
+            RecipePageTex.Height.Set(1080f, 0f);
+            RecipePage.Append(RecipePageTex);
+            base.Append(VampMainPanel);
         }
 
         Vector2 offset;

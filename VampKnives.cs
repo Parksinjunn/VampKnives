@@ -15,6 +15,7 @@ namespace VampKnives
         internal static VampKnives instance;
         public static ModHotKey HoodUpDownHotkey;
         public static ModHotKey SupportHotKey;
+        public static int inventoryIndex;
         public UserInterface customRecources;
         public UserInterface customResources2;
         private VampBar vampBar;
@@ -116,7 +117,6 @@ namespace VampKnives
             SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
             if (!Main.dedServ)
             {
-                // Add certain equip textures
                 //AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
                 AddEquipTexture(new Items.Armor.PyroHead(), null, EquipType.Head, "PyroHead", "VampKnives/Items/Armor/PyromancersHood_Head");
                 AddEquipTexture(new Items.Armor.DPyroHead(), null, EquipType.Head, "DPyroHead", "VampKnives/Items/Armor/DarkPyromancersHood_Head");
@@ -129,22 +129,11 @@ namespace VampKnives
                 AddEquipTexture(new Items.Armor.MageHead(), null, EquipType.Head, "MageHead", "VampKnives/Items/Armor/MagesHood_Head");
 
                 customRecources = new UserInterface();
-                //customResources2 = new UserInterface();
                 vampBar = new VampBar();
                 VampBar.visible = true;
                 customRecources.SetState(vampBar);
-                //warning = new WarningMessage();
-                //WarningMessage.visible = true;
-                //customResources2.SetState(warning);
-
                 VampireUserInterface = new UserInterface();
                 VampireUserInterface2 = new UserInterface();
-
-
-                //WarningMessage = new UserInterface();
-                //WarningMessage.SetState(WarningMessage);
-
-                //WarningMessagePerson = new UserInterface();
             }
             base.Load();
         }
@@ -162,21 +151,19 @@ namespace VampKnives
                 {
                     if (VampBar.visible)
                     {
-                        //Update CustomBars
                         customRecources.Update(Main._drawInterfaceGameTime);
                         vampBar.Draw(Main.spriteBatch);
                     }
                     return true;
                 }));
             }
-            int inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+            inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (inventoryIndex != -1)
             {
                 layers.Insert(inventoryIndex, new LegacyGameInterfaceLayer(
-                    "ExampleMod: Example Person UI",
+                    "Skin shop UI",
                     delegate
                     {
-                        // If the current UIState of the UserInterface is null, nothing will draw. We don't need to track a separate .visible value.
                         VampireUserInterface.Draw(Main.spriteBatch, new GameTime());
                         VampireUserInterface2.Draw(Main.spriteBatch, new GameTime());
                         return true;
