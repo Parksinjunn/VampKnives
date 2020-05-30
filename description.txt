@@ -2,10 +2,16 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
-Hotfix 3.0.2: Fixed crash caused by selecting item in the skin shop
+Update 3.1, The UI Update:
+
+Addition of recipe pages that help explain crafting in the game. These recipes can be found in chests throughout the world(Requires a new world), or can be bought from the Vampire NPC
+Finalization of plate system for defense knives (slightly more balanced now)
+Multiple bug fixes
+
 
 Recent Changes:
 
+Hotfix 3.0.2: Fixed crash caused by selecting item in the skin shop
 Ported to most recent version
 Fixed some textures
 Changed some damage scaling

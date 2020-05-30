@@ -164,6 +164,20 @@ namespace VampKnives.NPCs
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.AmmoCastRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.IronCastRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.SharpeningRodRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.PlateRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.AmmoSculptRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.KnifeSculptRecipe>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.SharpeningSculptRecipe>());
+            nextSlot++;
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicHood>());
             nextSlot++;
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicChestplate>());
