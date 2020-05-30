@@ -54,8 +54,8 @@ namespace VampKnives.Items.Materials
             recipe.AddRecipe();
 
             HammerRecipe recipe2 = new HammerRecipe(mod);
-            recipe2.AddIngredient(mod.GetItem("CrimsonShard"), 4);
-            recipe2.SetResult(this);
+            recipe2.AddIngredient(this);
+            recipe2.SetResult(mod.GetItem("CrimsonShard"), 4);
             recipe2.AddRecipe();
         }
     }

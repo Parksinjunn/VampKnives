@@ -19,11 +19,19 @@ namespace VampKnives
         public UserInterface customRecources;
         public UserInterface customResources2;
         private VampBar vampBar;
+        private RecipePageState RecipePage;
         private WarningMessage warning;
         //private UserInterface WarningMessage;
         internal UserInterface WarningMessagePerson;
         internal UserInterface VampireUserInterface;
         internal UserInterface VampireUserInterface2;
+        public static bool IsAmmoRecipe;
+        public static bool IsKnifeRecipe;
+        public static bool IsSharpeningRodRecipe;
+        public static bool IsPlateRecipe;
+        public static bool IsAmmoSculptRecipe;
+        public static bool IsKnifeSculptRecipe;
+        public static bool IsSharpeningSculptRecipe;
         //public static ModPacket MyPacket;
         //public static int MyPacketIdentifier;
         //private UserInterface VampBarInterface;
@@ -129,8 +137,11 @@ namespace VampKnives
                 AddEquipTexture(new Items.Armor.MageHead(), null, EquipType.Head, "MageHead", "VampKnives/Items/Armor/MagesHood_Head");
 
                 customRecources = new UserInterface();
+                customResources2 = new UserInterface();
                 vampBar = new VampBar();
                 VampBar.visible = true;
+                RecipePage = new RecipePageState();
+                customResources2.SetState(RecipePage);
                 customRecources.SetState(vampBar);
                 VampireUserInterface = new UserInterface();
                 VampireUserInterface2 = new UserInterface();
@@ -141,6 +152,86 @@ namespace VampKnives
         {
             VampireUserInterface?.Update(gameTime);
             VampireUserInterface2?.Update(gameTime);
+            if (IsKnifeRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = true;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsAmmoRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = true;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsSharpeningRodRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = true;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsPlateRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = true;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsAmmoSculptRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = true;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsKnifeSculptRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = true;
+                RecipePageState.IsSharpeningSculptRecipe = false;
+            }
+            else if (IsSharpeningSculptRecipe)
+            {
+                RecipePageState.IsAmmoRecipe = false;
+                RecipePageState.IsKnifeRecipe = false;
+                RecipePageState.IsSharpeningRodRecipe = false;
+                RecipePageState.IsPlateRecipe = false;
+                RecipePageState.IsAmmoSculptRecipe = false;
+                RecipePageState.IsKnifeSculptRecipe = false;
+                RecipePageState.IsSharpeningSculptRecipe = true;
+            }
+            else
+            {
+                IsKnifeRecipe = false;
+                IsAmmoRecipe = false;
+                IsSharpeningRodRecipe = false;
+                IsPlateRecipe = false;
+                IsAmmoSculptRecipe = false;
+                IsKnifeSculptRecipe = false;
+                IsSharpeningSculptRecipe = false;
+            }
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
@@ -153,6 +244,11 @@ namespace VampKnives
                     {
                         customRecources.Update(Main._drawInterfaceGameTime);
                         vampBar.Draw(Main.spriteBatch);
+                    }
+                    if(RecipePageState.visible)
+                    {
+                        customResources2.Update(Main._drawInterfaceGameTime);
+                        RecipePage.Draw(Main.spriteBatch);
                     }
                     return true;
                 }));

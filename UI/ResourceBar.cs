@@ -94,9 +94,11 @@ namespace VampKnives.UI
             switch (stat)
             {
                 case ResourceBarMode.BP:
-                    text.SetText("" + (int)(calc * p.VampMax));
+                    if(calc*p.VampMax >= 0)
+                    {
+                        text.SetText("" + (int)(calc * p.VampMax));
+                    }
                     break;
-
                 default:
                     break;
             }

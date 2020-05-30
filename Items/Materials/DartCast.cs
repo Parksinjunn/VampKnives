@@ -48,14 +48,16 @@ namespace VampKnives.Items.Materials
         }
         public override void AddRecipes()
         {
-                HammerRecipe recipe = new HammerRecipe(mod);
-                recipe.AddIngredient(ItemID.IronBar, 5);
-                recipe.anyIronBar = true;
-                recipe.AddTile(mod.GetTile("KnifeBench"));
-                recipe.SetResult(this);
-                recipe.AddRecipe();
+            HammerRecipe recipe = new HammerRecipe(mod);
+            recipe.AddIngredient(mod.GetItem("StoneAmmoSculptComplete"), 1);
+            recipe.AddIngredient(ItemID.IronBar, 5);
+            recipe.anyIronBar = true;
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
 
             recipe = new HammerRecipe(mod);
+            recipe.AddIngredient(mod.GetItem("StoneAmmoSculptComplete"), 1);
             recipe.AddIngredient(ItemID.IronBar, 3);
             recipe.anyIronBar = true;
             recipe.AddTile(mod.GetTile("VampTableTile"));

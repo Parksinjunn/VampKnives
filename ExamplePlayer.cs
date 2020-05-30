@@ -337,7 +337,6 @@ namespace VampKnives
                 KillCount = 0;
             }
         }
-
         public override void UpdateVanityAccessories()
         {
             for (int n = 13; n < 18 + player.extraAccessorySlots; n++)

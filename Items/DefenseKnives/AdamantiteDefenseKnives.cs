@@ -8,21 +8,13 @@ using Terraria.DataStructures;
 
 namespace VampKnives.Items.DefenseKnives
 {
-    public class AdamantiteDefenseKnives : KnifeItem
+    public class AdamantiteDefenseKnives : KnifeDefenseItem
     {
         public override void SetStaticDefaults()
         {
-                DisplayName.SetDefault("Adamantite Defense Knives");
-                Tooltip.SetDefault("These knives form a protective Adamantite wall when thrown");
-        }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            TooltipLine line3 = new TooltipLine(mod, "Face", "Each barrier can stop 6 projectiles before it breaks");
-            line3.overrideColor = new Color(240, 240, 240);
-            tooltips.Add(line3);
-            TooltipLine line4 = new TooltipLine(mod, "Face", "Anyone in proximity has a 15% chance to recieve the shadow dodge buff");
-            line4.overrideColor = new Color(240, 240, 240);
-            tooltips.Add(line4);
+            DisplayName.SetDefault("Adamantite Defense Knives");
+            Tooltip.SetDefault("These knives form a protective Adamantite wall when thrown");
+            PlateType = ModContent.GetInstance<Items.Materials.Plates.AdamantitePlate>();
         }
         public override void SafeSetDefaults()
         {
@@ -41,36 +33,14 @@ namespace VampKnives.Items.DefenseKnives
             item.shoot = mod.ProjectileType("AdamantiteDefenseKnivesProj");
             item.shootSpeed = 7f;
         }
-        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            int numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
-            Random random = new Random();
-            int ran = 65;
-            float spread = MathHelper.ToRadians(ran);
-            float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-            double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
-            double deltaAngle = spread / (float)numProjectiles2;
-            double offsetAngle;
-
-            for (int j = 0; j < numProjectiles2; j++)
-            {
-                offsetAngle = startAngle + deltaAngle * j;
-                Projectile.NewProjectile(position.X, position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, knockBack, player.whoAmI);
-            }
-            return false;
-        }
-        public override void AddRecipes()
-        {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.AdamantiteBar, 20);
-            recipe.AddTile(mod.GetTile("KnifeBench"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe.AddIngredient(ItemID.AdamantiteBar, 16);
-            recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            TooltipLine line3 = new TooltipLine(mod, "Face", "Each barrier can stop 6 projectiles before it breaks");
+            line3.overrideColor = new Color(240, 240, 240);
+            tooltips.Add(line3);
+            TooltipLine line4 = new TooltipLine(mod, "Face", "Anyone in proximity has a 15% chance to recieve the shadow dodge buff");
+            line4.overrideColor = new Color(240, 240, 240);
+            tooltips.Add(line4);
         }
     }
 

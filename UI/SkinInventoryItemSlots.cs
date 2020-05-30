@@ -27,8 +27,6 @@ namespace VampKnives.UI
             _context = ItemSlot.Context.ShopItem;
             _scale = scale;
             Item = new Item();
-            Main.NewText("" + context);
-
             switch(Iteration)
             {
                 case 0:
@@ -108,7 +106,7 @@ namespace VampKnives.UI
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            //float oldScale = Main.inventoryScale;
+            float oldScale = Main.inventoryScale;
             Main.inventoryScale = _scale;
             Rectangle rectangle = GetDimensions().ToRectangle();
 
@@ -131,7 +129,7 @@ namespace VampKnives.UI
             Vector2 downMove = new Vector2(0, 50);
             ItemSlot.Draw(spriteBatch, ref Item, _context, rectangle.TopLeft());
 
-            //Main.inventoryScale = oldScale;
+            Main.inventoryScale = oldScale;
         }
     }
 }
