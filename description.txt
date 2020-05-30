@@ -4,6 +4,8 @@ Also, there is optional compatibility (included in the mod) with calamity mod th
 
 Update 3.1, The UI Update:
 
+Hotfix 3.1.1: Fixed Knife Worktable being unbreakable in multiplayer
+
 Addition of recipe pages that help explain crafting in the game. These recipes can be found in chests throughout the world(Requires a new world), or can be bought from the Vampire NPC
 Finalization of plate system for defense knives (slightly more balanced now)
 Multiple bug fixes

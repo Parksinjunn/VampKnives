@@ -35,6 +35,9 @@ namespace VampKnives.Tiles
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("Knife Workbench");
             AddMapEntry(new Color(200, 200, 200), name, MapChestName);
+            name = CreateMapEntryName(Name + "_Locked");
+            name.SetDefault("Locked Example Chest");
+            AddMapEntry(new Color(0, 141, 63), name, MapChestName);
             dustType = mod.DustType("Sparkle");
             disableSmartCursor = true;
             adjTiles = new int[] { TileID.Containers };
@@ -46,8 +49,15 @@ namespace VampKnives.Tiles
 
         public override bool HasSmartInteract() => true;
 
-        public override bool IsLockedChest(int i, int j) => false;
+        public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
 
+        public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
+        {
+            if (Main.dayTime)
+                return false;
+            dustType = this.dustType;
+            return true;
+        }
         public string MapChestName(string name, int i, int j)
         {
             int left = i;
@@ -116,7 +126,8 @@ namespace VampKnives.Tiles
                 NetMessage.SendData(33, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f, 0f, 0f, 0, 0, 0);
                 player.editedChestName = false;
             }
-            if (Main.netMode == 1)
+            bool isLocked = IsLockedChest(left, top);
+            if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked)
             {
                 if (left == player.chestX && top == player.chestY && player.chest >= 0)
                 {
@@ -126,31 +137,45 @@ namespace VampKnives.Tiles
                 }
                 else
                 {
-                    NetMessage.SendData(31, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
                     Main.stackSplit = 600;
                 }
             }
             else
             {
-                int chest = Chest.FindChest(left, top);
-                if (chest >= 0)
+                if (isLocked)
                 {
-                    Main.stackSplit = 600;
-                    if (chest == player.chest)
+                    int key = ItemID.ShadowKey;
+                    if (player.ConsumeItem(key) && Chest.Unlock(left, top))
                     {
-                        player.chest = -1;
-                        Main.PlaySound(SoundID.MenuClose);
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                        {
+                            NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, (float)left, (float)top);
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    int chest = Chest.FindChest(left, top);
+                    if (chest >= 0)
                     {
-                        player.chest = chest;
-                        Main.playerInventory = true;
-                        Main.recBigList = false;
-                        player.chestX = left;
-                        player.chestY = top;
-                        Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+                        Main.stackSplit = 600;
+                        if (chest == player.chest)
+                        {
+                            player.chest = -1;
+                            Main.PlaySound(SoundID.MenuClose);
+                        }
+                        else
+                        {
+                            player.chest = chest;
+                            Main.playerInventory = true;
+                            Main.recBigList = false;
+                            player.chestX = left;
+                            player.chestY = top;
+                            Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
+                        }
+                        Recipe.FindRecipes();
                     }
-                    Recipe.FindRecipes();
                 }
             }
             return true;
