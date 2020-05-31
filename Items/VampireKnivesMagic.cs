@@ -42,6 +42,7 @@ namespace VampKnives.Items
             recipe.SetResult(this);
             recipe.AddRecipe();
 
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(this);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(ItemID.VampireKnives);

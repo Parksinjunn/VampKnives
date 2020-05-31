@@ -16,8 +16,6 @@ namespace VampKnives.Items.Accessories.VampNecklaces
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Vampire Necklace");
-            //Tooltip.SetDefault("[c/FF0000:Tier 1]");
-            //    + string.Format("\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{0}][i:{1}][i/s123:{2}]", item.type, ModContent.ItemType<ExtraFinger>(), ItemID.Ectoplasm));
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(7, 10));
         }
 
@@ -28,18 +26,27 @@ namespace VampKnives.Items.Accessories.VampNecklaces
             item.rare = 10;
             item.accessory = true;
         }
-
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+            tooltips.RemoveAll(x => x.Name == "Tooltip0" && x.mod == "Terraria");
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            TooltipLine line3;
             TooltipLine line = new TooltipLine(mod, "Face", "Skin: Moonlord");
             line.overrideColor = new Color(210, 0, 0);
             tooltips.Add(line);
             TooltipLine line4 = new TooltipLine(mod, "Face", "To upgrade, kill: " + p.KillText);
             line4.overrideColor = new Color(255, 0, 0);
             tooltips.Add(line4);
-            TooltipLine line3 = new TooltipLine(mod, "Face", "Lifesteal Bonus: " + ((p.NeckAdd - 1) * 100) + "%");
-            line3.overrideColor = new Color(255, 0, 0);
+            if (p.NeckAdd - 1 <= 0)
+            {
+                line3 = new TooltipLine(mod, "Face", "PLEASE KILL FIRST BOSS TO FIX BLOOD METER");
+                line3.overrideColor = new Color(255, 255, 255);
+            }
+            else
+            {
+                line3 = new TooltipLine(mod, "Face", "Lifesteal Bonus: " + ((p.NeckAdd - 1) * 100) + "%");
+                line3.overrideColor = new Color(255, 0, 0);
+            }
             tooltips.Add(line3);
             foreach (TooltipLine line2 in tooltips)
             {
@@ -47,12 +54,33 @@ namespace VampKnives.Items.Accessories.VampNecklaces
                 {
                     line2.overrideColor = new Color(160, 0, 0);
                 }
-            }
-            foreach (TooltipLine line2 in tooltips)
-            {
                 if (line2.mod == "Terraria" && line2.Name == "ItemName")
                 {
                     line2.text = "[c/FF0000:Va][c/EE0200:mp][c/DD0400:ir][c/CC0600:e] [c/BB0800:Ne][c/AB0A00:ck][c/9A0C00:la][c/890E00:ce]";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMoveSpeed")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccDefense")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccCritChance")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccDamage")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMeleeSpeed")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMaxMana")
+                {
+                    line2.text = "";
                 }
             }
         }

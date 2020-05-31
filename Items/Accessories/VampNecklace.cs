@@ -27,9 +27,10 @@ namespace VampKnives.Items.Accessories
             item.rare = 10;
             item.accessory = true;
         }
-
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+            Main.NewText("");
+            tooltips.RemoveAll(x => x.Name == "Tooltip0" && x.mod == "Terraria");
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             TooltipLine line3;
             TooltipLine line = new TooltipLine(mod, "Face", "Skin: Original");
@@ -55,12 +56,33 @@ namespace VampKnives.Items.Accessories
                 {
                     line2.overrideColor = new Color(160,0,0);
                 }
-            }
-            foreach (TooltipLine line2 in tooltips)
-            {
                 if (line2.mod == "Terraria" && line2.Name == "ItemName")
                 {
                     line2.text = "[c/FF0000:Va][c/EE0200:mp][c/DD0400:ir][c/CC0600:e] [c/BB0800:Ne][c/AB0A00:ck][c/9A0C00:la][c/890E00:ce]";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMoveSpeed")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccDefense")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccCritChance")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccDamage")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMeleeSpeed")
+                {
+                    line2.text = "";
+                }
+                if (line2.mod == "Terraria" && line2.Name == "PrefixAccMaxMana")
+                {
+                    line2.text = "";
                 }
             }
         }

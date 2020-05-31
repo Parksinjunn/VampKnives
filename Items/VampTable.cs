@@ -9,7 +9,7 @@ namespace VampKnives.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Knife Worktable");
+            DisplayName.SetDefault("Vampire Altar");
             Tooltip.SetDefault("Used to craft knives");
         }
 

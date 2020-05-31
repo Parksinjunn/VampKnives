@@ -36,7 +36,7 @@ namespace VampKnives.Tiles
             name.SetDefault("Knife Workbench");
             AddMapEntry(new Color(200, 200, 200), name, MapChestName);
             name = CreateMapEntryName(Name + "_Locked");
-            name.SetDefault("Locked Example Chest");
+            name.SetDefault("Locked Knife Workbench");
             AddMapEntry(new Color(0, 141, 63), name, MapChestName);
             dustType = mod.DustType("Sparkle");
             disableSmartCursor = true;

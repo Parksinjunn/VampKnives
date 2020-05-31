@@ -293,12 +293,16 @@ namespace VampKnives
             return new TagCompound {
 				{"NeckProgress", NeckProgress},
                 {"Given", Given},
+                {"NeckAdd", NeckAdd},
+                {"KillText", KillText},
             };
         }
         public override void Load(TagCompound tag)
         {
             NeckProgress = tag.GetInt("NeckProgress");
             Given = tag.GetBool("Given");
+            NeckAdd = tag.GetFloat("NeckAdd");
+            KillText = tag.GetString("KillText");
         }
         public override void UpdateBadLifeRegen()
         {

@@ -30,7 +30,7 @@ namespace VampKnives.Tiles
             TileObjectData.addTile(Type);
             AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
             ModTranslation name = CreateMapEntryName();
-            name.SetDefault("Vampire Workbench");
+            name.SetDefault("Vampire Altar");
             disableSmartCursor = true;
             adjTiles = new int[] { TileID.WorkBenches };
 
