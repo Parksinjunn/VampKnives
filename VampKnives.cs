@@ -235,8 +235,8 @@ namespace VampKnives
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int index = layers.FindIndex(layer => layer.Name.Contains("Resource Bars"));
-            if(index != -1)
+            int index = layers.FindIndex(layer => layer.Name.Contains("Vanilla: Mouse Text"));
+            if (index != -1)
             {
                 layers.Insert(index, new LegacyGameInterfaceLayer("VampBars: Blood Resource Bar", delegate
                 {

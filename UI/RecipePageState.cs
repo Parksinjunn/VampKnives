@@ -20,7 +20,6 @@ namespace VampKnives.UI
         public static bool IsKnifeSculptRecipe;
         public static bool IsSharpeningSculptRecipe;
 
-        Texture2D BgTexture = ModContent.GetTexture("VampKnives/UI/VampBarBg");
         int TextureWidth = 730;
         int TextureHeight = 1050;
 
