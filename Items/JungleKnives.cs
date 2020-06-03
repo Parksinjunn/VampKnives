@@ -25,7 +25,8 @@ namespace VampKnives.Items
 			item.useAnimation = 15;
 			item.useStyle = 1;
             item.noMelee = true;
-			item.knockBack = 3;
+            item.noUseGraphic = true;
+            item.knockBack = 3;
             item.value = Item.sellPrice(0, 0, 25, 45) ;
 			item.rare = 8;
 			item.UseSound = SoundID.Item45;

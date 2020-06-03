@@ -29,7 +29,7 @@ namespace VampKnives.Items
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 7, 62, 22);
             item.rare = 8;
-            item.UseSound = SoundID.Item97;
+            item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("WyvernProj");
             item.shootSpeed = 17f;

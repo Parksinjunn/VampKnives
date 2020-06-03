@@ -23,6 +23,7 @@ namespace VampKnives.Items
             item.height = 32;
             item.useTime = 15;
             item.useAnimation = 15;
+            item.noUseGraphic = true;
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 2.75f;
@@ -40,6 +41,8 @@ namespace VampKnives.Items
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.VampireKnives, 1);
             recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 3);
             recipe.AddTile(mod.GetTile("VampTableTile"));

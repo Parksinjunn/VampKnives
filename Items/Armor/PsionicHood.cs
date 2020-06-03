@@ -201,7 +201,7 @@ namespace VampKnives.Items.Armor
             //KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             if (NPC.downedBoss2)
             {
-                p.HealAccMult = 1.05f;
+                p.HealAccMult += 0.05f;
                 item.value = Item.sellPrice(0, 2, 0, 0);
                 item.defense = 2;
             }
@@ -211,60 +211,60 @@ namespace VampKnives.Items.Armor
             }
             if (NPC.downedBoss3)
             {
-                p.HealAccMult = 1.1f;
+                p.HealAccMult += 0.1f;
                 item.value = Item.sellPrice(0, 4, 0, 0);
                 item.defense = 3;
             }
             if (Main.hardMode)
             {
-                p.HealAccMult = 1.15f;
+                p.HealAccMult += 0.15f;
                 item.value = Item.sellPrice(0, 5, 0, 0);
                 item.defense = 5;
             }
             if (NPC.downedMechBoss1)
             {
-                p.HealAccMult = 1.2f;
+                p.HealAccMult += 0.2f;
                 item.value = Item.sellPrice(0, 6, 0, 0);
                 item.defense = 6;
             }
             if (NPC.downedMechBoss2)
             {
-                p.HealAccMult = 1.25f;
+                p.HealAccMult += 0.25f;
                 item.value = Item.sellPrice(0, 7, 0, 0);
                 item.defense = 7;
             }
             if (NPC.downedMechBoss3)
             {
-                p.HealAccMult = 1.3f;
+                p.HealAccMult += 0.3f;
                 item.value = Item.sellPrice(0, 8, 0, 0);
             }
             if (NPC.downedPlantBoss)
             {
-                p.HealAccMult = 1.35f;
+                p.HealAccMult += 0.35f;
                 item.value = Item.sellPrice(0, 9, 0, 0);
                 item.defense = 8;
             }
             if (NPC.downedGolemBoss)
             {
-                p.HealAccMult = 1.4f;
+                p.HealAccMult += 0.4f;
                 item.value = Item.sellPrice(0, 10, 0, 0);
                 item.defense = 9;
             }
             if (NPC.downedFishron)
             {
-                p.HealAccMult = 1.45f;
+                p.HealAccMult += 0.45f;
                 item.value = Item.sellPrice(0, 12, 0, 0);
                 item.defense = 10;
             }
             if (NPC.downedAncientCultist)
             {
-                p.HealAccMult = 1.5f;
+                p.HealAccMult += 0.5f;
                 item.value = Item.sellPrice(0, 14, 0, 0);
                 item.defense = 11;
             }
             if (NPC.downedTowers)
             {
-                p.HealAccMult = 1.6f;
+                p.HealAccMult += 0.6f;
                 item.value = Item.sellPrice(0, 16, 0, 0);
                 item.defense = 12;
             }

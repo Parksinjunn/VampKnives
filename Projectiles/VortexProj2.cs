@@ -32,7 +32,7 @@ namespace VampKnives.Projectiles
             //projectile.light = .04f;
             //projectile.alpha = (int)projectile.localAI[0] * 2;
             timer++;
-            Main.NewText("" + timer);
+            //Main.NewText("" + timer);
             if (timer >= 30)
             {
                 for (int i = 0; i < 200; i++)

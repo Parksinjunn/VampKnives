@@ -27,7 +27,8 @@ namespace VampKnives.Items
 			item.useAnimation = 15;
 			item.useStyle = 1;
             item.noMelee = true;
-			item.knockBack = 3;
+            item.noUseGraphic = true;
+            item.knockBack = 3;
 			item.value = 1000;
 			item.rare = 8;
 			item.UseSound = SoundID.Item97;

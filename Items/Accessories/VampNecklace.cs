@@ -29,7 +29,6 @@ namespace VampKnives.Items.Accessories
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Main.NewText("");
             tooltips.RemoveAll(x => x.Name == "Tooltip0" && x.mod == "Terraria");
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             TooltipLine line3;

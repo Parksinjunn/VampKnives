@@ -13,8 +13,8 @@ namespace VampKnives.Items
 
         public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
         {
-            add += KnifeSupportDamagePlayer.KnifeDamagePlayer(player).knifeSupportDamageAdd;
-            mult *= KnifeSupportDamagePlayer.KnifeDamagePlayer(player).knifeSupportDamageMult;
+            add += (KnifeSupportDamagePlayer.KnifeDamagePlayer(player).knifeSupportDamageAdd * KnifeDamagePlayer.ModPlayer(player).knifeDamageAdd);
+            mult *= (KnifeSupportDamagePlayer.KnifeDamagePlayer(player).knifeSupportDamageMult * (KnifeDamagePlayer.ModPlayer(player).knifeDamageMult));
         }
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)

@@ -31,7 +31,7 @@ namespace VampKnives.Items
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 12, 48, 16);
             item.rare = 8;
-            item.UseSound = SoundID.Item97;
+            item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("SpectreProj");
             item.shootSpeed = 9f;

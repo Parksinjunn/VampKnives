@@ -22,7 +22,7 @@ namespace VampKnives.Buffs
 
             if (p.IsTrueSupport == true)
             {
-                p.TrueSupportBuff = 2f;
+                p.TrueSupportBuff = 1.2f;
             }
             else
             {

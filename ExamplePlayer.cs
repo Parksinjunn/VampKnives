@@ -109,7 +109,7 @@ namespace VampKnives
         public float VampDecSlow = 1f;
         public int DelayTimer;
         public double DelayAdd;
-        public float HealAccMult = 1f;
+        public float HealAccMult = 0.4f;
         public bool ArmorSet;
         public bool PsionicPower;
         public int numProj;
@@ -181,7 +181,7 @@ namespace VampKnives
             VampDecreaseRate = 2f;
             VampDecSlow = 1f;
             VampNecklace = false;
-            HealAccMult = 1f;
+            HealAccMult = 0.4f;
             DelayAdd = 0;
             ArmorSet = false;
             IsTrueSupport = false;
@@ -335,11 +335,6 @@ namespace VampKnives
                 VampCurrent = 0;
             if (VampCurrent > VampMax)
                 VampCurrent = VampMax;
-            if(KillCount > 0)
-            {
-                NeckProgress += KillCount;
-                KillCount = 0;
-            }
         }
         public override void UpdateVanityAccessories()
         {

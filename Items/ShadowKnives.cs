@@ -9,26 +9,8 @@ namespace VampKnives.Items
 {
     public class ShadowKnives : KnifeItem
     {
-        ////TO CALL A MOD
-        //Mod Calamity = ModLoader.GetMod("CalamityMod");
         public override void SetStaticDefaults()
         {
-            ////IF MOD EXCLUSIVE
-            //if (Calamity != null)
-            //{
-            //    DisplayName.SetDefault("KNIFENAME");
-            //    Tooltip.SetDefault("KNIFEDESCRIPTION");
-            //}
-            //else
-            //{
-            //    DisplayName.SetDefault("KNIFENAME");
-            //    Tooltip.SetDefault("Please enable Calamity");
-            //}
-
-            ////FOR ANIMATIONS
-            //Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 13));
-
-            //Defaults
             DisplayName.SetDefault("Penumbra");
             Tooltip.SetDefault("Very Dark");
         }
@@ -40,7 +22,7 @@ namespace VampKnives.Items
             item.height = 38;
             item.useTime = 15;
             item.useAnimation = 15;
-            //item.noUseGraphic = true;
+            item.noUseGraphic = true;
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 3;

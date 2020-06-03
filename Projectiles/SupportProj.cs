@@ -20,9 +20,9 @@ namespace VampKnives.Projectiles
             projectile.width = 2;
             projectile.height = 2;
             projectile.friendly = false;
-            projectile.penetrate = 1;                       
+            projectile.penetrate = 1;
             projectile.hostile = false;
-            projectile.tileCollide = false;                 
+            projectile.tileCollide = false;
             projectile.ignoreWater = true;
             //projectile.light = 0.5f;
             projectile.timeLeft = 3600;
@@ -79,7 +79,7 @@ namespace VampKnives.Projectiles
                     {
                         LowestLife = TempStatLife;
                         Decision = g;
-                        Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
+                        //Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
                     }
                 }
                 if (owner.HasBuff(mod.BuffType("TrueSupportDebuff")) == true)
@@ -110,8 +110,8 @@ namespace VampKnives.Projectiles
                             p.VampCurrent += 1f;
                         p.DelayTimer = 30;
                         int statLifeCalc = (int)((p.HealAccMult) * ((p.VampCurrent / 230) + (0.6 * ((0.000000180527267 * Math.Pow(damage, 4)) - (0.0000551402375 * Math.Pow(damage, 3)) + (0.00382482 * Math.Pow(damage, 2)) + (0.09874884 * damage) + 1.34702863)) + Main.rand.NextFloat(-2, 2)));
-                        if (statLifeCalc > 1000)
-                            statLifeCalc = 1000;
+                        if (statLifeCalc > 30)
+                            statLifeCalc = 30 + Main.rand.Next(-3, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
                         Target.statLife += (statLifeCalc);
@@ -121,7 +121,7 @@ namespace VampKnives.Projectiles
                         break;
                     }
                 }
-                else
+                else if (owner.HasBuff(mod.BuffType("TrueSupportDebuff")) != true)
                 {
                     for (int g = 0; g < Main.ActivePlayersCount; g++)
                     {
@@ -132,7 +132,7 @@ namespace VampKnives.Projectiles
                         {
                             LowestLife = TempStatLife;
                             Decision = g;
-                            Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
+                            //Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
                         }
                     }
                     Player Target = Main.player[Decision];
@@ -140,7 +140,7 @@ namespace VampKnives.Projectiles
                     float shootToY = Target.position.Y + (Target.height / 2) - projectile.Center.Y;
                     float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
 
-                    if (distance < 2000f && Target.active)
+                    if (distance < 2000f && owner.active)
                     {
                         distance = 4f / distance;
 
@@ -150,9 +150,9 @@ namespace VampKnives.Projectiles
                         projectile.velocity.X = shootToX;
                         projectile.velocity.Y = shootToY;
                     }
-                    float distanceX = Target.position.X - projectile.position.X;
-                    float distanceY = Target.position.Y - projectile.position.Y;
-                    if (distance < 70f && projectile.position.X < Target.position.X + Target.width && projectile.position.X + projectile.width > Target.position.X && projectile.position.Y < Target.position.Y + Target.height && projectile.position.Y + projectile.height > Target.position.Y)
+                    float distanceX = owner.position.X - projectile.position.X;
+                    float distanceY = owner.position.Y - projectile.position.Y;
+                    if (distance < 70f && projectile.position.X < owner.position.X + owner.width && projectile.position.X + projectile.width > owner.position.X && projectile.position.Y < owner.position.Y + owner.height && projectile.position.Y + projectile.height > owner.position.Y)
                     {
                         int damage = projectile.damage;
                         ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
@@ -161,13 +161,13 @@ namespace VampKnives.Projectiles
                             p.VampCurrent += 1f;
                         p.DelayTimer = 30;
                         int statLifeCalc = (int)((p.HealAccMult) * ((p.VampCurrent / 230) + (0.6 * ((0.000000180527267 * Math.Pow(damage, 4)) - (0.0000551402375 * Math.Pow(damage, 3)) + (0.00382482 * Math.Pow(damage, 2)) + (0.09874884 * damage) + 1.34702863)) + Main.rand.NextFloat(-2, 2)));
-                        if (statLifeCalc > 1000)
-                            statLifeCalc = 1000;
+                        if (statLifeCalc > 20)
+                            statLifeCalc = 20 + Main.rand.Next(-3, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
-                        Target.statLife += (statLifeCalc);
+                        owner.statLife += (statLifeCalc);
                         if (statLifeCalc >= 1)
-                            Target.HealEffect(statLifeCalc, false);
+                            owner.HealEffect(statLifeCalc, false);
                         projectile.Kill();
                         break;
                     }

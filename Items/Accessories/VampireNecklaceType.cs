@@ -73,12 +73,12 @@ namespace VampKnives.Items.Accessories
         {
             if (Main.mouseItem.type != 0)
             {
-                Main.NewText("Holding item");
+                //Main.NewText("Holding item");
                 return true;
             }
             else
             {
-                Main.NewText("Holding air");
+                //Main.NewText("Holding air");
                 return false;
             }
         }

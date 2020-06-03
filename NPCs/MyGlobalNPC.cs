@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using VampKnives.Items;
 using VampKnives.Items.Accessories;
 using VampKnives.Items.BossDrops;
 using VampKnives.Items.Materials;
@@ -40,7 +41,7 @@ namespace VampKnives.NPCs
                     {
                         ModPacket packet = mod.GetPacket();
                         packet.Write(Packet3); // no idea what Packet3 is, but this should be the ID f the message, something that tells the receiving end what this message is about
-                        Main.NewText("Packet3 Written");
+                        //Main.NewText("Packet3 Written");
                         packet.Send(npc.lastInteraction); // sends the packet to the killer only
                     }
                 }
@@ -75,6 +76,15 @@ namespace VampKnives.NPCs
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PlantFiber>());
                 }
+            }
+            if(npc.type == NPCID.WyvernHead)
+            {
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<WyvernHead>());
+            }
+            if(npc.type == NPCID.Harpy)
+            {
+                if (Main.rand.Next(50) <= 4)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<HarpyKnives>());
             }
             if (npc.type == NPCID.MartianTurret)
             {

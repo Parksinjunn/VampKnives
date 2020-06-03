@@ -3,37 +3,77 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace VampKnives.Projectiles
 {
     public class WyvernProj : KnifeProjectile
     {
+        public bool HitNewTarget;
+        public int delay = 40;
         public override void SetDefaults()
         {
             projectile.width = 14;
             projectile.height = 40;
             projectile.friendly = true;
-            projectile.penetrate = 3;
+            projectile.penetrate = 2;
             projectile.hostile = false;
             projectile.tileCollide = false;                 //this make that the projectile does not go thru walls
             projectile.ignoreWater = false;
-            projectile.timeLeft = 110;
+            projectile.timeLeft = 320;
         }
         public override void AI()
         {
-            if (Main.rand.NextFloat() < 1f)
-            {
-                Dust dust;
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Main.LocalPlayer.Center;
-                dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
-                dust.noGravity = false;
-            }
-            //this make that the projectile faces the right way 
+                for(int g = 0; g < 160 / projectile.timeLeft; g++)
+                {
+                    Vector2 position = Main.LocalPlayer.Center;
+                    Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
+                    dust.noGravity = false;
+                }
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
-            //projectile.light = .04f;
-            //projectile.alpha = (int)(projectile.localAI[0] * 2);
+            for (int NPCDist = 0; NPCDist < 200; NPCDist++)
+            {
+                Rectangle rectangle4 = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
+                Rectangle value11 = new Rectangle((int)Main.npc[NPCDist].position.X, (int)Main.npc[NPCDist].position.Y, Main.npc[NPCDist].width, Main.npc[NPCDist].height);
+                if (rectangle4.Intersects(value11))
+                {
+                    HitNewTarget = true;
+                    delay = 0;
+                }
+            }
+            if (HitNewTarget)
+            {
+                if (delay <= 30)
+                {
+                    delay++;
+                    projectile.velocity *= 0.95f;
+                }
+                else if (delay > 30)
+                {
+                    for (int i = 0; i < Main.npc.Length; i++)
+                    {
+                        NPC target = Main.npc[i];
+                        if (!target.friendly)
+                        {
+                            float shootToX = target.position.X + (float)target.width * 0.5f - projectile.Center.X;
+                            float shootToY = target.position.Y - projectile.Center.Y;
+                            float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+
+                            if (distance < 2000f && !target.friendly && target.active)
+                            {
+                                distance = 3f / distance;
+
+                                shootToX *= distance * 10;
+                                shootToY *= distance * 10;
+
+                                projectile.velocity.X = shootToX;
+                                projectile.velocity.Y = shootToY;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)

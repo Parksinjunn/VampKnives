@@ -40,7 +40,7 @@ namespace VampKnives.Items
             item.height = 32;
             item.useTime = 30;
             item.useAnimation = 30;
-            //item.noUseGraphic = true;
+            item.noUseGraphic = true;
             item.useStyle = 1;
             item.noMelee = true;
             item.knockBack = 3;

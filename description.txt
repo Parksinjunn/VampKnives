@@ -4,6 +4,10 @@ Also, there is optional compatibility (included in the mod) with calamity mod th
 
 Update 3.1, The UI Update:
 
+Update 3.1.4: Harpy and Wyvern knives fully implemented, 100% drop from wyvern, 8% drop from harpy
+	-Fixed inconsistencies
+	-Added light to the True Excalibur Swords
+	-Rebalanced damage and lifesteal
 Hotfix 3.1.3: Fixed incompatibility with unleveled mod
 Hotfix 3.1.2: Fixed a few recipes, fixes to vampire necklace, updated crystal sprites
 Hotfix 3.1.1: Fixed Knife Worktable being unbreakable in multiplayer
