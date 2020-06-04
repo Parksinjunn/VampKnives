@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.MaterialKnives
 {
-    public class ChlorophyteKnives : KnifeItem
+    public class ChlorophyteKnives : KnifeMaterialItem
     {
         public override void SetStaticDefaults()
         {

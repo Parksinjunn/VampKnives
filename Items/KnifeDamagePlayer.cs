@@ -42,7 +42,18 @@ namespace VampKnives.Items
         {
             KnifeDamage = 1f;
             KnifeKnockback = 0f;
-            knifeDamageMult = 1f;
+            if(VampKnives.Legacy)
+            {
+                knifeDamageMult = 1f;
+            }
+            if (VampKnives.Normal)
+            {
+                knifeDamageMult = 1.2f;
+            }
+            if (VampKnives.Unforgiving)
+            {
+                knifeDamageMult = 0.8f;
+            }
             KnifeCrit = 0;
         }
     }

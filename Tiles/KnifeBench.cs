@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using VampKnives.UI;
 
 namespace VampKnives.Tiles
 {
@@ -34,53 +35,14 @@ namespace VampKnives.Tiles
             TileObjectData.addTile(Type);
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("Knife Workbench");
-            AddMapEntry(new Color(200, 200, 200), name, MapChestName);
-            name = CreateMapEntryName(Name + "_Locked");
-            name.SetDefault("Locked Knife Workbench");
-            AddMapEntry(new Color(0, 141, 63), name, MapChestName);
             dustType = mod.DustType("Sparkle");
             disableSmartCursor = true;
-            adjTiles = new int[] { TileID.Containers };
-            chest = "Knife Workbench";
-            chestDrop = ModContent.ItemType<Items.KnifeBenchItem>();
+            adjTiles = new int[] { TileID.WorkBenches };
         }
 
         public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
 
         public override bool HasSmartInteract() => true;
-
-        public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
-
-        public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)
-        {
-            if (Main.dayTime)
-                return false;
-            dustType = this.dustType;
-            return true;
-        }
-        public string MapChestName(string name, int i, int j)
-        {
-            int left = i;
-            int top = j;
-            Tile tile = Main.tile[i, j];
-            if (tile.frameX % 36 != 0)
-            {
-                left--;
-            }
-            if (tile.frameY != 0)
-            {
-                top--;
-            }
-            int chest = Chest.FindChest(left, top);
-            if (Main.chest[chest].name == "")
-            {
-                return name;
-            }
-            else
-            {
-                return name + ": " + Main.chest[chest].name;
-            }
-        }
 
         public override void NumDust(int i, int j, bool fail, ref int num)
         {
@@ -89,94 +51,23 @@ namespace VampKnives.Tiles
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(i * 16, j * 16, 32, 32, chestDrop);
-            Chest.DestroyChest(i, j);
+            Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<Items.KnifeBenchItem>());
         }
+
 
         public override bool NewRightClick(int i, int j)
         {
-            Player player = Main.LocalPlayer;
-            Tile tile = Main.tile[i, j];
-            Main.mouseRightRelease = false;
-            int left = i;
-            int top = j;
-            if (tile.frameX % 36 != 0)
+            if (WorkbenchSlotState.visible)
             {
-                left--;
-            }
-            if (tile.frameY != 0)
-            {
-                top--;
-            }
-            if (player.sign >= 0)
-            {
+                Main.playerInventory = false;
+                WorkbenchSlotState.visible = false;
                 Main.PlaySound(SoundID.MenuClose);
-                player.sign = -1;
-                Main.editSign = false;
-                Main.npcChatText = "";
             }
-            if (Main.editChest)
+            else if (WorkbenchSlotState.visible == false)
             {
-                Main.PlaySound(SoundID.MenuTick);
-                Main.editChest = false;
-                Main.npcChatText = "";
-            }
-            if (player.editedChestName)
-            {
-                NetMessage.SendData(33, -1, -1, NetworkText.FromLiteral(Main.chest[player.chest].name), player.chest, 1f, 0f, 0f, 0, 0, 0);
-                player.editedChestName = false;
-            }
-            bool isLocked = IsLockedChest(left, top);
-            if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked)
-            {
-                if (left == player.chestX && top == player.chestY && player.chest >= 0)
-                {
-                    player.chest = -1;
-                    Recipe.FindRecipes();
-                    Main.PlaySound(SoundID.MenuClose);
-                }
-                else
-                {
-                    NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
-                    Main.stackSplit = 600;
-                }
-            }
-            else
-            {
-                if (isLocked)
-                {
-                    int key = ItemID.ShadowKey;
-                    if (player.ConsumeItem(key) && Chest.Unlock(left, top))
-                    {
-                        if (Main.netMode == NetmodeID.MultiplayerClient)
-                        {
-                            NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, (float)left, (float)top);
-                        }
-                    }
-                }
-                else
-                {
-                    int chest = Chest.FindChest(left, top);
-                    if (chest >= 0)
-                    {
-                        Main.stackSplit = 600;
-                        if (chest == player.chest)
-                        {
-                            player.chest = -1;
-                            Main.PlaySound(SoundID.MenuClose);
-                        }
-                        else
-                        {
-                            player.chest = chest;
-                            Main.playerInventory = true;
-                            Main.recBigList = false;
-                            player.chestX = left;
-                            player.chestY = top;
-                            Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-                        }
-                        Recipe.FindRecipes();
-                    }
-                }
+                Main.playerInventory = true;
+                WorkbenchSlotState.visible = true;
+                Main.PlaySound(SoundID.MenuOpen);
             }
             return true;
         }
@@ -199,8 +90,8 @@ namespace VampKnives.Tiles
             player.showItemIcon2 = -1;
             if (chest < 0)
             {
-                player.showItemIconText = Language.GetTextValue("LegacyChestType.0");
-            }
+                player.showItemIconText = "Knife Workbench";
+                    }
             else
             {
                 player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Knife Workbench";

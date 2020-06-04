@@ -12,7 +12,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Sculpted knife ammo");
-            Tooltip.SetDefault("Parts to a bigger picture");
+            Tooltip.SetDefault("Combining five of these sculpts will producea set of knife sculpts fit for a cast");
         }
         public override void HoldItem(Player player)
         {
@@ -69,7 +69,7 @@ namespace VampKnives.Items.Materials
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            ChiselRecipe recipe = new ChiselRecipe(mod);
             recipe.AddIngredient(ItemID.StoneBlock, 6);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);

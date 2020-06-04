@@ -11,6 +11,7 @@ namespace VampKnives.Projectiles
     {
         public bool HitNewTarget;
         public int delay = 40;
+        public int NumHits;
         public override void SetDefaults()
         {
             projectile.width = 14;
@@ -27,19 +28,24 @@ namespace VampKnives.Projectiles
                 for(int g = 0; g < 160 / projectile.timeLeft; g++)
                 {
                     Vector2 position = Main.LocalPlayer.Center;
-                    Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
+                    Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 5, projectile.height - 5, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
                     dust.noGravity = false;
                 }
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
+            if (projectile.timeLeft < 60)
+                projectile.Opacity *= 0.98f;
             for (int NPCDist = 0; NPCDist < 200; NPCDist++)
             {
-                Rectangle rectangle4 = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
-                Rectangle value11 = new Rectangle((int)Main.npc[NPCDist].position.X, (int)Main.npc[NPCDist].position.Y, Main.npc[NPCDist].width, Main.npc[NPCDist].height);
-                if (rectangle4.Intersects(value11))
+                if (!Main.npc[NPCDist].friendly)
                 {
-                    HitNewTarget = true;
-                    delay = 0;
+                    Rectangle rectangle4 = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
+                    Rectangle value11 = new Rectangle((int)Main.npc[NPCDist].position.X, (int)Main.npc[NPCDist].position.Y, Main.npc[NPCDist].width, Main.npc[NPCDist].height);
+                    if (rectangle4.Intersects(value11))
+                    {
+                        HitNewTarget = true;
+                        delay = 0;
+                    }
                 }
             }
             if (HitNewTarget)
@@ -78,6 +84,8 @@ namespace VampKnives.Projectiles
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
+            NumHits++;
+            projectile.damage = projectile.damage / NumHits;
             Player owner = Main.player[projectile.owner];
             Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
 

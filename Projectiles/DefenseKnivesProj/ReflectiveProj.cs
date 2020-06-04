@@ -36,6 +36,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public int TimerAdamantite;
         public int TimerChlorophyte;
         public float TimerShroomite;
+        public int TimerOrichalcum = 200;
         public int TimerElemental;
         public int ShroomiteIterator;
         public bool FirstAdamantiteInitializeDone = false;
@@ -299,8 +300,8 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             {
                 if (IsOrichalcum && Main.npc[NPCDist].active && !Main.npc[NPCDist].friendly)
                 {
-                    petalRandom = Main.rand.Next(1,10000);
-                    if (petalRandom > 9900)
+                    TimerOrichalcum += Main.rand.Next(1,4);
+                    if (TimerOrichalcum == 460)
                     {
                         float PosX = projectile.position.X + Main.rand.Next(-500,500);
                         float PosY = projectile.position.Y - Main.screenHeight;
@@ -309,6 +310,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                             PosY = projectile.position.Y + Main.screenHeight;
                         }
                         Projectile.NewProjectile(PosX, PosY, 0f, -15f, ModContent.ProjectileType<OrichalcumPetals>(), Main.rand.Next(9,16), 0f, owner.whoAmI, 0f, 0f);
+                        TimerOrichalcum = 0;
                    }
                 }
                 if (Main.npc[NPCDist].active && !Main.npc[NPCDist].dontTakeDamage && Main.npc[NPCDist].lifeMax > 1 && Main.npc[NPCDist].knockBackResist == 0)

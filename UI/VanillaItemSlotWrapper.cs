@@ -10,6 +10,7 @@ namespace VampKnives.UI
     internal class VanillaItemSlotWrapper : UIElement
     {
         internal Item Item;
+        public string HoverText { get; set; }
         private readonly int _context;
         private readonly float _scale;
         internal Func<Item, bool> ValidItemFunc;
@@ -20,7 +21,6 @@ namespace VampKnives.UI
             _scale = scale;
             Item = new Item();
             Item.SetDefaults(0);
-
             Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
             Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
         }
@@ -38,6 +38,13 @@ namespace VampKnives.UI
                 {
                     // Handle handles all the click and hover actions based on the context.
                     ItemSlot.Handle(ref Item, _context);
+                }
+            }
+            if (ContainsPoint(Main.MouseScreen) && !PlayerInput.IgnoreMouseInterface)
+            {
+                if (!string.IsNullOrEmpty(HoverText))
+                {
+                    Main.hoverItemName = HoverText;
                 }
             }
             // Draw draws the slot itself and Item. Depending on context, the color will change, as will drawing other things like stack counts.

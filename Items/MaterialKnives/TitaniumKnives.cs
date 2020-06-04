@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.MaterialKnives
 {
-    public class TitaniumKnives : KnifeItem
+    public class TitaniumKnives : KnifeMaterialItem
     {
         public override void SetStaticDefaults()
         {

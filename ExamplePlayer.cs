@@ -125,6 +125,14 @@ namespace VampKnives
         public bool IsSupportKeyPressed;
         public float TrueSupportBuff;
 
+        public bool LegacyPlayer;
+        public bool NormalPlayer;
+        public bool UnforgivingPlayer;
+
+
+
+        public int NumCrafted;
+
         public override void ResetEffects()
         {
             Connor = false;
@@ -181,13 +189,28 @@ namespace VampKnives
             VampDecreaseRate = 2f;
             VampDecSlow = 1f;
             VampNecklace = false;
-            HealAccMult = 0.4f;
+            if(VampKnives.Legacy)
+            {
+                HealAccMult = 0.8f;
+            }
+            if (VampKnives.Normal)
+            {
+                HealAccMult = 0.4f;
+            }
+            if (VampKnives.Unforgiving)
+            {
+                HealAccMult = 0.2f;
+            }
             DelayAdd = 0;
             ArmorSet = false;
             IsTrueSupport = false;
             TrueSupportBuff = 1f;
             TitaniumDefenseBuff = false;
             ShroomiteBuff = false;
+            VampKnives.ChangeItemIsHeld = false;
+            LegacyPlayer = VampKnives.Legacy;
+            NormalPlayer = VampKnives.Normal;
+            UnforgivingPlayer = VampKnives.Unforgiving;
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -291,10 +314,14 @@ namespace VampKnives
         public override TagCompound Save()
         {
             return new TagCompound {
-				{"NeckProgress", NeckProgress},
+                {"NeckProgress", NeckProgress},
                 {"Given", Given},
                 {"NeckAdd", NeckAdd},
                 {"KillText", KillText},
+                {"Legacy", LegacyPlayer},
+                {"Normal", NormalPlayer},
+                {"Unforgiving", UnforgivingPlayer},
+                {"NumCrafted", NumCrafted },
             };
         }
         public override void Load(TagCompound tag)
@@ -303,6 +330,10 @@ namespace VampKnives
             Given = tag.GetBool("Given");
             NeckAdd = tag.GetFloat("NeckAdd");
             KillText = tag.GetString("KillText");
+            LegacyPlayer = tag.GetBool("Legacy");
+            NormalPlayer = tag.GetBool("Normal");
+            UnforgivingPlayer = tag.GetBool("Unforgiving");
+            NumCrafted = tag.GetInt("NumCrafted");
         }
         public override void UpdateBadLifeRegen()
         {
@@ -388,9 +419,65 @@ namespace VampKnives
                 }
             }
         }
+        bool FirstEnhancedText;
+        bool SecondEnhancedText;
+        bool ThirdEnhancedText;
+        bool FourthEnhancedText;
+        bool FifthEnhancedText;
+        bool SixthEnhancedText;
+        bool SeventhEnhancedText;
+        bool EigthEnhancedText;
+        bool NinthEnhancedText;
+
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
-            if(IsSupportKeyPressed)
+            if (NumCrafted == 20 && !FirstEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                FirstEnhancedText = true;
+            }
+            if (NumCrafted == 50 && !SecondEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                SecondEnhancedText = true;
+            }
+            if (NumCrafted == 100 && !ThirdEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                ThirdEnhancedText = true;
+            }
+            if (NumCrafted == 150 && !FourthEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                FourthEnhancedText = true;
+            }
+            if (NumCrafted == 225 && !FifthEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                FifthEnhancedText = true;
+            }
+            if (NumCrafted == 300 && !SixthEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                SixthEnhancedText = true;
+            }
+            if (NumCrafted == 400 && !SeventhEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                SeventhEnhancedText = true;
+            }
+            if (NumCrafted == 500 && !EigthEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                EigthEnhancedText = true;
+            }
+            if (NumCrafted == 1000 && !NinthEnhancedText)
+            {
+                CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
+                Main.NewText("You've crafted ammo a thousand times, you've mastered the art of crafting knife ammo", 180, 0, 0);
+                NinthEnhancedText = true;
+            }
+            if (IsSupportKeyPressed)
             {
                 player.AddBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>(), 60, true);
             }

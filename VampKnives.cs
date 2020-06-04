@@ -18,8 +18,10 @@ namespace VampKnives
         public static int inventoryIndex;
         public UserInterface customRecources;
         public UserInterface customResources2;
+        public UserInterface FirstLoadUI;
         private VampBar vampBar;
         private RecipePageState RecipePage;
+        private EntranceDamageSettingsPanel FirstLoadUIPanel;
         private WarningMessage warning;
         //private UserInterface WarningMessage;
         internal UserInterface WarningMessagePerson;
@@ -32,6 +34,15 @@ namespace VampKnives
         public static bool IsAmmoSculptRecipe;
         public static bool IsKnifeSculptRecipe;
         public static bool IsSharpeningSculptRecipe;
+        public static bool ChosenDifficulty;
+        public static bool Legacy;
+        public static bool Normal;
+        public static bool Unforgiving;
+        public static bool ChangeItemIsHeld;
+        public static bool HammerInSlot;
+        public static bool ChiselInSlot;
+        public UserInterface WorkbenchSlots;
+        private WorkbenchSlotState WorkbenchSlotPanel;
         //public static ModPacket MyPacket;
         //public static int MyPacketIdentifier;
         //private UserInterface VampBarInterface;
@@ -138,18 +149,34 @@ namespace VampKnives
 
                 customRecources = new UserInterface();
                 customResources2 = new UserInterface();
+                FirstLoadUI = new UserInterface();
+                FirstLoadUIPanel = new EntranceDamageSettingsPanel();
                 vampBar = new VampBar();
                 VampBar.visible = true;
                 RecipePage = new RecipePageState();
                 customResources2.SetState(RecipePage);
                 customRecources.SetState(vampBar);
+                FirstLoadUI.SetState(FirstLoadUIPanel);
                 VampireUserInterface = new UserInterface();
                 VampireUserInterface2 = new UserInterface();
+
+                WorkbenchSlots = new UserInterface();
+                WorkbenchSlotPanel = new WorkbenchSlotState();
+                WorkbenchSlots.SetState(WorkbenchSlotPanel);
+
             }
             base.Load();
         }
         public override void UpdateUI(GameTime gameTime)
         {
+            if (!Legacy && !Normal && !Unforgiving)
+            {
+                EntranceDamageSettingsPanel.visible = true;
+            }
+            else if((Legacy || Normal || Unforgiving) && !ChangeItemIsHeld)
+            {
+                EntranceDamageSettingsPanel.visible = false;
+            }
             VampireUserInterface?.Update(gameTime);
             VampireUserInterface2?.Update(gameTime);
             if (IsKnifeRecipe)
@@ -250,8 +277,22 @@ namespace VampKnives
                         customResources2.Update(Main._drawInterfaceGameTime);
                         RecipePage.Draw(Main.spriteBatch);
                     }
+                    if(EntranceDamageSettingsPanel.visible)
+                    {
+                        FirstLoadUI.Update(Main._drawInterfaceGameTime);
+                        FirstLoadUIPanel.Draw(Main.spriteBatch);
+                    }
+                    if (WorkbenchSlotState.visible)
+                    {
+                        WorkbenchSlots.Update(Main._drawInterfaceGameTime);
+                        WorkbenchSlotPanel.Draw(Main.spriteBatch);
+                    }
                     return true;
                 }));
+                if(Main.playerInventory == false && WorkbenchSlotState.visible)
+                {
+                    WorkbenchSlotState.visible = false;
+                }
             }
             inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (inventoryIndex != -1)
@@ -287,6 +328,10 @@ namespace VampKnives
                 ModPacket packet2 = this.GetPacket();
                 packet2.Write(Packet2);
                 packet2.Write(KeyPressed);
+                //packet2.Write(ChosenDifficulty);
+                //packet2.Write(Legacy);
+                //packet2.Write(Normal);
+                //packet2.Write(Unforgiving);
                 packet2.Write(playerID);
                 packet2.Send(-1, playerID); 
             }

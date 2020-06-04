@@ -8,7 +8,7 @@ using VampKnives.Items.Ammo;
 
 namespace VampKnives.Items.MaterialKnives
 {
-    public class MoltenKnives : KnifeItem
+    public class MoltenKnives : KnifeMaterialItem
     {
         public override void SetStaticDefaults()
         {
