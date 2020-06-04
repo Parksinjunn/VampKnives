@@ -58,5 +58,19 @@ namespace VampKnives.Items.Misc
             Main.NewText("Chisel Present: " + VampKnives.ChiselInSlot);
             Main.NewText("Hammer Present : " + VampKnives.HammerInSlot);
         }
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.DirtBlock, 1);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.DirtBlock, 1);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+        }
     }
 }
