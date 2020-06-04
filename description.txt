@@ -3,6 +3,9 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
 Update 3.2, The Balance Update:
+
+Hotfix 3.2.1: Fixed debug relics and wyvern projectile
+
 Added three difficulty modes (will possibly be expanded upon in the future)
 Gave the knife workbench functioning item slots that hold the hammer and chisel, this inventory is universal across worlds.
 Major changes to material knives, they now have armor piercing and can cause massive damage when paired with some of the other knives. (Note this doesn't affect bosses who have constantly reseting armor)

@@ -31,7 +31,7 @@ namespace VampKnives.Projectiles.Ammo
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Main.NewText("Defense 1: " + n.defense);
+            //Main.NewText("Defense 1: " + n.defense);
             Hoods(n);
             if(VampKnives.Normal || VampKnives.Legacy)
             {
@@ -41,7 +41,7 @@ namespace VampKnives.Projectiles.Ammo
             {
                 n.defense = (int)(n.defense / (1.00001f));
             }
-            Main.NewText("Defense 2: " + n.defense);
+            //Main.NewText("Defense 2: " + n.defense);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {

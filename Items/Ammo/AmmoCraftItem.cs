@@ -32,7 +32,7 @@ namespace VampKnives.Items.Ammo
             crafted = true;
             p.NumCrafted += 1;
             NumberCrafted = p.NumCrafted;
-            Main.NewText("Number Crafted: " + p.NumCrafted);
+            //Main.NewText("Number Crafted: " + p.NumCrafted);
         }
         public override void UpdateInventory(Player player)
         {

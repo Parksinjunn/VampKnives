@@ -28,13 +28,13 @@ namespace VampKnives.Projectiles
                 for(int g = 0; g < 160 / projectile.timeLeft; g++)
                 {
                     Vector2 position = Main.LocalPlayer.Center;
-                    Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 5, projectile.height - 5, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
+                    Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.Center.X, projectile.Center.Y), 1, 1, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
                     dust.noGravity = false;
                 }
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
             if (projectile.timeLeft < 60)
-                projectile.Opacity *= 0.98f;
+                projectile.Opacity -= 0.01f;
             for (int NPCDist = 0; NPCDist < 200; NPCDist++)
             {
                 if (!Main.npc[NPCDist].friendly)

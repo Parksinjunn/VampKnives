@@ -55,8 +55,8 @@ namespace VampKnives.Items.Misc
             //Main.NewText("Normal: " + VampKnives.Normal);
             //Main.NewText("Unforgiving: " + VampKnives.Unforgiving);
             //Main.NewText("Chosen: " + VampKnives.ChosenDifficulty);
-            Main.NewText("Chisel Present: " + VampKnives.ChiselInSlot);
-            Main.NewText("Hammer Present : " + VampKnives.HammerInSlot);
+            //Main.NewText("Chisel Present: " + VampKnives.ChiselInSlot);
+            //Main.NewText("Hammer Present : " + VampKnives.HammerInSlot);
         }
         public override void AddRecipes()
         {
