@@ -31,7 +31,7 @@ namespace VampKnives.Items.MaterialKnives
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("DartAnim");
-            item.shootSpeed = 15f;
+            item.shootSpeed = 100f;
             item.useAmmo = ModContent.ItemType<ThrowingKnivesAmmo>();
         }
         public override bool CloneNewInstances

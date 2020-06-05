@@ -10,12 +10,10 @@ namespace VampKnives.Projectiles
     public class SupportProj : KnifeProjectile
     {
         Player Decide;
-        int Decision;
         int LowestLife = 500;
+        public int Decision;
         public override void SetDefaults()
         {
-            Player owner = Main.player[projectile.owner];
-
             projectile.Name = "Vampire Healing";
             projectile.width = 2;
             projectile.height = 2;
@@ -63,27 +61,25 @@ namespace VampKnives.Projectiles
                     Main.dust[dust].velocity *= 0.2f;
                 }
             }
-            //projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
-            //projectile.light = .04f;
-            //projectile.alpha = (int)projectile.localAI[0] * 2;
             for (int i = 0; i < 200; i++)
             {
+                projectile.netUpdate = true;
                 Player owner = Main.player[projectile.owner];
-                for (int g = 0; g < Main.ActivePlayersCount; g++)
-                {
-                    Decide = Main.player[g];
-                    int TempStatLife = Decide.statLife;
-                    //Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
-                    if (TempStatLife < LowestLife && Decide != owner)
-                    {
-                        LowestLife = TempStatLife;
-                        Decision = g;
-                        //Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
-                    }
-                }
                 if (owner.HasBuff(mod.BuffType("TrueSupportDebuff")) == true)
                 {
+                    for (int g = 0; g < Main.ActivePlayersCount; g++)
+                    {
+                        Decide = Main.player[g];
+                        int TempStatLife = Decide.statLife;
+                        //Main.NewText("LowestLife: " + LowestLife + "   TempStatLife: " + TempStatLife);
+                        if (TempStatLife < LowestLife && Decide != owner)
+                        {
+                            LowestLife = TempStatLife;
+                            Decision = g;
+                            //Main.NewText("Decision: " + Decide + "Decision's Life: " + Decide.statLife);
+                        }
+                    }
                     Player Target = Main.player[Decision];
                     float shootToX = Target.position.X + (float)Target.width * 0.5f - projectile.Center.X;
                     float shootToY = Target.position.Y + (Target.height / 2) - projectile.Center.Y;
@@ -103,7 +99,7 @@ namespace VampKnives.Projectiles
                     float distanceY = Target.position.Y - projectile.position.Y;
                     if (distance < 70f && projectile.position.X < Target.position.X + Target.width && projectile.position.X + projectile.width > Target.position.X && projectile.position.Y < Target.position.Y + Target.height && projectile.position.Y + projectile.height > Target.position.Y && Target != owner)
                     {
-                        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+                        ExamplePlayer p = owner.GetModPlayer<ExamplePlayer>();
                         float damage = projectile.damage * p.TrueSupportBuff;
                         p.VampCurrent += (int)(damage * 0.40);
                         if (((int)(damage * 0.40)) < 1)
@@ -119,6 +115,16 @@ namespace VampKnives.Projectiles
                         Target.statLife += (statLifeCalc);
                         if (statLifeCalc >= 1)
                             Target.HealEffect(statLifeCalc, false);
+                        if (Main.netMode != 0)
+                        {
+                            ModPacket packet = mod.GetPacket();
+                            packet.Write(55);
+                            //packet.Write(HasHitTarget);
+                            packet.Write(owner.whoAmI);
+                            packet.Write(Target.whoAmI);
+                            packet.Write(statLifeCalc);
+                            packet.Send();
+                        }
                         projectile.Kill();
                         break;
                     }
@@ -152,12 +158,12 @@ namespace VampKnives.Projectiles
                         projectile.velocity.X = shootToX;
                         projectile.velocity.Y = shootToY;
                     }
-                    float distanceX = owner.position.X - projectile.position.X;
-                    float distanceY = owner.position.Y - projectile.position.Y;
-                    if (distance < 70f && projectile.position.X < owner.position.X + owner.width && projectile.position.X + projectile.width > owner.position.X && projectile.position.Y < owner.position.Y + owner.height && projectile.position.Y + projectile.height > owner.position.Y)
+                    float distanceX = Target.position.X - projectile.position.X;
+                    float distanceY = Target.position.Y - projectile.position.Y;
+                    if (distance < 70f && projectile.position.X < Target.position.X + Target.width && projectile.position.X + projectile.width > Target.position.X && projectile.position.Y < Target.position.Y + Target.height && projectile.position.Y + projectile.height > Target.position.Y)
                     {
                         int damage = projectile.damage;
-                        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+                        ExamplePlayer p = owner.GetModPlayer<ExamplePlayer>();
                         p.VampCurrent += (int)(damage * 0.40);
                         if (((int)(damage * 0.40)) < 1)
                             p.VampCurrent += 1f;
@@ -169,9 +175,19 @@ namespace VampKnives.Projectiles
                             statLifeCalc = 10 + Main.rand.Next(-3, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
-                        owner.statLife += (statLifeCalc);
+                        Target.statLife += (statLifeCalc);
                         if (statLifeCalc >= 1)
-                            owner.HealEffect(statLifeCalc, false);
+                            Target.HealEffect(statLifeCalc, false);
+                        if(Main.netMode != 0)
+                        {
+                            ModPacket packet = mod.GetPacket();
+                            packet.Write(55);
+                            //packet.Write(HasHitTarget);
+                            packet.Write(owner.whoAmI);
+                            packet.Write(Target.whoAmI);
+                            packet.Write(statLifeCalc);
+                            packet.Send();
+                        }
                         projectile.Kill();
                         break;
                     }

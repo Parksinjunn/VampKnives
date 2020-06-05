@@ -317,6 +317,8 @@ namespace VampKnives
             base.Unload();
         }
         int Packet2 = 22;
+        int Packet5 = 55;
+        int Packet6 = 66;
         int Packet4 = 44;
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -328,36 +330,47 @@ namespace VampKnives
                 ModPacket packet2 = this.GetPacket();
                 packet2.Write(Packet2);
                 packet2.Write(KeyPressed);
-                //packet2.Write(ChosenDifficulty);
-                //packet2.Write(Legacy);
-                //packet2.Write(Normal);
-                //packet2.Write(Unforgiving);
                 packet2.Write(playerID);
                 packet2.Send(-1, playerID); 
             }
             if (idVariable == Packet2)
             {
                 bool KeyPressed2 = reader.ReadBoolean();
+
                 int playerID = reader.ReadInt32();
                 Main.player[playerID].GetModPlayer<ExamplePlayer>().HoodIsVisible = KeyPressed2;
-
             }
             if (idVariable == 33)
             {
                 Main.LocalPlayer.GetModPlayer<ExamplePlayer>().NeckProgress++;
             }
-            //if(idVariable == MyPacketIdentifier)
-            //{
 
-            //}
-
-            //if (idVariable == Packet4)
-            //{
-            //    Main.NewText("Packet4 Read");
-            //    int playerID = reader.ReadInt32();
-            //    Main.player[playerID].GetModPlayer<ExamplePlayer>().NeckProgress += 1;
-            //    Main.NewText("Packet4 Sent: " + Main.player[playerID].GetModPlayer<ExamplePlayer>().NeckProgress);
-            //}
+            if (idVariable == Packet5)
+            {
+                int Owner = reader.ReadInt32();
+                int Decision = reader.ReadInt32();
+                int SyncLifeAmount = reader.ReadInt32();
+                bool BuffState = Main.player[Owner].HasBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>());
+                ModPacket packet5 = this.GetPacket();
+                packet5.Write(Packet6);
+                packet5.Write(Decision);
+                packet5.Write(SyncLifeAmount);
+                packet5.Write(Owner);
+                packet5.Write(BuffState);
+                packet5.Send(-1, Owner);
+            }
+            if (idVariable == Packet6)
+            {
+                int Decision = reader.ReadInt32();
+                int SyncLifeAmount = reader.ReadInt32();
+                int Owner = reader.ReadInt32();
+                bool BuffState = reader.ReadBoolean();
+                if (BuffState)
+                    Main.player[Owner].AddBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>(), 60);
+                Main.player[Decision].statLife += (SyncLifeAmount);
+                if (SyncLifeAmount >= 1)
+                    Main.player[Decision].HealEffect(SyncLifeAmount, false);
+            }
             base.HandlePacket(reader, whoAmI);
         }
     }
