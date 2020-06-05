@@ -4,6 +4,7 @@ Also, there is optional compatibility (included in the mod) with calamity mod th
 
 Update 3.2, The Balance Update:
 
+Hotfix 3.2.2: Fixed lifesteal imbalance and slight balance to luminite knives
 Hotfix 3.2.1: Fixed debug relics and wyvern projectile
 
 Added three difficulty modes (will possibly be expanded upon in the future)

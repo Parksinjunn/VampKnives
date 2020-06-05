@@ -22,7 +22,7 @@ namespace VampKnives.Items.BossDrops
         }
         public override void SafeSetDefaults()
 		{
-			item.damage = 120;            
+			item.damage = 90;            
 			item.width = 66;
 			item.height = 66;
             item.useTime = 12;
