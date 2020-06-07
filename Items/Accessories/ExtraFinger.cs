@@ -11,14 +11,14 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class ExtraFinger : KnifeItem
+    public class ExtraFinger : ModItem
     {
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Y'know what they say, five's better than four");
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 38;
             item.height = 36;

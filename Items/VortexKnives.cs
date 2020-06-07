@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items
 {
-    public class VortexKnives : KnifeItem
+    public class VortexKnives : KnifeDamageItem
     {
         public override void SetStaticDefaults()
         {

@@ -2,18 +2,22 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
-Update 3.2, The Balance Update:
+Update 3.3, The Upgrade Update:
+Added the ability to upgrade your knives at the Vampire Altar (menu opened by right-clicking on the altar)
+Added the Crit Emblem, this boosts crit chance by 8% for all damage types and can be used to upgrade your knives at the knife altar (stacks to 20)
+Made the whetstone slightly harder to make and stacks to 20 (now required to upgrade your knives)
+Two new material drops that are used to upgrade your knives (for details on exact drops check the wiki, which is posted in the discord)
+
+Recent Changes:
 
 Hotfix 3.2.3: Fixed support projectile
 Hotfix 3.2.2: Fixed lifesteal imbalance and slight balance to luminite knives
 Hotfix 3.2.1: Fixed debug relics and wyvern projectile
-
+3.2:
 Added three difficulty modes (will possibly be expanded upon in the future)
 Gave the knife workbench functioning item slots that hold the hammer and chisel, this inventory is universal across worlds.
 Major changes to material knives, they now have armor piercing and can cause massive damage when paired with some of the other knives. (Note this doesn't affect bosses who have constantly reseting armor)
 Added ammo crafting enhancement system (get better at making knives over time)
-
-Recent Changes:
 
 Update 3.1.4: Harpy and Wyvern knives fully implemented, 100% drop from wyvern, 8% drop from harpy
 	-Fixed inconsistencies
@@ -22,6 +26,7 @@ Update 3.1.4: Harpy and Wyvern knives fully implemented, 100% drop from wyvern, 
 Hotfix 3.1.3: Fixed incompatibility with unleveled mod
 Hotfix 3.1.2: Fixed a few recipes, fixes to vampire necklace, updated crystal sprites
 Hotfix 3.1.1: Fixed Knife Worktable being unbreakable in multiplayer
+3.1:
 Addition of recipe pages that help explain crafting in the game. These recipes can be found in chests throughout the world(Requires a new world), or can be bought from the Vampire NPC
 Finalization of plate system for defense knives (slightly more balanced now)
 Multiple bug fixes

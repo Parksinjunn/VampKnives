@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items
 {
-	public class WaspKnives : KnifeItem
+	public class WaspKnives : KnifeDamageItem
 	{
 		public override void SetStaticDefaults()
 		{

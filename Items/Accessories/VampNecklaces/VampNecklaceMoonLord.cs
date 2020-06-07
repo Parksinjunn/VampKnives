@@ -19,7 +19,7 @@ namespace VampKnives.Items.Accessories.VampNecklaces
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(7, 10));
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 40;
             item.height = 42;

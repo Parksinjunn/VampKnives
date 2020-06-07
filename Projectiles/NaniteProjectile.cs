@@ -7,10 +7,10 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Projectiles
 {
-    public class NaniteProjectile : ModProjectile
+    public class NaniteProjectile : KnifeProjectile
     {
         public int tileCollide;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Nanites";
             projectile.width = 26;

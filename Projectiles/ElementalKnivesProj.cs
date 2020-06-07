@@ -21,7 +21,7 @@ namespace VampKnives.Projectiles
 
             return randomNum;
         }
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
 		{
 			projectile.Name = "Elemental Knife";
 			projectile.width = 16;

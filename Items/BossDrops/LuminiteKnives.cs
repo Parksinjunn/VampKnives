@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 
 namespace VampKnives.Items.BossDrops
 {
-	public class LuminiteKnives : KnifeItem
+	public class LuminiteKnives : KnifeDamageItem
 	{
         Mod Calamity = ModLoader.GetMod("CalamityMod");
 
@@ -22,7 +22,7 @@ namespace VampKnives.Items.BossDrops
         }
         public override void SafeSetDefaults()
 		{
-			item.damage = 90;            
+			item.damage = 100;            
 			item.width = 66;
 			item.height = 66;
             item.useTime = 12;

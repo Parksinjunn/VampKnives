@@ -7,10 +7,10 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Projectiles
 {
-    public class MandibleSummonProj : ModProjectile
+    public class MandibleSummonProj : KnifeProjectile
     {
         public int tileCollide;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "buggzy";
             projectile.width = 40;

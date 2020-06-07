@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class VortexProj2 : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Vortex Spawn";
             projectile.width = 16;

@@ -8,7 +8,7 @@ namespace VampKnives.Projectiles
 {
     public class HarpyProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 18;
             projectile.height = 40;

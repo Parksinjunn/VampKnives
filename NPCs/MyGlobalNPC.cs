@@ -77,11 +77,11 @@ namespace VampKnives.NPCs
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PlantFiber>());
                 }
             }
-            if(npc.type == NPCID.WyvernHead)
+            if (npc.type == NPCID.WyvernHead)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<WyvernHead>());
             }
-            if(npc.type == NPCID.Harpy)
+            if (npc.type == NPCID.Harpy)
             {
                 if (Main.rand.Next(50) <= 4)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<HarpyKnives>());
@@ -133,6 +133,48 @@ namespace VampKnives.NPCs
             if (npc.type == NPCID.KingSlime)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Superglue>());
+                if (Main.rand.Next(0, 5) == 3)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
+                }
+            }
+            if (npc.type == NPCID.BlueSlime || npc.type == NPCID.BlackSlime || npc.type == NPCID.RedSlime || npc.type == NPCID.BlueSlime || npc.type == NPCID.PurpleSlime || npc.type == NPCID.RainbowSlime || npc.type == NPCID.SandSlime || npc.type == NPCID.SlimedZombie || npc.type == NPCID.Slimeling || npc.type == NPCID.SlimeMasked || npc.type == NPCID.Slimer || npc.type == NPCID.Slimer2 || npc.type == NPCID.SlimeRibbonGreen || npc.type == NPCID.SlimeRibbonRed || npc.type == NPCID.SlimeRibbonWhite || npc.type == NPCID.SlimeRibbonYellow || npc.type == NPCID.SlimeSpiked || npc.type == NPCID.SmallSlimedZombie || npc.type == NPCID.SpikedIceSlime || npc.type == NPCID.SpikedJungleSlime || npc.type == NPCID.UmbrellaSlime || npc.type == NPCID.YellowSlime || npc.type == NPCID.MotherSlime || npc.type == NPCID.LavaSlime || npc.type == NPCID.JungleSlime || npc.type == NPCID.IceSlime || npc.type == NPCID.IlluminantSlime || npc.type == NPCID.GreenSlime || npc.type == NPCID.DungeonSlime || npc.type == NPCID.CorruptSlime || npc.type == NPCID.BunnySlimed || npc.type == NPCID.BigSlimedZombie || npc.type == NPCID.ArmedZombieSlimed || npc.type == NPCID.BabySlime || npc.type == NPCID.Pinky || npc.type == NPCID.BlueJellyfish || npc.type == NPCID.GreenJellyfish || npc.type == NPCID.BloodJelly || npc.type == NPCID.PinkJellyfish || npc.type == NPCID.StardustJellyfishBig || npc.type == NPCID.StardustJellyfishSmall || npc.type == NPCID.Crimslime || npc.type == NPCID.BigCrimslime || npc.type == NPCID.LittleCrimslime)
+            {
+                if (!Main.hardMode)
+                {
+                    if (Main.rand.Next(0, 1000) <= 1 * npc.lifeMax)
+                    {
+                        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
+                    }
+                }
+                else if (Main.hardMode)
+                {
+                    if (Main.rand.Next(0, 1000) <= 1 * npc.lifeMax + 50)
+                    {
+                        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
+                    }
+                }
+            }
+            if (npc.type == NPCID.SkeletonSniper || npc.type == NPCID.CultistArcherBlue || npc.type == NPCID.CultistArcherWhite || npc.type == NPCID.ElfArcher || npc.type == NPCID.GoblinArcher || npc.type == NPCID.SkeletonArcher || npc.type == NPCID.AngryBones || npc.type == NPCID.AngryBonesBig || npc.type == NPCID.AngryBonesBigHelmet || npc.type == NPCID.AngryBonesBigMuscle || npc.type == NPCID.BlueArmoredBones || npc.type == NPCID.BlueArmoredBonesMace || npc.type == NPCID.BlueArmoredBonesNoPants || npc.type == NPCID.BlueArmoredBonesSword || npc.type == NPCID.HellArmoredBones || npc.type == NPCID.HellArmoredBonesMace || npc.type == NPCID.HellArmoredBonesSpikeShield || npc.type == NPCID.HellArmoredBonesSword || npc.type == NPCID.RustyArmoredBonesAxe || npc.type == NPCID.RustyArmoredBonesFlail || npc.type == NPCID.RustyArmoredBonesSword || npc.type == NPCID.RustyArmoredBonesSwordNoArmor)
+            {
+                if (!Main.hardMode)
+                {
+                    if (Main.rand.Next(0, 1000) <= 1 * npc.lifeMax)
+                    {
+                        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PiercingTip>());
+                    }
+                }
+                else if (Main.hardMode)
+                {
+                    if (Main.rand.Next(0, 1000) <= 1 * (npc.lifeMax / 2))
+                    {
+                        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PiercingTip>());
+                    }
+                }
+            }
+            if(npc.type == NPCID.WallofFlesh)
+            {
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CritEmblem>());
             }
             if (npc.type == NPCID.SkeletronHead)
             {
@@ -141,6 +183,10 @@ namespace VampKnives.NPCs
             if (npc.type == NPCID.SkeletronPrime)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<MechanicalFingers>());
+                for (int x = 0; x < Main.rand.Next(1, 3); x++)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PiercingTip>());
+                }
             }
             if (npc.type == NPCID.Mothron)
             {

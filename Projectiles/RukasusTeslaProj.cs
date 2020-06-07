@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class RukasusTeslaProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Rukasus Tesla";
             projectile.width = 14;

@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles.Ammo
 {
     public class OrichalcumProj : AmmoProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 10;
             projectile.height = 30;

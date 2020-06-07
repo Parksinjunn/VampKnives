@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace VampKnives.Items
 {
-    public class MandibleKnives : KnifeItem
+    public class MandibleKnives : KnifeDamageItem
     {
         ////TO CALL A MOD
         //Mod Calamity = ModLoader.GetMod("CalamityMod");

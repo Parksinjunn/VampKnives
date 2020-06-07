@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using VampKnives.Items;
 
 namespace VampKnives.Projectiles
 {
@@ -12,7 +13,7 @@ namespace VampKnives.Projectiles
         public bool HitNewTarget;
         public int delay = 40;
         public int NumHits;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 14;
             projectile.height = 40;
@@ -25,7 +26,7 @@ namespace VampKnives.Projectiles
         }
         public override void AI()
         {
-                for(int g = 0; g < 160 / projectile.timeLeft; g++)
+            for (int g = 0; g < 160 / projectile.timeLeft; g++)
                 {
                     Vector2 position = Main.LocalPlayer.Center;
                     Dust dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.Center.X, projectile.Center.Y), 1, 1, 45, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 0, new Color(255, 255, 255), 0.8f)];
@@ -99,5 +100,18 @@ namespace VampKnives.Projectiles
             }
             Hoods(n);
         }
+        //public override bool OnTileCollide(Vector2 oldVelocity)
+        //{
+        //    Main.NewText("Ricochet: " + ParentWeapon.RicochetChance);
+        //    if (ParentWeapon.RicochetChance > 0.5f)
+        //    {
+        //        Ricochet(oldVelocity);
+        //    }
+        //    else
+        //    {
+        //        projectile.Kill();
+        //    }
+        //    return false;
+        //}
     }
 }

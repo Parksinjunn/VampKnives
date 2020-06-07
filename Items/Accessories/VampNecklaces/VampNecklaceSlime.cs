@@ -18,7 +18,7 @@ namespace VampKnives.Items.Accessories.VampNecklaces
             DisplayName.SetDefault("Vampire Necklace");
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 40;
             item.height = 42;

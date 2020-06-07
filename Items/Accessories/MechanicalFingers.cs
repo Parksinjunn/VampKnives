@@ -11,14 +11,14 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class MechanicalFingers : KnifeItem
+    public class MechanicalFingers : ModItem
     {
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("They seem to move on their own...");
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 43;
             item.height = 43;

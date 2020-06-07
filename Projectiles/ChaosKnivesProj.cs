@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
 	public class ChaosKnivesProj : KnifeProjectile
 	{
-		public override void SetDefaults()
+		public override void SafeSetDefaults()
 		{
 			projectile.Name = "Chaos Knife";
 			projectile.width = 16;

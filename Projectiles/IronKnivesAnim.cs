@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
 	public class IronKnivesAnim : KnifeProjectile
 	{
-		public override void SetDefaults()
+		public override void SafeSetDefaults()
 		{
 			projectile.Name = "Iron Knife";
 			projectile.width = 16;

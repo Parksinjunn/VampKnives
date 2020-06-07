@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items
 {
-    public class SupportKnivesTier2 : KnifeItem
+    public class SupportKnivesTier2 : KnifeItemSupportScaler
     {
         public override void SetStaticDefaults()
         {

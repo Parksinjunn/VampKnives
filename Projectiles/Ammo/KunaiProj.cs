@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles.Ammo
 {
     public class KunaiProj : AmmoProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 12;
             projectile.height = 32;

@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class MandibleProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Blooming Terror";
             projectile.width = 10;

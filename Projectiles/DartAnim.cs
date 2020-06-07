@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
 	public class DartAnim : KnifeProjectile
 	{
-		public override void SetDefaults()
+		public override void SafeSetDefaults()
 		{
 			projectile.Name = "Dart";
 			projectile.width = 24;

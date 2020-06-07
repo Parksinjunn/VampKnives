@@ -3,7 +3,7 @@ using Terraria.ID;
 
 namespace VampKnives.Items
 {
-    public class HarpyKnives : KnifeItem
+    public class HarpyKnives : KnifeDamageItem
     {
         public override void SetStaticDefaults()
         {

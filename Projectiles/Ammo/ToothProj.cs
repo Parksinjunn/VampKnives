@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles.Ammo
     {
         public int ran;
         public int ranD;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 26;
             projectile.height = 40;

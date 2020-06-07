@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class ChainProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 22;
             projectile.height = 32;

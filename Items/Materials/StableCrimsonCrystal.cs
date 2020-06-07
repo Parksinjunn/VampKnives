@@ -14,7 +14,7 @@ namespace VampKnives.Items.Materials
         }
         public override void SetDefaults()
         {
-            item.maxStack = 10;
+            item.maxStack = 30;
             item.value = Item.sellPrice(0, 1, 0, 0);
             item.rare = 10;
         }

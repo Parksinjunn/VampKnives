@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class ScimitarProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             Main.projFrames[projectile.type] = 6;
             projectile.width = 38;

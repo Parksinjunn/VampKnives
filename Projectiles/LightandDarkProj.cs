@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class LightandDarkProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Light and Dark";
             projectile.width = 30;

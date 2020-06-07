@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class VampNecklace : KnifeItem
+    public class VampNecklace : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -20,7 +20,7 @@ namespace VampKnives.Items.Accessories
             //    + string.Format("\n[c/FF0000:Colors ][c/00FF00:are ][c/0000FF:fun ]and so are items: [i:{0}][i:{1}][i/s123:{2}]", item.type, ModContent.ItemType<ExtraFinger>(), ItemID.Ectoplasm));
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 40;
             item.height = 42;

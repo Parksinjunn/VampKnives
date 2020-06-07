@@ -7,9 +7,9 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Projectiles
 {
-    public class SengoTrap1 : ModProjectile
+    public class SengoTrap1 : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Sengo Trap";
             projectile.width = 32;

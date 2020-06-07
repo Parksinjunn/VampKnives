@@ -43,6 +43,12 @@ namespace VampKnives
         public static bool ChiselInSlot;
         public UserInterface WorkbenchSlots;
         private WorkbenchSlotState WorkbenchSlotPanel;
+        public UserInterface UpgradePanelUI;
+        private UpgradePanel UpgradePanelState;
+
+        public static int SharpnessUpgradeCounter;
+        public static int CritUpgradeCounter;
+        public static int SpecialUpgradeCounter;
         //public static ModPacket MyPacket;
         //public static int MyPacketIdentifier;
         //private UserInterface VampBarInterface;
@@ -164,6 +170,9 @@ namespace VampKnives
                 WorkbenchSlotPanel = new WorkbenchSlotState();
                 WorkbenchSlots.SetState(WorkbenchSlotPanel);
 
+                UpgradePanelUI = new UserInterface();
+                UpgradePanelState = new UpgradePanel();
+                UpgradePanelUI.SetState(UpgradePanelState);
             }
             base.Load();
         }
@@ -279,19 +288,28 @@ namespace VampKnives
                     }
                     if(EntranceDamageSettingsPanel.visible)
                     {
-                        FirstLoadUI.Update(Main._drawInterfaceGameTime);
-                        FirstLoadUIPanel.Draw(Main.spriteBatch);
+                        //FirstLoadUI.Update(Main._drawInterfaceGameTime);
+                        //FirstLoadUIPanel.Draw(Main.spriteBatch);
                     }
                     if (WorkbenchSlotState.visible)
                     {
                         WorkbenchSlots.Update(Main._drawInterfaceGameTime);
                         WorkbenchSlotPanel.Draw(Main.spriteBatch);
                     }
+                    if(UpgradePanel.visible)
+                    {
+                        UpgradePanelUI.Update(Main._drawInterfaceGameTime);
+                        UpgradePanelState.Draw(Main.spriteBatch);
+                    }
                     return true;
                 }));
                 if(Main.playerInventory == false && WorkbenchSlotState.visible)
                 {
                     WorkbenchSlotState.visible = false;
+                }
+                if (Main.playerInventory == false && UpgradePanel.visible)
+                {
+                    UpgradePanel.visible = false;
                 }
             }
             inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));

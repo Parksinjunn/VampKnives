@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items
 {
-	public class PlagueWaspKnives : KnifeItem
+	public class PlagueWaspKnives : KnifeDamageItem
 	{
         Mod Calamity = ModLoader.GetMod("CalamityMod");
 

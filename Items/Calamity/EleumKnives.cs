@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Calamity
 {
-	public class EleumKnives : KnifeItem
+	public class EleumKnives : KnifeDamageItem
 	{
         Mod Calamity = ModLoader.GetMod("CalamityMod");
 

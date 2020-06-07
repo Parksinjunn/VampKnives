@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
 	public class BeeKnifeProj : KnifeProjectile
 	{
-		public override void SetDefaults()
+		public override void SafeSetDefaults()
 		{
 			projectile.Name = "Bee Knife";
 			projectile.width = 16;
@@ -22,7 +22,7 @@ namespace VampKnives.Projectiles
             projectile.tileCollide = true;                 //this make that the projectile does not go thru walls
 			projectile.ignoreWater = true;
             projectile.timeLeft = 300;
-          		}
+        }
 
 		public override void AI()
 		{
@@ -34,7 +34,6 @@ namespace VampKnives.Projectiles
             projectile.localAI[0] += 1f;
             //projectile.light = .04f;
 			projectile.alpha = (int)projectile.localAI[0] * 2;
-			
         }
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)

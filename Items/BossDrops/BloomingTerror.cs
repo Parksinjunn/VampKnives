@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.BossDrops
 {
-    public class BloomingTerror : KnifeItem
+    public class BloomingTerror : KnifeDamageItem
     {
         public override void SetStaticDefaults()
         {

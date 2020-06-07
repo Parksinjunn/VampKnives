@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles.Ammo
 {
     public class TitaniumProj : AmmoProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 18;
             projectile.height = 40;

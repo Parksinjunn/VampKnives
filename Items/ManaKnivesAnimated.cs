@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items
 {
-	public class ManaKnivesAnimated : KnifeItem
+	public class ManaKnivesAnimated : KnifeDamageItem
 	{
 		public override void SetStaticDefaults()
 		{

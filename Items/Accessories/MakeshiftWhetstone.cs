@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class MakeshiftWhetstone : KnifeItem
+    public class MakeshiftWhetstone : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -20,7 +20,7 @@ namespace VampKnives.Items.Accessories
                 "\n15% increased knife critical strike chance");
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 32;
             item.height = 32;

@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace VampKnives.Items
 {
-    public class ShadowKnives : KnifeItem
+    public class ShadowKnives : KnifeDamageItem
     {
         public override void SetStaticDefaults()
         {

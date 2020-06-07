@@ -10,7 +10,7 @@ namespace VampKnives.Projectiles.Ammo
     public abstract class AmmoProjectile : KnifeProjectile
     {
         public float ArmorPiercingMult = 1f;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 14;
             projectile.height = 34;
@@ -43,7 +43,7 @@ namespace VampKnives.Projectiles.Ammo
             }
             //Main.NewText("Defense 2: " + n.defense);
         }
-        public override bool OnTileCollide(Vector2 oldVelocity)
+        public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {
             Main.PlaySound(SoundID.Tink, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.5f);
             int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 1, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.Gray, 1f);

@@ -11,16 +11,16 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class SharpeningRod : KnifeItem
+    public class SharpeningRod : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("SharpeningRod");
+            DisplayName.SetDefault("Sharpening Rod");
             Tooltip.SetDefault("30% increase knife damage"+
                 "\n15% increased knife critical strike chance");
         }
 
-        public override void SafeSetDefaults()
+        public override void SetDefaults()
         {
             item.width = 32;
             item.height = 32;

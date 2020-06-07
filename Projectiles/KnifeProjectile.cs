@@ -16,6 +16,29 @@ namespace VampKnives.Projectiles
 {
     public abstract class KnifeProjectile : ModProjectile
     {
+        public KnifeWeapon ParentWeapon = new KnifeWeapon();
+
+        public virtual void SafeSetDefaults() {
+        }
+        public virtual bool SafeOnTileCollide(Vector2 OldVelocity){
+            return true;
+        }
+        public override void SetDefaults()
+        {
+            SafeSetDefaults();
+        }
+        public override void PostAI()
+        {
+            if (ModContent.GetModItem(Main.LocalPlayer.HeldItem.type) is Items.KnifeDamageItem)
+            {
+                ParentWeapon = Main.LocalPlayer.HeldItem.GetGlobalItem<KnifeWeapon>();
+                //Main.NewText("Weapon: " + ParentWeapon);
+            }
+            if (projectile.penetrate != -1)
+            {
+                projectile.penetrate += ParentWeapon.PenetrationBonus;
+            }
+        }
         public void Hoods(NPC n)
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
@@ -89,6 +112,39 @@ namespace VampKnives.Projectiles
             {
                 n.AddBuff(BuffID.Venom, effectLength);
             }
+        }
+        public int NumRicochets;
+        public void Ricochet(Vector2 OldVelocity)
+        {
+            if (projectile.velocity.X != OldVelocity.X)
+            {
+                projectile.position.X = projectile.position.X + projectile.velocity.X;
+                projectile.velocity.X = 0f - OldVelocity.X;
+            }
+            if (projectile.velocity.Y != OldVelocity.Y)
+            {
+                projectile.position.Y = projectile.position.Y + projectile.velocity.Y;
+                projectile.velocity.Y = 0f - OldVelocity.Y;
+            }
+            NumRicochets++;
+            if(NumRicochets > 5)
+            {
+                projectile.Kill();
+            }
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            SafeOnTileCollide(oldVelocity);
+            //Main.NewText("Ricochet: " + ParentWeapon.RicochetChance);
+            if (ParentWeapon.RicochetChance > Main.rand.NextFloat(0f, 1.0f))
+            {
+                Ricochet(oldVelocity);
+            }
+            else
+            {
+                projectile.Kill();
+            }
+            return false;
         }
     }
 }

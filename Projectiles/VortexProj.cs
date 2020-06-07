@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles
 {
     public class VortexProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 18;
             projectile.height = 32;

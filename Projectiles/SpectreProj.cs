@@ -12,7 +12,7 @@ namespace VampKnives.Projectiles
 {
     public class SpectreProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 24;
             projectile.height = 34;

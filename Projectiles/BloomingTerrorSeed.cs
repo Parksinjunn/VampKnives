@@ -7,9 +7,9 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Projectiles
 {
-    public class BloomingTerrorSeed : ModProjectile
+    public class BloomingTerrorSeed : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.Name = "Terror Seed";
             projectile.width = 28;

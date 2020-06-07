@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles.Ammo
 {
     public class ChlorophyteProj : AmmoProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 14;
             projectile.height = 34;

@@ -112,6 +112,7 @@ namespace VampKnives.Projectiles
                             statLifeCalc = 20 + Main.rand.Next(-3, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
+                        statLifeCalc += ParentWeapon.LifeStealBonus;
                         Target.statLife += (statLifeCalc);
                         if (statLifeCalc >= 1)
                             Target.HealEffect(statLifeCalc, false);
@@ -175,6 +176,7 @@ namespace VampKnives.Projectiles
                             statLifeCalc = 10 + Main.rand.Next(-3, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
+                        statLifeCalc += ParentWeapon.LifeStealBonus;
                         Target.statLife += (statLifeCalc);
                         if (statLifeCalc >= 1)
                             Target.HealEffect(statLifeCalc, false);

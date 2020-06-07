@@ -7,6 +7,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using VampKnives.UI;
 
 namespace VampKnives.Tiles
 {
@@ -30,7 +31,7 @@ namespace VampKnives.Tiles
             TileObjectData.addTile(Type);
             AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTable);
             ModTranslation name = CreateMapEntryName();
-            name.SetDefault("Vampire Altar");
+            name.SetDefault("Vampire Altar\nRight-Click to upgrade your knives");
             disableSmartCursor = true;
             adjTiles = new int[] { TileID.WorkBenches };
 
@@ -149,6 +150,66 @@ namespace VampKnives.Tiles
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<Items.VampTable>());
+        }
+        public override bool NewRightClick(int i, int j)
+        {
+            if (UpgradePanel.visible)
+            {
+                Main.playerInventory = false;
+                UpgradePanel.visible = false;
+                Main.PlaySound(SoundID.MenuClose);
+            }
+            else if (UpgradePanel.visible == false)
+            {
+                Main.playerInventory = true;
+                UpgradePanel.visible = true;
+                Main.PlaySound(SoundID.MenuOpen);
+            }
+            return true;
+        }
+
+        public override void MouseOver(int i, int j)
+        {
+            Player player = Main.LocalPlayer;
+            Tile tile = Main.tile[i, j];
+            int left = i;
+            int top = j;
+            if (tile.frameX % 36 != 0)
+            {
+                left--;
+            }
+            if (tile.frameY != 0)
+            {
+                top--;
+            }
+            int chest = Chest.FindChest(left, top);
+            player.showItemIcon2 = -1;
+            if (chest < 0)
+            {
+                player.showItemIconText = "Vampire Altar\nRight-Click to upgrade your knives";
+            }
+            else
+            {
+                player.showItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Vampire Altar\nRight-Click to upgrade your knives";
+                if (player.showItemIconText == "Vampire Altar\nRight-Click to upgrade your knives")
+                {
+                    player.showItemIcon2 = ModContent.ItemType<Items.VampTable>();
+                    player.showItemIconText = "";
+                }
+            }
+            player.noThrow = 2;
+            player.showItemIcon = true;
+        }
+
+        public override void MouseOverFar(int i, int j)
+        {
+            MouseOver(i, j);
+            Player player = Main.LocalPlayer;
+            if (player.showItemIconText == "")
+            {
+                player.showItemIcon = false;
+                player.showItemIcon2 = 0;
+            }
         }
     }
 }

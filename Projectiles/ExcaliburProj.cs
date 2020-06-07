@@ -9,7 +9,7 @@ namespace VampKnives.Projectiles
 {
     public class ExcaliburProj : KnifeProjectile
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 38;
             projectile.height = 38;
