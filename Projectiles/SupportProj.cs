@@ -109,7 +109,7 @@ namespace VampKnives.Projectiles
                         if (statLifeCalc > 30)
                             statLifeCalc = 30 + Main.rand.Next(-3, 3);
                         if (VampKnives.Unforgiving && statLifeCalc > 20)
-                            statLifeCalc = 20 + Main.rand.Next(-3, 3);
+                            statLifeCalc = 20 + Main.rand.Next(-5, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
                         statLifeCalc += ParentWeapon.LifeStealBonus;
@@ -173,7 +173,7 @@ namespace VampKnives.Projectiles
                         if (statLifeCalc > 20)
                             statLifeCalc = 20 + Main.rand.Next(-3, 3);
                         if (VampKnives.Unforgiving && statLifeCalc > 10)
-                            statLifeCalc = 10 + Main.rand.Next(-3, 3);
+                            statLifeCalc = 10 + Main.rand.Next(-5, 3);
                         if (statLifeCalc < 1)
                             statLifeCalc = 1;
                         statLifeCalc += ParentWeapon.LifeStealBonus;

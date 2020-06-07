@@ -13,7 +13,7 @@ namespace VampKnives.Items.Materials
         {
             DisplayName.SetDefault("Unstable Corruption Crystal");
             Tooltip.SetDefault("Seems to have corrupt energy pouring from its cracks");
-            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(2, 9));
+            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(4, 9));
         }
         public override void SetDefaults()
         {

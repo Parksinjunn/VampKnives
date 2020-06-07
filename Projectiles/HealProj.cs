@@ -102,9 +102,9 @@ namespace VampKnives.Projectiles
                     p.DelayTimer = 30;
                     int statLifeCalc = (int)((p.HealAccMult)*((p.VampCurrent / 230) + (0.6*((0.000000180527267 * Math.Pow(damage, 4)) - (0.0000551402375 * Math.Pow(damage,3)) + (0.00382482*Math.Pow(damage,2)) + (0.09874884 * damage) + 1.34702863)) + Main.rand.NextFloat(-2,2)));
                     if (statLifeCalc > 20)
-                        statLifeCalc = 20 + Main.rand.Next(-3, 3) + (int)p.VampCurrent/230;
+                        statLifeCalc = 20 + Main.rand.Next(-3, 3) + (int)p.VampCurrent/330;
                     if (VampKnives.Unforgiving && statLifeCalc > 10)
-                        statLifeCalc = 10 + Main.rand.Next(-3, 3);
+                        statLifeCalc = 10 + Main.rand.Next(-5, 3);
                     if (statLifeCalc < 1)
                         statLifeCalc = 1;
                     statLifeCalc += ParentWeapon.LifeStealBonus;

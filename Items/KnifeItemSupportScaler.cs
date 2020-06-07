@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace VampKnives.Items
 {
-    public abstract class KnifeItemSupportScaler : KnifeItem
+    public abstract class KnifeItemSupportScaler : KnifeDamageItem
     {
         public float WepDamageSupport;
 
