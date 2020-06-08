@@ -36,7 +36,7 @@ namespace VampKnives
         public static bool IsSharpeningSculptRecipe;
         public static bool ChosenDifficulty;
         public static bool Legacy;
-        public static bool Normal;
+        public static bool Normal = true;
         public static bool Unforgiving;
         public static bool ChangeItemIsHeld;
         public static bool HammerInSlot;
@@ -134,6 +134,19 @@ namespace VampKnives
             recipe11.AddTile(TileID.Furnaces);
             recipe11.SetResult(ItemID.IronBar, 3);
             recipe11.AddRecipe();
+            //LIVINGFIREBLOCK
+            recipe11 = new ModRecipe(this);
+            recipe11.AddIngredient(ItemID.HellstoneBrick, 5);
+            recipe11.AddIngredient(ItemID.Fireblossom);
+            recipe11.needLava = true;
+            recipe11.SetResult(ItemID.LivingFireBlock, 5);
+            recipe11.AddRecipe();
+            recipe11 = new ModRecipe(this);
+            recipe11.AddIngredient(ItemID.HellstoneBrick, 25);
+            recipe11.AddIngredient(ItemID.Fireblossom,5);
+            recipe11.AddTile(TileID.Hellforge);
+            recipe11.SetResult(ItemID.LivingFireBlock, 5);
+            recipe11.AddRecipe();
         }
         public override void Load()
         {
@@ -182,7 +195,7 @@ namespace VampKnives
             {
                 EntranceDamageSettingsPanel.visible = true;
             }
-            else if((Legacy || Normal || Unforgiving) && !ChangeItemIsHeld)
+            else if((Legacy || Normal || Unforgiving) && !ChangeItemIsHeld && ChosenDifficulty)
             {
                 EntranceDamageSettingsPanel.visible = false;
             }
@@ -288,8 +301,8 @@ namespace VampKnives
                     }
                     if(EntranceDamageSettingsPanel.visible)
                     {
-                        //FirstLoadUI.Update(Main._drawInterfaceGameTime);
-                        //FirstLoadUIPanel.Draw(Main.spriteBatch);
+                        FirstLoadUI.Update(Main._drawInterfaceGameTime);
+                        FirstLoadUIPanel.Draw(Main.spriteBatch);
                     }
                     if (WorkbenchSlotState.visible)
                     {
