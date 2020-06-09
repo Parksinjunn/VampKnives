@@ -10,7 +10,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class ShroomiteDefenseKnivesProj : ReflectiveProj
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             NumProjHits = 12;
             ReflectChance = 0.5f;

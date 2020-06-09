@@ -2,6 +2,7 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Hotfix 3.3.2: Slight optimization of defense knives
 Hotfix 3.3.1: Living Fire block added, fixed difficulty options not showing
 Update 3.3, The Upgrade Update:
 Added the ability to upgrade your knives at the Vampire Altar (menu opened by right-clicking on the altar)

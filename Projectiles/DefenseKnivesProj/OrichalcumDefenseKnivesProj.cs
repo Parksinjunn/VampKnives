@@ -10,7 +10,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class OrichalcumDefenseKnivesProj : ReflectiveProj
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             IsOrichalcum = true;
             NumProjHits = 5;

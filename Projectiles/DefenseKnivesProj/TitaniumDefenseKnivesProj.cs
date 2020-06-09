@@ -10,7 +10,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class TitaniumDefenseKnivesProj : ReflectiveProj
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             NumProjHits = 8;
             ReflectChance = 2.25f;

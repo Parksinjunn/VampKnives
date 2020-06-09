@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class ResilienceKnivesProj : ReflectiveProj
     {
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             NumProjHits = 60;
             projectile.width = 56;

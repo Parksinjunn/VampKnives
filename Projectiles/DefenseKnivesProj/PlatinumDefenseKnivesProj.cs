@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
     public class PlatinumDefenseKnivesProj : ReflectiveProj
     {
         int FrameNum;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             NumProjHits = 3;
             ReflectChance = 1f;

@@ -19,7 +19,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         int RotationTimer;
         int RotationMultiplier=1;
         bool SwitchDirection;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 22;
             projectile.height = 26;

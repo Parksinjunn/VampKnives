@@ -11,6 +11,8 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class ProjCount
     {
+        public static int MaxActive = 40;
+        public static int NumberActive;
         public static int NumActiveAdamantite;
         public static int NumActiveTitanium;
         public static int NumActiveShroomite;
@@ -36,6 +38,10 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public static int GetActiveShroomiteGasCount()
         {
             return ShroomiteActiveGasCount;
+        }
+        public static int GetActiveConut()
+        {
+            return NumberActive;
         }
     }
 }

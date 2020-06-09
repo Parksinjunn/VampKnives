@@ -23,7 +23,7 @@ namespace VampKnives.Items
             item.knockBack = 2;
             item.value = Item.sellPrice(0, 0, 56, 32);
             item.rare = 8;
-            item.UseSound = SoundID.Item37;
+            item.UseSound = SoundID.Item39;
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("HarpyProj");
             item.shootSpeed = 15f;

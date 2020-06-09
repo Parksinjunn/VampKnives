@@ -13,7 +13,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public int FrameCount = 8;
         public int FrameCounter;
         public int FrameDelay;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 14;
             projectile.height = 16;

@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
     public class SpectreDefProj : KnifeProjectile
     {
         public bool HasHitEnemy = false;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 4;
             projectile.height = 4;

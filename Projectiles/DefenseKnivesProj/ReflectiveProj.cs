@@ -40,8 +40,13 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public int TimerElemental;
         public int ShroomiteIterator;
         public bool FirstAdamantiteInitializeDone = false;
+        public int NumIntersects;
+
+        public bool HasCountedActive;
 
         List<Projectile> killlist = new List<Projectile>();
+        public virtual void SafeSetDefaults(){
+        }
         public override void SetDefaults()
         {
             projectile.knockBack = 60;
@@ -53,6 +58,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 600;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 40;
+            SafeSetDefaults();
         }
         public bool StopRotation = false;
         public bool GotPlayerPosition = false;
@@ -64,13 +70,25 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         int petalRandom;
         public override void AI()
         {
-            if(GottenChlorophyteVelocity == false)
+            if(projectile.timeLeft == 600)
+            {
+                ProjCount.NumberActive++;
+            }
+            if (GottenChlorophyteVelocity == false)
             {
                 CholorphyteVelocity = projectile.velocity;
                 GottenChlorophyteVelocity = true;
             }
             Reflect = (int)(Main.rand.Next(1, 101) * ReflectChance);
             Player owner = Main.player[projectile.owner];
+            if(projectile.numUpdates == -1)
+            {
+                if (ProjCount.GetActiveConut() > ProjCount.MaxActive && projectile.timeLeft < 550)
+                {
+                    projectile.Kill();
+                }
+            }
+            
             Random rand = new Random();
             if (GotPlayerPosition == false)
             {
@@ -167,7 +185,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                     double dist = 100; //Distance away from the player
                     
 
-                    /*Position the player based on where the player is, the Sin/Cos of the angle times the /
+                    /*Position the projectile based on where the player is, the Sin/Cos of the angle times the /
                     /distance for the desired distance away from the player minus the projectile's width   /
                     /and height divided by two so the center of the projectile is at the right place.     */
                     float ProjectileXSpawn = OwnerPositionX - (int)(Math.Cos(rad) * dist) - ShroomiteGas.Width / 2;
@@ -253,7 +271,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                         //    killlist.Remove(ProJ);
                         //    ProJ.Kill();
                         //}
-                        if (IsSpectre)
+                        if (IsSpectre && Main.rand.Next(1, 15) == 7)
                         {
                             Projectile.NewProjectile(projectile.Center, new Vector2(0f, 0f), ModContent.ProjectileType<SpectreDefProj>(), SpectreDamage, 2, owner.whoAmI);
                         }
@@ -272,7 +290,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                             ProjHitDust.velocity *= 0.75f;
                             ProjHitDust.noGravity = true;
                         }
-                        if (IsSpectre)
+                        if (IsSpectre && Main.rand.Next(1, 15) == 7)
                         {
                             Projectile.NewProjectile(projectile.Center, new Vector2(0f, 0f), ModContent.ProjectileType<SpectreDefProj>(), SpectreDamage, 2, owner.whoAmI);
                         }
@@ -313,17 +331,40 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                         TimerOrichalcum = 0;
                    }
                 }
-                if (Main.npc[NPCDist].active && !Main.npc[NPCDist].dontTakeDamage && Main.npc[NPCDist].lifeMax > 1 && Main.npc[NPCDist].knockBackResist == 0)
+                if (Main.npc[NPCDist].active && !Main.npc[NPCDist].dontTakeDamage && Main.npc[NPCDist].lifeMax > 1 && Main.npc[NPCDist].knockBackResist >= 0 && !Main.npc[NPCDist].friendly)
                 {
                     Rectangle value11 = new Rectangle((int)Main.npc[NPCDist].position.X, (int)Main.npc[NPCDist].position.Y, Main.npc[NPCDist].width, Main.npc[NPCDist].height);
                     if (rectangle4.Intersects(value11))
                     {
                         Main.npc[NPCDist].velocity = -Main.npc[NPCDist].velocity;
-                        if (IsSpectre)
+                        NumIntersects++;
+                        if (NumIntersects > 5 && rectangle4.Intersects(value11))
+                        {
+                            shootToX = projectile.position.X - Main.npc[NPCDist].Center.X;
+                            shootToY = projectile.position.Y - Main.npc[NPCDist].Center.Y;
+                            distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+                            if (projectile.rotation > MathHelper.ToRadians(90) && projectile.rotation < MathHelper.ToRadians(270))
+                            {
+                                Main.npc[NPCDist].position.X += shootToX + Main.npc[NPCDist].Size.X;
+                                Main.npc[NPCDist].position.Y += shootToY + Main.npc[NPCDist].Size.Y;
+                            }
+                            else
+                            {
+                                Main.npc[NPCDist].position.X -= shootToX + Main.npc[NPCDist].Size.X;
+                                Main.npc[NPCDist].position.Y -= shootToY + Main.npc[NPCDist].Size.Y;
+                            }
+                            NumIntersects = 0;
+                        }
+
+                        if (IsSpectre && Main.rand.Next(1,15) == 7)
                         {
                             Projectile.NewProjectile(projectile.Center, new Vector2(0f, 0f), ModContent.ProjectileType<SpectreDefProj>(), SpectreDamage, 2, owner.whoAmI);
                         }
                     }
+                    //else
+                    //{
+                    //    NumIntersects = 0;
+                    //}
                 }
             }
         }
@@ -392,11 +433,16 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            if (IsSpectre)
+            if (IsSpectre && Main.rand.Next(1, 15) == 7)
             {
                 Player owner = Main.player[projectile.owner];
                 Projectile.NewProjectile(projectile.Center, new Vector2(0f, 0f), ModContent.ProjectileType<SpectreDefProj>(), SpectreDamage, 2, owner.whoAmI);
             }
+        }
+        public override bool PreKill(int timeLeft)
+        {
+            ProjCount.NumberActive--;
+            return true;
         }
 
         //public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

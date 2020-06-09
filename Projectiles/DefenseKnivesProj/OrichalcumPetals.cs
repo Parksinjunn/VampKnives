@@ -13,7 +13,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public int ran;
         public int ranD;
         public bool HasHitEnemy = false;
-        public override void SetDefaults()
+        public override void SafeSetDefaults()
         {
             projectile.width = 16;
             projectile.height = 16;
