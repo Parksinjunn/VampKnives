@@ -725,42 +725,49 @@ namespace VampKnives.UI
             int BuyItem = ModContent.ItemType<Items.Materials.PiercingTip>();
             if (!_vanillaItemSlot.Item.IsAir)
             {
-                KnifeWeapon UpgradeItem = _vanillaItemSlot.Item.GetGlobalItem<KnifeWeapon>();
-                PenetrateBuyPrice = UpgradeItem.PenetrationPurchases;
-                for (int i = 0; i < 59; i++)
+                if(_vanillaItemSlot.Item.type == ModContent.ItemType<CorruptionNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<CrimsonNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<ButchersKnives>())
                 {
-                    Item item = Main.LocalPlayer.inventory[i];
-                    if (!item.IsAir && item.type == BuyItem && item.stack >= PenetrateBuyPrice)
+                    Main.NewText("You cannot add penetration to this weapon");
+                }
+                else
+                {
+                    KnifeWeapon UpgradeItem = _vanillaItemSlot.Item.GetGlobalItem<KnifeWeapon>();
+                    PenetrateBuyPrice = UpgradeItem.PenetrationPurchases;
+                    for (int i = 0; i < 59; i++)
                     {
-                        if (UpgradeItem.PenetrationBonus < 10)
+                        Item item = Main.LocalPlayer.inventory[i];
+                        if (!item.IsAir && item.type == BuyItem && item.stack >= PenetrateBuyPrice)
                         {
-                            UpgradeItem.PenetrationBonus += 1;
-                            UpgradeItem.OriginalOwner = Main.LocalPlayer.name;
-                            Item SavedItem = new Item();
-                            int SavedItemStack;
-                            SavedItem = item.Clone();
-                            SavedItemStack = item.stack;
-                            item.TurnToAir();
-                            for (int StackNum = 0; StackNum < SavedItemStack - (PenetrateBuyPrice); StackNum++)
+                            if (UpgradeItem.PenetrationBonus < 10)
                             {
-                                Main.LocalPlayer.PutItemInInventory(SavedItem.type);
+                                UpgradeItem.PenetrationBonus += 1;
+                                UpgradeItem.OriginalOwner = Main.LocalPlayer.name;
+                                Item SavedItem = new Item();
+                                int SavedItemStack;
+                                SavedItem = item.Clone();
+                                SavedItemStack = item.stack;
+                                item.TurnToAir();
+                                for (int StackNum = 0; StackNum < SavedItemStack - (PenetrateBuyPrice); StackNum++)
+                                {
+                                    Main.LocalPlayer.PutItemInInventory(SavedItem.type);
+                                }
+                                UpgradeItem.PenetrationPurchases++;
+                                break;
                             }
-                            UpgradeItem.PenetrationPurchases++;
-                            break;
+                            else
+                            {
+                                Main.NewText("You've maxed out this skill!");
+                                break;
+                            }
                         }
-                        else
+                        else if (item.type != BuyItem && i == 58 && PenetrateBuyPrice != 11)
+                        {
+                            Main.NewText("You don't have enough Piercing Tips, you need: " + (PenetrateBuyPrice));
+                        }
+                        else if (item.type != BuyItem && i == 58 && PenetrateBuyPrice == 11)
                         {
                             Main.NewText("You've maxed out this skill!");
-                            break;
                         }
-                    }
-                    else if (item.type != BuyItem && i == 58 && PenetrateBuyPrice != 11)
-                    {
-                        Main.NewText("You don't have enough Piercing Tips, you need: " + (PenetrateBuyPrice));
-                    }
-                    else if (item.type != BuyItem && i == 58 && PenetrateBuyPrice == 11)
-                    {
-                        Main.NewText("You've maxed out this skill!");
                     }
                 }
             }

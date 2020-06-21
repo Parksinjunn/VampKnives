@@ -43,6 +43,8 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public int NumIntersects;
 
         public bool HasCountedActive;
+        public bool EffectsAdded = false;
+        int StuckTimer;
 
         List<Projectile> killlist = new List<Projectile>();
         public virtual void SafeSetDefaults(){
@@ -70,7 +72,14 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         int petalRandom;
         public override void AI()
         {
-            if(projectile.timeLeft == 600)
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            if (EffectsAdded == false)
+            {
+                ReflectChance += p.DefenseReflectChance;
+                NumProjHits += p.DefenseExtraLives;
+                EffectsAdded = true;
+            }
+            if (projectile.timeLeft == 600)
             {
                 ProjCount.NumberActive++;
             }
@@ -98,7 +107,6 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             }
             if(IsPalladium || IsMythril || IsAdamantite || IsTitanium || IsChlorophyte || IsShroomite || IsElemental)
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
                 for (int j = 0; j < Main.ActivePlayersCount; j++)
                 {
                     Player DistanceTarget = Main.player[j];
@@ -230,7 +238,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             {
                 if (Main.projectile[s].active && Main.projectile[s].hostile)/* && !Array.Exists(blacklist, element => element == Main.projectile[s].type))*/
                 {
-                        Projectile ProJ = Main.projectile[s];
+                    Projectile ProJ = Main.projectile[s];
                     if (Colliding(projectile.Hitbox, ProJ.Hitbox) == true && Reflect <= 60)
                     {
                         for (int b = 0; b < 10; b++)
@@ -266,11 +274,6 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                                 projdust.scale = 1.3f;
                             }
                         }
-                        //if (killlist.Contains(ProJ))
-                        //{
-                        //    killlist.Remove(ProJ);
-                        //    ProJ.Kill();
-                        //}
                         if (IsSpectre && Main.rand.Next(1, 15) == 7)
                         {
                             Projectile.NewProjectile(projectile.Center, new Vector2(0f, 0f), ModContent.ProjectileType<SpectreDefProj>(), SpectreDamage, 2, owner.whoAmI);
@@ -278,6 +281,19 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                     }
                     else if (Colliding(projectile.Hitbox, ProJ.Hitbox) == true && Reflect > 60)
                     {
+                        if(Colliding(projectile.Hitbox, ProJ.Hitbox) == true)
+                        {
+                            StuckTimer++;
+                            if(StuckTimer >= 30)
+                            {
+                                ProJ.Kill();
+                                StuckTimer = 0;
+                            }
+                        }
+                        else if(StuckTimer > 1)
+                        {
+                            StuckTimer--;
+                        }
                         ProJ.velocity = new Vector2(-ProJ.velocity.X, -ProJ.velocity.Y);
                         Vector2 rotVector = (projectile.rotation - MathHelper.ToRadians(90f)).ToRotationVector2(); 
                         killlist.Add(ProJ);
@@ -316,7 +332,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             Rectangle rectangle4 = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
             for (int NPCDist = 0; NPCDist < 200; NPCDist++)
             {
-                if (IsOrichalcum && Main.npc[NPCDist].active && !Main.npc[NPCDist].friendly)
+                if (IsOrichalcum && Main.npc[NPCDist].CanBeChasedBy())
                 {
                     TimerOrichalcum += Main.rand.Next(1,4);
                     if (TimerOrichalcum == 460)
@@ -331,7 +347,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                         TimerOrichalcum = 0;
                    }
                 }
-                if (Main.npc[NPCDist].active && !Main.npc[NPCDist].dontTakeDamage && Main.npc[NPCDist].lifeMax > 1 && Main.npc[NPCDist].knockBackResist >= 0 && !Main.npc[NPCDist].friendly)
+                if (Main.npc[NPCDist].CanBeChasedBy() && Main.npc[NPCDist].knockBackResist >= 0)
                 {
                     Rectangle value11 = new Rectangle((int)Main.npc[NPCDist].position.X, (int)Main.npc[NPCDist].position.Y, Main.npc[NPCDist].width, Main.npc[NPCDist].height);
                     if (rectangle4.Intersects(value11))

@@ -110,7 +110,7 @@ namespace VampKnives
         public int DelayTimer;
         public double DelayAdd;
         public float HealAccMult = 0.4f;
-        public bool ArmorSet;
+        public bool PsionicArmorSet;
         public bool PsionicPower;
         public int numProj;
 
@@ -129,7 +129,15 @@ namespace VampKnives
         public bool NormalPlayer;
         public bool UnforgivingPlayer;
 
+        public float DefenseReflectChance = 0f;
+        public int DefenseExtraLives = 0;
 
+        bool DoubleTapStart;
+        int DoubleTapTimer;
+        public bool Transform;
+        public bool HasTabletEquipped;
+        public bool VampiricArmorSet;
+        public float VampiricSetScaler = 1f;
 
         public int NumCrafted;
 
@@ -202,7 +210,7 @@ namespace VampKnives
                 HealAccMult = 0.2f;
             }
             DelayAdd = 0;
-            ArmorSet = false;
+            PsionicArmorSet = false;
             IsTrueSupport = false;
             TrueSupportBuff = 1f;
             TitaniumDefenseBuff = false;
@@ -211,6 +219,10 @@ namespace VampKnives
             LegacyPlayer = VampKnives.Legacy;
             NormalPlayer = VampKnives.Normal;
             UnforgivingPlayer = VampKnives.Unforgiving;
+            HasTabletEquipped = false;
+            DefenseReflectChance = 0;
+            DefenseExtraLives = 0;
+            //Transform = false;
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -218,17 +230,29 @@ namespace VampKnives
             // Here we would make a backup clone of values that are only correct on the local players Player instance.
             // Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
             clone.HoodIsVisible = this.HoodIsVisible;
+            clone.Transform = this.Transform;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
-            ModPacket packet = mod.GetPacket();
-            packet.Write(Packet1);
-            packet.Write(HoodIsVisible);
-            packet.Write(Main.myPlayer);
-            //eventually more stuff
-            packet.Send(); //both are optional here
-            //packet.Send(toWhichClientOnly, whatClientToIgnoreWhileSending)
+            ExamplePlayer clone = clientPlayer as ExamplePlayer;
+            if(HoodIsVisible != clone.HoodIsVisible)
+            {
+                ModPacket packet = mod.GetPacket();
+                packet.Write(Packet1);
+                packet.Write(HoodIsVisible);
+                packet.Write(Main.myPlayer);
+                packet.Send();
+            }
+            else if(Transform != clone.Transform)
+            {
+                ModPacket packet2 = mod.GetPacket();
+                packet2.Write(88);
+                packet2.Write(Transform);
+                packet2.Write(HasTabletEquipped);
+                packet2.Write(Main.myPlayer);
+                packet2.Send();
+            }
         }
 
         public override void UpdateDead()
@@ -237,6 +261,42 @@ namespace VampKnives
             SengosCurse = false;
             TitaniumDefenseBuff = false;
             ShroomiteBuff = false;
+        }
+        public override void OnHitByNPC(NPC npc, int damage, bool crit)
+        {
+            if (VampiricArmorSet && Main.rand.Next(0, 1001) <= 2 * VampiricSetScaler)
+            {
+                for (int NPCID = 0; NPCID < Main.maxNPCs; NPCID++)
+                {
+                float shootToX = Main.npc[NPCID].position.X + (float)Main.npc[NPCID].width * 0.5f - player.Center.X;
+                float shootToY = Main.npc[NPCID].position.Y - player.Center.Y;
+                float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+                if (Main.npc[NPCID].CanBeChasedBy() && distance < 1000f)
+                    {
+                        int LifeStealRandom = Main.rand.Next(40, 90);
+                        player.ApplyDamageToNPC(Main.npc[NPCID], LifeStealRandom, 0f, 0, false);
+                        Projectile.NewProjectile(Main.npc[NPCID].position, new Vector2(0f, 0f), ModContent.ProjectileType<Projectiles.HealProj>(), LifeStealRandom, 0f, player.whoAmI);
+                    }
+                }
+            }
+        }
+        public override void OnHitByProjectile(Projectile proj, int damage, bool crit)
+        {
+            if (VampiricArmorSet && Main.rand.Next(0, 1001) <= (int)(2f * VampiricSetScaler))
+            {
+                for (int NPCID = 0; NPCID < Main.maxNPCs; NPCID++)
+                {
+                    float shootToX = Main.npc[NPCID].position.X + (float)Main.npc[NPCID].width * 0.5f - player.Center.X;
+                    float shootToY = Main.npc[NPCID].position.Y - player.Center.Y;
+                    float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+                    if (Main.npc[NPCID].CanBeChasedBy() && distance < 1000f)
+                    {
+                        int LifeStealRandom = Main.rand.Next(40, 90);
+                        player.ApplyDamageToNPC(Main.npc[NPCID], LifeStealRandom, 0f, 0, false);
+                        Projectile.NewProjectile(Main.npc[NPCID].position, new Vector2(0f, 0f), ModContent.ProjectileType<Projectiles.HealProj>(), LifeStealRandom, 0f, player.whoAmI);
+                    }
+                }
+            }
         }
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
@@ -247,7 +307,7 @@ namespace VampKnives
         {
             if (hasMyBuff == true)
                 ApplyMyBuff(target);
-            if (ArmorSet)
+            if (PsionicArmorSet)
             {
                 if (Main.rand.Next(25) == 3)
                 {
@@ -371,7 +431,11 @@ namespace VampKnives
         {
             for (int n = 13; n < 18 + player.extraAccessorySlots; n++)
             {
-                Item item = player.armor[n];
+                    Item item = player.armor[n];
+                if (item.type == ModContent.ItemType<Items.Accessories.AncientVampiricTablet>())
+                {
+                    HasTabletEquipped = true;
+                }
                 if (item.type == ModContent.ItemType<Items.Armor.PyromancersHood>())
                 {
                     pyroHideVanity = false;
@@ -481,12 +545,16 @@ namespace VampKnives
             {
                 player.AddBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>(), 60, true);
             }
+            //if(Transform == true)
+            //{
+            //    player.AddBuff(ModContent.BuffType<Buffs.BatBuff>(), 60, true);
+            //}
             // Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
             if (HoodKeyPressed == true && pyroAccessory)
             {
                 player.AddBuff(ModContent.BuffType<Buffs.PyroHoodBuff>(), 60, true);
             }
-            if(HoodKeyPressed == true && dPyroAccessory)
+            if (HoodKeyPressed == true && dPyroAccessory)
             {
                 player.AddBuff(ModContent.BuffType<Buffs.DPyroHoodBuff>(), 60, true);
             }
@@ -517,6 +585,12 @@ namespace VampKnives
             if (HoodKeyPressed == true && MageAccessory)
             {
                 player.AddBuff(ModContent.BuffType<Buffs.MageHoodBuff>(), 60, true);
+            }
+            if (HasTabletEquipped == false)
+            {
+                Transform = false;
+                DoubleTapTimer = 0;
+                DoubleTapStart = false;
             }
         }
         public override void FrameEffects()
@@ -557,6 +631,29 @@ namespace VampKnives
             {
                 player.head = mod.GetEquipSlot("MageHead", EquipType.Head);
             }
+            if(HasTabletEquipped && Transform)
+            {
+                if (player.bodyFrameCounter == 0 && (player.velocity.X < 0 || player.velocity.X > 0 || player.velocity.Y < 0 || player.velocity.Y > 0))
+                {
+                    player.head = mod.GetEquipSlot("BatTransformHidden", EquipType.Head);
+                    player.wings = mod.GetEquipSlot("BatFlyMovement", EquipType.Wings);
+                    int num74 = 4;
+                    if (player.direction == 1)
+                    {
+                        num74 = -40;
+                    }
+                    int num75 = Dust.NewDust(new Vector2(player.position.X + (float)(player.width / 2) + (float)num74, player.position.Y + (float)(player.height / 2) - 15f), 30, 30, 182, 0f, 0f, 100, Color.Red, 0.5f);
+                    Main.dust[num75].noGravity = true;
+                    Dust dust3 = Main.dust[num75];
+                    dust3.velocity *= 0.3f;
+                    Lighting.AddLight(new Vector2(player.position.X + (float)(player.width / 2) + (float)num74, player.position.Y + (float)(player.height / 2) - 15f), new Vector3(0.45f, 0.02f, 0.02f));
+                }
+                else
+                {
+                    player.head = mod.GetEquipSlot("BatTransform", EquipType.Head);
+                    player.wings = mod.GetEquipSlot("BatWingsHidden", EquipType.Wings);
+                }
+            }
             if (nullified)
             {
                 Nullify();
@@ -571,6 +668,31 @@ namespace VampKnives
                 player.controlJump = false;
             }
             base.SetControls();
+        }
+        public override void ModifyDrawLayers(List<PlayerLayer> layers)
+        {
+            if (Transform && HasTabletEquipped)
+            {
+                //layers.Remove(PlayerLayer.Head);
+                layers.Remove(PlayerLayer.Body);
+                layers.Remove(PlayerLayer.Legs);
+                layers.Remove(PlayerLayer.Skin);
+                layers.Remove(PlayerLayer.BackAcc);
+                layers.Remove(PlayerLayer.WaistAcc);
+                layers.Remove(PlayerLayer.BalloonAcc);
+                layers.Remove(PlayerLayer.FaceAcc);
+                //layers.Remove(PlayerLayer.Wings);
+                layers.Remove(PlayerLayer.Face);
+                layers.Remove(PlayerLayer.FrontAcc);
+                layers.Remove(PlayerLayer.HandOffAcc);
+                layers.Remove(PlayerLayer.HandOnAcc);
+                layers.Remove(PlayerLayer.NeckAcc);
+                layers.Remove(PlayerLayer.ShieldAcc);
+                layers.Remove(PlayerLayer.ShoeAcc);
+                layers.Remove(PlayerLayer.WaistAcc);
+                layers.Remove(PlayerLayer.Arms);
+            }
+            base.ModifyDrawLayers(layers);
         }
         private void Nullify()
         {
@@ -592,6 +714,15 @@ namespace VampKnives
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            if (DoubleTapStart && HasTabletEquipped)
+            {
+                DoubleTapTimer++;
+                if (DoubleTapTimer > 15)
+                {
+                    DoubleTapStart = false;
+                    DoubleTapTimer = 0;
+                }
+            }
             if (VampKnives.HoodUpDownHotkey.JustPressed)
             {
                 if (HoodKeyPressed == false)
@@ -618,6 +749,26 @@ namespace VampKnives
                     IsTrueSupport = false;
                 }
 
+            }
+            if(VampKnives.VampDashHotKey.JustPressed && HasTabletEquipped)
+            {
+                DoubleTapStart = true;
+            }
+            if (DoubleTapTimer > 1 && VampKnives.VampDashHotKey.JustPressed)
+            {
+                if(Transform == false)
+                {
+                    Main.NewText("Transformed");
+                    Transform = true;
+                    DoubleTapStart = false;
+                    DoubleTapTimer = 0;
+                }
+                else if(Transform == true)
+                {
+                    Transform = false;
+                    DoubleTapStart = false;
+                    DoubleTapTimer = 0;
+                }
             }
         }
     }

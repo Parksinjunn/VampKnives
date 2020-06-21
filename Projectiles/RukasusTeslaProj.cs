@@ -15,7 +15,7 @@ namespace VampKnives.Projectiles
             projectile.width = 14;
             projectile.height = 32;
             projectile.friendly = true;
-            projectile.penetrate = 4;                       //this is the projectile penetration
+            projectile.penetrate = 1;                       //this is the projectile penetration
             Main.projFrames[projectile.type] = 4;           //this is projectile frames
             projectile.hostile = false;
             projectile.magic = true;                        //this make the projectile do magic damage

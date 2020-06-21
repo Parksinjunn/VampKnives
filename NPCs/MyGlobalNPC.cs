@@ -110,21 +110,48 @@ namespace VampKnives.NPCs
             {
                 if (Main.rand.Next(6) == 0)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionCrystal>());
-
             }
-            if (npc.type == NPCID.EaterofSouls)
+            if (npc.type == NPCID.EaterofSouls||npc.type==NPCID.Corruptor||npc.type==NPCID.CorruptSlime||npc.type==NPCID.Slimeling||npc.type==NPCID.Slimer||npc.type==NPCID.Slimer2||npc.type==NPCID.PigronCorruption||npc.type==NPCID.SandsharkCorrupt||npc.type==NPCID.DevourerHead)
             {
                 Random random = new Random();
                 int ran = random.Next(0, 11);
                 if (ran == 5)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionShard>());
             }
-            if (npc.type == NPCID.FaceMonster)
+            if (npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater)
+            {
+                if (Main.rand.Next(1, 50) == 25)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionNestKnives>());
+                }
+            }
+            if (npc.type == NPCID.BigMimicCorruption)
+            {
+                for (int x = 0; x < Main.rand.Next(1, 7); x++)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionShard>());
+                }
+            }
+            if (npc.type == NPCID.FaceMonster || npc.type == NPCID.BloodCrawler || npc.type == NPCID.BloodCrawlerWall || npc.type == NPCID.BloodJelly || npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera || npc.type == NPCID.Herpling || npc.type == NPCID.Crimslime || npc.type == NPCID.BigCrimslime || npc.type == NPCID.LittleCrimslime || npc.type == NPCID.BloodFeeder || npc.type == NPCID.FloatyGross || npc.type == NPCID.IchorSticker || npc.type == NPCID.CrimsonAxe || npc.type == NPCID.PigronCrimson)
             {
                 Random random = new Random();
                 int ran = random.Next(0, 11);
                 if (ran == 5)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
+            }
+            if(npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera)
+            {
+                if(Main.rand.Next(1,50) == 25)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonNestKnives>());
+                }
+            }
+            if(npc.type == NPCID.BigMimicCrimson)
+            {
+                for(int x = 0; x < Main.rand.Next(1,7);x++)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
+                }
             }
             if (npc.type == NPCID.MoonLordCore)
             {
@@ -192,6 +219,17 @@ namespace VampKnives.NPCs
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.BrokenHeroKnives>());
             }
+            if(npc.type == NPCID.BigMimicHallow)
+            {
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.HallowedGauntlet>());
+            }
+            if(npc.type == NPCID.Vampire)
+            {
+                if(Main.rand.Next(0,26) == 25)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.AncientVampiricTablet>());
+                }
+            }
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
@@ -249,6 +287,7 @@ namespace VampKnives.NPCs
 
         public bool PenetratingPoison = false;
         public bool bleedingOut = false;
+        public bool bleedingOut2 = false;
         public bool hellfire = false;
         public bool cursedFire = false;
         public bool gildedCurse = false;
@@ -261,6 +300,7 @@ namespace VampKnives.NPCs
         {
             PenetratingPoison = false;
             bleedingOut = false;
+            bleedingOut2 = false;
             hellfire = false;
             cursedFire = false;
             gildedCurse = false;
@@ -323,6 +363,20 @@ namespace VampKnives.NPCs
                     damage = exampleKnifeCount * 3;
                 }
             }
+            if (bleedingOut2)
+            {
+                for(int y = 0; y < 25; y++)
+                {
+                    if (npc.lifeRegen > 0)
+                    {
+                        npc.lifeRegen = 0;
+                    }
+                    int RandomUpAndDown = 1 + Main.rand.Next(0, 4);
+                    npc.lifeRegen -= RandomUpAndDown;
+                    if (damage != RandomUpAndDown)
+                        damage = RandomUpAndDown;
+                }
+            }
             if (hellfire)
             {
                 for (int x = 0; x < 10; x++)
@@ -383,6 +437,18 @@ namespace VampKnives.NPCs
                 {
                     int DustID2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 5, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 10, Color.Red, 1f);
                     Main.dust[DustID2].noGravity = true;
+                }
+            }
+            if (bleedingOut2)
+            {
+                bool blood = Main.rand.NextBool();
+                if (blood)
+                {
+                    for(int x = 0; x < 5 * (npc.Size.X/8); x++)
+                    {
+                        int DustID2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 268, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 140, Color.Red, 1f);
+                        Main.dust[DustID2].noGravity = false;
+                    }
                 }
             }
             if (hellfire)

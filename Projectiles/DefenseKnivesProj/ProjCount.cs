@@ -18,6 +18,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public static int NumActiveShroomite;
         public static int ShroomiteIterator;
         public static int ShroomiteActiveGasCount;
+        public static int LightningActiveCount;
 
         public static int GetActiveAdamantite()
         {
@@ -42,6 +43,10 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public static int GetActiveConut()
         {
             return NumberActive;
+        }
+        public static int GetLightningActiveCount()
+        {
+            return LightningActiveCount;
         }
     }
 }

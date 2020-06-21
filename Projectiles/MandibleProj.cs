@@ -11,7 +11,6 @@ namespace VampKnives.Projectiles
     {
         public override void SafeSetDefaults()
         {
-            projectile.Name = "Blooming Terror";
             projectile.width = 10;
             projectile.height = 30;
             projectile.friendly = true;
@@ -38,10 +37,10 @@ namespace VampKnives.Projectiles
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y+Main.rand.Next(1000,1300), 0, -25, mod.ProjectileType("MandibleSummonProj"), projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
-            Random random = new Random();
-            int ran1 = random.Next(-35, 35);
-            int ran2 = random.Next(5, 15);
+            if(Main.rand.Next(1,5) == 3)
+            {
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y + Main.rand.Next(1000, 1300), 0, -25, mod.ProjectileType("MandibleSummonProj"), projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
+            }
             Player owner = Main.player[projectile.owner];
                 Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
             Hoods(n);

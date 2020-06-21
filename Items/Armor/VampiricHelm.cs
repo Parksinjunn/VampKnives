@@ -8,16 +8,15 @@ using Terraria.ModLoader;
 namespace VampKnives.Items.Armor
 {
     [AutoloadEquip(EquipType.Head)]
-    public class PsionicHood : KnifeItem
+    public class VampiricHelm : KnifeItem
     {
-        public int numProj;
         public int Frame;
         public int FrameCounter;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            DisplayName.SetDefault("Psionic Hood");
-            Tooltip.SetDefault("Threaded with pulsing energy.");
+            DisplayName.SetDefault("Vampiric Helm");
+            Tooltip.SetDefault("");
         }
 
         public override void SafeSetDefaults()
@@ -26,7 +25,7 @@ namespace VampKnives.Items.Armor
             item.height = 20;
             item.value = Item.sellPrice(0, 1, 0, 0);
             item.rare = 2;
-            item.defense = 1;
+            item.defense = 5;
         }
 
         public override bool CloneNewInstances
@@ -39,68 +38,20 @@ namespace VampKnives.Items.Armor
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            if (NPC.downedBoss2)
-            {
-                numProj = 1;
-            }
-            if (NPC.downedQueenBee)
-            {
-                numProj = 2;
-            }
-            if (NPC.downedBoss3)
-            {
-                numProj = 3;
-            }
-            if (Main.hardMode)
-            {
-                numProj = 4;
-            }
-            if (NPC.downedMechBoss1)
-            {
-                numProj = 5;
-            }
-            if (NPC.downedMechBoss2)
-            {
-                numProj = 6;
-            }
-            if (NPC.downedMechBoss3)
-            {
-                numProj = 7;
-            }
-            if (NPC.downedPlantBoss)
-            {
-                numProj = 8;
-            }
-            if (NPC.downedGolemBoss)
-            {
-                numProj = 9;
-            }
-            if (NPC.downedFishron)
-            {
-                numProj = 10;
-            }
-            if (NPC.downedAncientCultist)
-            {
-                numProj = 11;
-            }
-            if (NPC.downedTowers)
-            {
-                numProj = 12;
-            }
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            TooltipLine line = new TooltipLine(mod, "Face", "+ " + ((p.HealAccMult-1)*100) + "% greater healing");
+            TooltipLine line = new TooltipLine(mod, "Face", "+" + ((p.DefenseReflectChance-1))*100 + "% reflect chance");
             line.overrideColor = new Color(255, 60, 28);
             if (NPC.downedBoss2)
             {
                 tooltips.Add(line);
             }
 
-            if (p.PsionicArmorSet)
+            if (p.VampiricArmorSet)
             {
                 TooltipLine line4 = new TooltipLine(mod, "Face", "Set Bonus:");
                 line4.overrideColor = new Color(255, 70, 38);
                 tooltips.Add(line4);
-                TooltipLine line3 = new TooltipLine(mod, "Face", "+ 4% chance to spawn " + numProj + " 'homing projectiles'");
+                TooltipLine line3 = new TooltipLine(mod, "Face", "Enemies are more likely to target you\nHave a " + ((2f*p.VampiricSetScaler)/10f) + "% Chance to steal the life of the enemies around you upon being hit");
                 line3.overrideColor = new Color(255, 70, 38);
                 tooltips.Add(line3);
             }
@@ -173,8 +124,55 @@ namespace VampKnives.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-            p.PsionicArmorSet = true;
-            p.PsionicPower = true;
+            p.VampiricArmorSet = true;
+            if (NPC.downedBoss2)
+            {
+                p.VampiricSetScaler = 1.5f;
+            }
+            if (NPC.downedBoss3)
+            {
+                p.VampiricSetScaler = 2f;
+            }
+            if (Main.hardMode)
+            {
+                p.VampiricSetScaler = 2.5f;
+            }
+            if (NPC.downedMechBoss1)
+            {
+                p.VampiricSetScaler = 3f;
+            }
+            if (NPC.downedMechBoss2)
+            {
+                p.VampiricSetScaler = 3.5f;
+            }
+            if (NPC.downedMechBoss3)
+            {
+                p.VampiricSetScaler = 4f;
+            }
+            if (NPC.downedPlantBoss)
+            {
+                p.VampiricSetScaler = 4.5f;
+            }
+            if (NPC.downedGolemBoss)
+            {
+                p.VampiricSetScaler = 5f;
+            }
+            if (NPC.downedFishron)
+            {
+                p.VampiricSetScaler = 5.5f;
+            }
+            if (NPC.downedAncientCultist)
+            {
+                p.VampiricSetScaler = 6f;
+            }
+            if (NPC.downedTowers)
+            {
+                p.VampiricSetScaler = 7f;
+            }
+            if (NPC.downedMoonlord)
+            {
+                p.VampiricSetScaler = 10f;
+            }
         }
         public override void UpdateInventory(Player player)
         {
@@ -198,75 +196,84 @@ namespace VampKnives.Items.Armor
                     Frame = 0; //go back to the first frame
             }
             ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            player.aggro += 300;
             //KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             if (NPC.downedBoss2)
             {
-                p.HealAccMult += 0.05f;
                 item.value = Item.sellPrice(0, 2, 0, 0);
-                item.defense = 2;
+                p.DefenseReflectChance = 1.2f;
+                item.defense = 7;
             }
             if (NPC.downedQueenBee)
             {
                 item.value = Item.sellPrice(0, 3, 0, 0);
+                p.DefenseReflectChance = 1.3f;
             }
             if (NPC.downedBoss3)
             {
-                p.HealAccMult += 0.1f;
                 item.value = Item.sellPrice(0, 4, 0, 0);
-                item.defense = 3;
+                p.DefenseReflectChance = 1.5f;
+                item.defense = 9;
             }
             if (Main.hardMode)
             {
-                p.HealAccMult += 0.15f;
                 item.value = Item.sellPrice(0, 5, 0, 0);
-                item.defense = 5;
+                p.DefenseReflectChance = 1.6f;
+                item.defense = 11;
             }
             if (NPC.downedMechBoss1)
             {
-                p.HealAccMult += 0.2f;
                 item.value = Item.sellPrice(0, 6, 0, 0);
-                item.defense = 6;
+                p.DefenseReflectChance = 1.7f;
+                item.defense = 13;
             }
             if (NPC.downedMechBoss2)
             {
-                p.HealAccMult += 0.25f;
                 item.value = Item.sellPrice(0, 7, 0, 0);
-                item.defense = 7;
+                p.DefenseReflectChance = 1.8f;
+                item.defense = 14;
             }
             if (NPC.downedMechBoss3)
             {
-                p.HealAccMult += 0.3f;
                 item.value = Item.sellPrice(0, 8, 0, 0);
+                p.DefenseReflectChance = 1.9f;
+                item.defense = 15;
             }
             if (NPC.downedPlantBoss)
             {
-                p.HealAccMult += 0.35f;
                 item.value = Item.sellPrice(0, 9, 0, 0);
-                item.defense = 8;
+                p.DefenseReflectChance = 2.1f;
+                item.defense = 16;
             }
             if (NPC.downedGolemBoss)
             {
-                p.HealAccMult += 0.4f;
                 item.value = Item.sellPrice(0, 10, 0, 0);
-                item.defense = 9;
+                p.DefenseReflectChance = 2.2f;
+                item.defense = 18;
             }
             if (NPC.downedFishron)
             {
-                p.HealAccMult += 0.45f;
                 item.value = Item.sellPrice(0, 12, 0, 0);
-                item.defense = 10;
+                p.DefenseReflectChance = 2.5f;
+                item.defense = 20;
             }
             if (NPC.downedAncientCultist)
             {
-                p.HealAccMult += 0.5f;
                 item.value = Item.sellPrice(0, 14, 0, 0);
-                item.defense = 11;
+                p.DefenseReflectChance = 3f;
+                item.defense = 22;
             }
             if (NPC.downedTowers)
             {
-                p.HealAccMult += 0.6f;
                 item.value = Item.sellPrice(0, 16, 0, 0);
-                item.defense = 12;
+                p.DefenseReflectChance = 4f;
+                item.defense = 24;
+            }
+            if (NPC.downedMoonlord)
+            {
+                item.value = Item.sellPrice(0, 20, 0, 0);
+                p.DefenseReflectChance = 5f;
+                item.defense = 32;
             }
         }
     }

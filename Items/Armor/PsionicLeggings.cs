@@ -114,7 +114,7 @@ namespace VampKnives.Items.Armor
             {
                 tooltips.Add(line);
             }
-            if (p.ArmorSet)
+            if (p.PsionicArmorSet)
             {
                 TooltipLine line4 = new TooltipLine(mod, "Face", "Set Bonus:");
                 line4.overrideColor = new Color(255, 70, 38);

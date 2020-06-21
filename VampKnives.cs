@@ -15,6 +15,7 @@ namespace VampKnives
         internal static VampKnives instance;
         public static ModHotKey HoodUpDownHotkey;
         public static ModHotKey SupportHotKey;
+        public static ModHotKey VampDashHotKey;
         public static int inventoryIndex;
         public UserInterface customRecources;
         public UserInterface customResources2;
@@ -153,6 +154,7 @@ namespace VampKnives
             instance = this;
             HoodUpDownHotkey = RegisterHotKey("HoodUpDown", "P");
             SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
+            VampDashHotKey = RegisterHotKey("Double tap to transform into a bat for a few seconds(Requires vampiric armor)", "D");
             if (!Main.dedServ)
             {
                 //AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
@@ -165,6 +167,10 @@ namespace VampKnives
                 AddEquipTexture(new Items.Armor.ShamanHead(), null, EquipType.Head, "ShamanHead", "VampKnives/Items/Armor/ShamansHood_Head");
                 AddEquipTexture(new Items.Armor.WitchDoctorHead(), null, EquipType.Head, "WitchDoctorHead", "VampKnives/Items/Armor/WitchDoctorHood_Head");
                 AddEquipTexture(new Items.Armor.MageHead(), null, EquipType.Head, "MageHead", "VampKnives/Items/Armor/MagesHood_Head");
+                AddEquipTexture(null, EquipType.Head, "BatTransform", "VampKnives/Items/Armor/BatTransform");
+                AddEquipTexture(null, EquipType.Head, "BatTransformHidden", "VampKnives/Items/Armor/BatTransformHidden");
+                AddEquipTexture(null, EquipType.Wings, "BatFlyMovement", "VampKnives/Items/Armor/BatFlyMovement");
+                AddEquipTexture(null, EquipType.Wings, "BatWingsHidden", "VampKnives/Items/Armor/BatWingsHidden");
 
                 customRecources = new UserInterface();
                 customResources2 = new UserInterface();
@@ -344,12 +350,15 @@ namespace VampKnives
         {
             HoodUpDownHotkey = null;
             SupportHotKey = null;
+            VampDashHotKey = null;
             instance = null;
             base.Unload();
         }
         int Packet2 = 22;
         int Packet5 = 55;
         int Packet6 = 66;
+        int BatTransformRecieve = 88;
+        int BatTransformSend = 89;
         int Packet4 = 44;
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -401,6 +410,26 @@ namespace VampKnives
                 Main.player[Decision].statLife += (SyncLifeAmount);
                 if (SyncLifeAmount >= 1)
                     Main.player[Decision].HealEffect(SyncLifeAmount, false);
+            }
+            if (idVariable == BatTransformRecieve)
+            {
+                bool Transform = reader.ReadBoolean();
+                bool HasTablet = reader.ReadBoolean();
+                int playerID = reader.ReadInt32();
+                ModPacket packet = this.GetPacket();
+                packet.Write(BatTransformSend);
+                packet.Write(Transform);
+                packet.Write(HasTablet);
+                packet.Write(playerID);
+                packet.Send(-1, playerID);
+            }
+            if (idVariable == BatTransformSend)
+            {
+                bool Transform = reader.ReadBoolean();
+                bool HasTablet = reader.ReadBoolean();
+                int playerID = reader.ReadInt32();
+                Main.player[playerID].GetModPlayer<ExamplePlayer>().Transform = Transform;
+                Main.player[playerID].GetModPlayer<ExamplePlayer>().HasTabletEquipped = HasTablet;
             }
             base.HandlePacket(reader, whoAmI);
         }

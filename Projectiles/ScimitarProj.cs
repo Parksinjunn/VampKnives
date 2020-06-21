@@ -9,24 +9,24 @@ namespace VampKnives.Projectiles
 {
     public class ScimitarProj : KnifeProjectile
     {
+        bool Instantiated = false;
         public override void SafeSetDefaults()
         {
             Main.projFrames[projectile.type] = 6;
             projectile.width = 38;
             projectile.height = 38;
             projectile.friendly = true;
-            projectile.penetrate = 1;                       //this is the projectile penetration
+            projectile.penetrate = 6;                       //this is the projectile penetration
             projectile.hostile = false;
             projectile.magic = true;                        //this make the projectile do magic damage
             projectile.tileCollide = true;                 //this make that the projectile does not go thru walls
             projectile.ignoreWater = false;
             projectile.timeLeft = 300;
         }
-        public float rotate = 20;
+        int SpriteRotation = 45;
         public override void AI()
         {
-            projectile.rotation = (projectile.velocity.ToRotation() * 1.2f) + MathHelper.PiOver2; // projectile sprite faces up
-            projectile.spriteDirection = projectile.direction;
+            projectile.rotation = projectile.velocity.ToRotation()+MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
             projectile.localAI[0] += 1f;
             //projectile.light = .04f;
             //projectile.alpha = (int)projectile.localAI[0] * 2;
@@ -34,8 +34,13 @@ namespace VampKnives.Projectiles
 
         public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens
         {
+            if(Instantiated == false)
+            {
+                projectile.frame = Main.rand.Next(0, 5);
+                Instantiated = true;
+            }
             projectile.frameCounter++; //increase the frameCounter by one
-            if (projectile.frameCounter >= 5) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
+            if (projectile.frameCounter >= 2) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
             {
                 projectile.frame++; //go to the next frame
                 projectile.frameCounter = 0; //reset the counter
@@ -49,8 +54,14 @@ namespace VampKnives.Projectiles
         {
             Player owner = Main.player[projectile.owner];
             Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
+            n.AddBuff(ModContent.BuffType<Buffs.BleedingOut2>(), 300);
             Hoods(n);
+        }
+        public override bool SafeOnTileCollide(Vector2 oldVelocity)
+        {
+            Main.PlaySound(SoundID.Tink, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.5f);
+            int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 1, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.Gray, 1f);
+            return true;
         }
     }
 }

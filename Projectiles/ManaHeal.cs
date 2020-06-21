@@ -27,7 +27,6 @@ namespace VampKnives.Projectiles
         {
             //this is projectile dust
                 Dust dust;
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                 dust = Terraria.Dust.NewDustPerfect(new Vector2(projectile.position.X, projectile.position.Y), 135, new Vector2(projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f), 10, new Color(255, 0, 0), 2.5f);
                 dust.noGravity = true;
 

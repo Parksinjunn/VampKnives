@@ -16,6 +16,9 @@ namespace VampKnives.Projectiles
 {
     public abstract class KnifeProjectile : ModProjectile
     {
+        public int ShatterTarget;
+        bool PenetrationBuffApplied = false;
+        bool TileCollision;
         public KnifeWeapon ParentWeapon = new KnifeWeapon();
 
         public virtual void SafeSetDefaults() {
@@ -23,20 +26,28 @@ namespace VampKnives.Projectiles
         public virtual bool SafeOnTileCollide(Vector2 OldVelocity){
             return true;
         }
+        public virtual void SafeModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
+        }
         public override void SetDefaults()
         {
             SafeSetDefaults();
         }
-        public override void PostAI()
+        public override bool PreAI()
         {
             if (ModContent.GetModItem(Main.LocalPlayer.HeldItem.type) is Items.KnifeDamageItem)
             {
                 ParentWeapon = Main.LocalPlayer.HeldItem.GetGlobalItem<KnifeWeapon>();
                 //Main.NewText("Weapon: " + ParentWeapon);
             }
-            if (projectile.penetrate != -1)
+            return true;
+        }
+        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            SafeModifyHitNPC(target,ref damage,ref knockback,ref crit,ref hitDirection);
+            if (projectile.penetrate != -1 && PenetrationBuffApplied == false && mod.ItemType("" + ParentWeapon.GetType()) != ModContent.ItemType<CorruptionNestKnives>())
             {
                 projectile.penetrate += ParentWeapon.PenetrationBonus;
+                PenetrationBuffApplied = true;
             }
         }
         public void Hoods(NPC n)
@@ -134,17 +145,21 @@ namespace VampKnives.Projectiles
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            SafeOnTileCollide(oldVelocity);
             //Main.NewText("Ricochet: " + ParentWeapon.RicochetChance);
             if (ParentWeapon.RicochetChance > Main.rand.NextFloat(0f, 1.0f))
             {
                 Ricochet(oldVelocity);
             }
+            SafeOnTileCollide(oldVelocity);
+            if(SafeOnTileCollide(oldVelocity) == false)
+            {
+                TileCollision = false;
+                return TileCollision;
+            }
             else
             {
-                projectile.Kill();
+                return true;
             }
-            return false;
         }
     }
 }
