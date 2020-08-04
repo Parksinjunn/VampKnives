@@ -83,13 +83,10 @@ namespace VampKnives.Projectiles
             }
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             NumHits++;
             projectile.damage = projectile.damage / NumHits;
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
             for (int x = 0; x < 5; x++)
             {
                 Dust dust;
@@ -98,7 +95,6 @@ namespace VampKnives.Projectiles
                 dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width + 5, projectile.height + 5, 45, projectile.velocity.X * -0.5f, projectile.velocity.Y * -0.5f, 0, new Color(255, 255, 255), 2f)];
                 dust.noGravity = true;
             }
-            Hoods(n);
         }
         //public override bool OnTileCollide(Vector2 oldVelocity)
         //{

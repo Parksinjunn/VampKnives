@@ -24,7 +24,7 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 300;
         }
 
-        public override void AI()
+        public override void SafeAI()
         {
             //this is projectile dust
             int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 172, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.Blue, 1.5f);
@@ -41,15 +41,9 @@ namespace VampKnives.Projectiles
         {
             Player owner = Main.player[projectile.owner];
             Random ran = new Random();
-            int stealChance = ran.Next(0, 5);
+            int stealChance = ran.Next(0, 15);
             Random ran2 = new Random();
             int durability = ran2.Next(5, 23);
-            if (stealChance == 3)
-            {
-                    Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
-                //n.AddBuff(BuffID.BUFFIDHERE, 300);
-            }
             //Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("SengoTrap1"), 0, projectile.knockBack); //Creates a new Projectile
             projectile.velocity.X = 0;
             projectile.velocity.Y = 0;
@@ -57,7 +51,13 @@ namespace VampKnives.Projectiles
             projectile.penetrate = durability;
             projectile.timeLeft = 120;
             if(durability == 12)
-            Hoods(n);
+            {
+                if (Main.rand.Next(0, HealProjChanceScale) <= HealProjChance)
+                {
+                    Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+                }
+                Hoods(n);
+            }
         }
 
         public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens

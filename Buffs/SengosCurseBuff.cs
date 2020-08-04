@@ -11,6 +11,7 @@ namespace VampKnives.Buffs
         {
             DisplayName.SetDefault("Sengo's Curse");
             Description.SetDefault("The Price of These Contraptions is Blood");
+            canBeCleared = false;
         }
 
         public override void Update(Player player, ref int buffIndex)

@@ -21,7 +21,7 @@ namespace VampKnives.Projectiles.Ammo
             projectile.ignoreWater = false;
             projectile.timeLeft = 300;
         }
-        public override void AI()
+        public override void SafeAI()
         {
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;

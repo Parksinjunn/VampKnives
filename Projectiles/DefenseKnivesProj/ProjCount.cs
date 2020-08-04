@@ -11,7 +11,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class ProjCount
     {
-        public static int MaxActive = 40;
+        public static int MaxActive = 20;
         public static int NumberActive;
         public static int NumActiveAdamantite;
         public static int NumActiveTitanium;
@@ -19,6 +19,9 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public static int ShroomiteIterator;
         public static int ShroomiteActiveGasCount;
         public static int LightningActiveCount;
+        public static int PumpkinActiveCount;
+        public static List<int> ZenithProj = new List<int>();
+        public static List<int> ZenithType = new List<int>();
 
         public static int GetActiveAdamantite()
         {
@@ -47,6 +50,10 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         public static int GetLightningActiveCount()
         {
             return LightningActiveCount;
+        }
+        public static int GetPumpkinActiveCount()
+        {
+            return PumpkinActiveCount;
         }
     }
 }

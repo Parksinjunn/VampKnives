@@ -34,13 +34,9 @@ namespace VampKnives.Projectiles
             //projectile.alpha = (int)projectile.localAI[0] * 2;
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
             n.AddBuff(ModContent.BuffType<Buffs.VortexDebuff>(), 360);
-
-            Hoods(n);
         }
     }
 }

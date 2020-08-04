@@ -26,19 +26,11 @@ namespace VampKnives.Projectiles
             projectile.aiStyle = 3;
         }
 
-        public override void AI()
+        public override void SafeAI()
         {
             //this is projectile dust
             int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 40, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.Purple, 1f);
             Main.dust[DustID2].noGravity = true;
-        }
-
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
-            Hoods(n);
         }
 
         public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens

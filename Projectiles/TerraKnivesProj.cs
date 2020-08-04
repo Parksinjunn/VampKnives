@@ -27,10 +27,8 @@ namespace VampKnives.Projectiles
             projectile.scale = 0.7f;
         }
 
-        public override void AI()
+        public override void SafeAI()
         {
-            projectile.localAI[0] += 1f;
-            //this make that the projectile faces the right way 
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             Lighting.AddLight(projectile.Center, 0, (Main.DiscoG / 255f), 0);
             if (HitTile)
@@ -45,17 +43,15 @@ namespace VampKnives.Projectiles
                 EffectTimer++;
             }
         }
-        public override bool PreKill(int timeLeft)
+        public override bool SafePreKill(int timeLeft)
         {
-            Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, projectile.velocity.X, projectile.velocity.Y, 132, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
-            return base.PreKill(timeLeft); ;
-        }
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
-            Hoods(n);
+            if (projectile.velocity.X == 0 && projectile.velocity.Y == 0)
+            {
+                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, Main.rand.NextFloat(-20f, 20f), Main.rand.NextFloat(-20f, 20f), 132, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
+            }
+            else
+                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, projectile.velocity.X, projectile.velocity.Y, 132, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
+            return base.SafePreKill(timeLeft); ;
         }
         public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {

@@ -75,7 +75,7 @@ namespace VampKnives.Projectiles
         {
             Hoods(n);
         }
-        public override bool PreKill(int timeLeft)
+        public override bool SafePreKill(int timeLeft)
         {
             if (Main.rand.Next(1, 10) == 6)
             {
@@ -96,7 +96,7 @@ namespace VampKnives.Projectiles
                     Main.dust[DustID3].velocity = new Vector2(DustVelocity * (float)Math.Cos(Angle / DustVelocity), DustVelocity * (float)Math.Sin(Angle / DustVelocity));
                 }
             }
-            return base.PreKill(timeLeft);
+            return base.SafePreKill(timeLeft);
         }
         public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {

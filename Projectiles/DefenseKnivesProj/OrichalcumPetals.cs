@@ -27,7 +27,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 70;
             Main.projFrames[projectile.type] = 3;           //this is projectile frames
         }
-        public override void AI()
+        public override void SafeAI()
         {
             //int numdust2 = Dust.NewDust(projectile.position, 6, 6, 26, 0f, 0f, 100, Color.Red, 1f);
             //Dust ProjHitDust = Main.dust[numdust2];

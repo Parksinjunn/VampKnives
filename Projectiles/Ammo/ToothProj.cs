@@ -24,7 +24,7 @@ namespace VampKnives.Projectiles.Ammo
             projectile.scale = 0.55f;
             projectile.timeLeft = 300;
         }
-        public override void AI()
+        public override void SafeAI()
         {
             if(ranD ==0)
             {

@@ -22,7 +22,7 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 300;
         }
         int SpriteRotation = 45;
-        public override void AI()
+        public override void SafeAI()
         {
             projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
             Lighting.AddLight(projectile.Center, 0.2f, 0, 0);
@@ -43,12 +43,6 @@ namespace VampKnives.Projectiles
         public override void Kill(int timeLeft)
         {
             Main.PlaySound(SoundID.Item10.WithVolume(.15f), projectile.position);
-        }
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            Hoods(n);
         }
         public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {

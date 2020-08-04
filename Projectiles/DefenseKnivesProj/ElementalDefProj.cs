@@ -27,7 +27,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 220;
             Main.projFrames[projectile.type] = FrameCount;           //this is projectile frames
         }
-        public override void AI()
+        public override void SafeAI()
         {
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             FrameDelay++;

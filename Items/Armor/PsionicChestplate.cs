@@ -14,6 +14,8 @@ namespace VampKnives.Items.Armor
         public int numProj;
         public int Frame = 0;
         public int FrameCounter = 0;
+        int StatLifeBonus;
+        int StatManaBonus;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -100,15 +102,22 @@ namespace VampKnives.Items.Armor
                 percentage = 30;
                 numProj = 12;
             }
+            KnifeDamagePlayer d = Main.LocalPlayer.GetModPlayer<KnifeDamagePlayer>();
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             TooltipLine line2 = new TooltipLine(mod, "Face", "Adds: " + Math.Round((p.DelayAdd / 60), 3) + " seconds to 'Blood Essence' decay delay");
             line2.overrideColor = new Color(255, 60, 28);
             tooltips.Add(line2);
-            TooltipLine line = new TooltipLine(mod, "Face", "+ " + percentage + "% Knife Damage");
+            TooltipLine line = new TooltipLine(mod, "Face", "+" + (int)(((d.knifeDamageMult * 100) * 0.00341) * 100) + "% Knife Damage");
             line.overrideColor = new Color(255, 60, 28);
+            TooltipLine line6 = new TooltipLine(mod, "Face", "+" + StatManaBonus + " Mana\n+" + StatLifeBonus + " Life");
+            line6.overrideColor = new Color(255, 60, 28);
             if (NPC.downedBoss2)
             {
                 tooltips.Add(line);
+            }
+            if (NPC.downedBoss3)
+            {
+                tooltips.Add(line6);
             }
 
             if (p.PsionicArmorSet)
@@ -221,7 +230,7 @@ namespace VampKnives.Items.Armor
                 p.DelayAdd = 20;
                 d.knifeDamageMult += 0.05f;
                 item.value = Item.sellPrice(0, 2, 0, 0);
-                item.defense = 3;
+                item.defense = 5;
             }
             if (NPC.downedQueenBee)
             {
@@ -234,70 +243,94 @@ namespace VampKnives.Items.Armor
                 p.DelayAdd = 30;
                 d.knifeDamageMult += 0.08f;
                 item.value = Item.sellPrice(0, 4, 0, 0);
-                item.defense = 4;
+                item.defense = 7;
+                StatLifeBonus = 5;
+                StatManaBonus = 5;
             }
             if (Main.hardMode)
             {
                 p.DelayAdd = 40;
                 d.knifeDamageMult += 0.10f;
                 item.value = Item.sellPrice(0, 5, 0, 0);
-                item.defense = 6;
+                item.defense = 10;
+                StatLifeBonus = 10;
+                StatManaBonus = 10;
             }
             if (NPC.downedMechBoss1)
             {
                 p.DelayAdd = 50;
                 d.knifeDamageMult += 0.12f;
                 item.value = Item.sellPrice(0, 6, 0, 0);
-                item.defense = 7;
+                item.defense = 12;
             }
             if (NPC.downedMechBoss2)
             {
                 p.DelayAdd = 55;
                 d.knifeDamageMult += 0.14f;
                 item.value = Item.sellPrice(0, 7, 0, 0);
-                item.defense = 8;
+                item.defense = 13;
             }
             if (NPC.downedMechBoss3)
             {
                 p.DelayAdd = 60;
                 d.knifeDamageMult += 0.16f;
                 item.value = Item.sellPrice(0, 8, 0, 0);
-                item.defense = 9;
+                item.defense = 14;
+                StatLifeBonus = 15;
+                StatManaBonus = 15;
             }
             if (NPC.downedPlantBoss)
             {
                 p.DelayAdd = 70;
                 d.knifeDamageMult += 0.18f;
                 item.value = Item.sellPrice(0, 9, 0, 0);
-                item.defense = 10;
+                item.defense = 16;
             }
             if (NPC.downedGolemBoss)
             {
                 p.DelayAdd = 80;
                 d.knifeDamageMult += 0.20f;
                 item.value = Item.sellPrice(0, 10, 0, 0);
-                item.defense = 12;
+                item.defense = 17;
+                StatLifeBonus = 20;
+                StatManaBonus = 20;
             }
             if (NPC.downedFishron)
             {
                 p.DelayAdd = 90;
                 d.knifeDamageMult += 0.22f;
                 item.value = Item.sellPrice(0, 12, 0, 0);
-                item.defense = 14;
+                item.defense = 18;
             }
             if (NPC.downedAncientCultist)
             {
                 p.DelayAdd = 100;
                 d.knifeDamageMult += 0.25f;
                 item.value = Item.sellPrice(0, 14, 0, 0);
-                item.defense = 16;
+                item.defense = 22;
             }
             if (NPC.downedTowers)
             {
                 p.DelayAdd = 120;
                 d.knifeDamageMult += 0.30f;
                 item.value = Item.sellPrice(0, 16, 0, 0);
-                item.defense = 18;
+                item.defense = 26;
+                StatLifeBonus = 30;
+                StatManaBonus = 30;
+            }
+            if (NPC.downedMoonlord)
+            {
+                p.DelayAdd = 150;
+                item.value = Item.sellPrice(0, 20, 0, 0);
+                d.knifeDamageMult += 0.36f;
+                item.defense = 34;
+                StatLifeBonus = 40;
+                StatManaBonus = 40;
+            }
+            if (StatManaBonus > 0)
+            {
+                player.statManaMax2 += StatManaBonus;
+                player.statLifeMax2 += StatLifeBonus;
             }
         }
     }

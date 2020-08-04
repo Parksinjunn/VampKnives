@@ -35,7 +35,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.scale *= 1.4f + (float)Main.rand.NextDouble();
             RotationFactor = Main.rand.Next(-1, 1)/10;
         }
-        public override void AI()
+        public override void SafeAI()
         {
             FrameDelay++;
             if (FrameDelay > 10)

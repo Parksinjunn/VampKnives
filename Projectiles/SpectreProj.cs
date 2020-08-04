@@ -53,11 +53,8 @@ namespace VampKnives.Projectiles
             projectile.alpha = (int)(projectile.localAI[0] * 2);
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
             for (int x = 0; x < 10; x++)
             {
                     Dust dust;
@@ -67,10 +64,9 @@ namespace VampKnives.Projectiles
                     dust.noGravity = true;
                     dust.shader = GameShaders.Armor.GetSecondaryShader(24, Main.LocalPlayer);
             }
-            Hoods(n);
         }
 
-        public override bool PreKill(int timeLeft)
+        public override bool SafePreKill(int timeLeft)
         {
             for (int x = 0; x < 18; x++)
             {
@@ -81,7 +77,7 @@ namespace VampKnives.Projectiles
                 dust.noGravity = true;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(24, Main.LocalPlayer);
             }
-            return base.PreKill(timeLeft);
+            return base.SafePreKill(timeLeft);
         }
     }
 }

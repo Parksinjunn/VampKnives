@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -43,6 +44,25 @@ namespace VampKnives.Tiles
             num = fail ? 1 : 3;
         }
 
+        //public override void NearbyEffects(int i, int j, bool closer)
+        //{
+        //    for(int x = 0; x < Main.maxItems; x++)
+        //    {
+        //        if(Main.item[x].type == ItemID.DirtBlock)
+        //        {
+        //            Item item = Main.item[x];
+        //            Vector2 TilePosition = new Vector2(i * 16, j * 16);
+        //            Vector2 vector31 = new Vector2(item.position.X + (float)item.width * 0.5f, item.position.Y + (float)item.height * 0.5f);
+        //            float num500 = TilePosition.X - vector31.X;
+        //            float num501 = TilePosition.Y - vector31.Y;
+        //            float num502 = (float)Math.Sqrt((double)(num500 * num500 + num501 * num501));
+        //            if(num502 < 200f)
+        //            {
+        //                Main.NewText("BOOM");
+        //            }
+        //        }
+        //    }
+        //}
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             Tile tile = Main.tile[i, j];

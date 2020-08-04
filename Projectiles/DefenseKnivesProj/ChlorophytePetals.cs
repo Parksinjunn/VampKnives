@@ -28,7 +28,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 140;
             Main.projFrames[projectile.type] = 3;           //this is projectile frames
         }
-        public override void AI()
+        public override void SafeAI()
         {
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             int numdust2 = Dust.NewDust(projectile.position, 1, 1, DustType, 0f, 0f, 100, Color.DeepPink, (float)Main.rand.NextDouble());

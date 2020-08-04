@@ -24,7 +24,7 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 300;
         }
 
-        public override void AI()
+        public override void SafeAI()
         {
             //this is projectile dust
             int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 20, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.LightBlue, 0.5f);
@@ -37,11 +37,8 @@ namespace VampKnives.Projectiles
 
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
             n.AddBuff(BuffID.Electrified, 240);
 
             int speedX = 15;
@@ -60,7 +57,6 @@ namespace VampKnives.Projectiles
                 offsetAngle = startAngle + deltaAngle * j;
                 Projectile.NewProjectile(n.position.X, n.position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), mod.ProjectileType("RukasusTeslaProj"), 15, 1);
             }
-            Hoods(n);
         }
 
         public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens

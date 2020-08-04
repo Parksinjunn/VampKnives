@@ -88,7 +88,7 @@ namespace VampKnives.Items.Armor
                 numProj = 12;
             }
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            TooltipLine line = new TooltipLine(mod, "Face", "+ " + ((p.HealAccMult-1)*100) + "% greater healing");
+            TooltipLine line = new TooltipLine(mod, "Face", "+ " + (int)((p.HealAccMult-1)*100) + "% greater healing");
             line.overrideColor = new Color(255, 60, 28);
             if (NPC.downedBoss2)
             {

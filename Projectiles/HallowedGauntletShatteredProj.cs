@@ -115,7 +115,7 @@ namespace VampKnives.Projectiles
             projectile.tileCollide = false;
             return false;
         }
-        public override bool PreKill(int timeLeft)
+        public override bool SafePreKill(int timeLeft)
         {
             float CircleRadius = 0.15f;
             for (int iteration = 0; iteration < 360; iteration++)
@@ -124,7 +124,7 @@ namespace VampKnives.Projectiles
                 Main.dust[DustID3].noGravity = true;
                 Main.dust[DustID3].velocity = new Vector2(CircleRadius * (float)Math.Cos(iteration / CircleRadius), CircleRadius * (float)Math.Sin(iteration / CircleRadius));
             }
-            return base.PreKill(timeLeft);
+            return base.SafePreKill(timeLeft);
         }
     }
 }

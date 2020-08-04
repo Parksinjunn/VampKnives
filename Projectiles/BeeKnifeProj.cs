@@ -24,7 +24,7 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 300;
         }
 
-		public override void AI()
+		public override void SafeAI()
 		{
                                                                 //this is projectile dust
            int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width-3, projectile.height-3, 244, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.DarkRed, 1.8f);
@@ -33,10 +33,10 @@ namespace VampKnives.Projectiles
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
             //projectile.light = .04f;
-			projectile.alpha = (int)projectile.localAI[0] * 2;
+			//projectile.alpha = (int)projectile.localAI[0] * 2;
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             float ran1 = Main.rand.Next(-1, 1);
             float ran2 = Main.rand.Next(-1, 1);
@@ -51,8 +51,6 @@ namespace VampKnives.Projectiles
                 else
                 Projectile.NewProjectile(projectile.position.X, projectile.position.Y, ran1, ran2, 181, projectile.damage, projectile.knockBack, Main.myPlayer);
             }
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            Hoods(n);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

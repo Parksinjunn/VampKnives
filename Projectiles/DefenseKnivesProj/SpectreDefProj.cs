@@ -25,7 +25,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 140;
             projectile.extraUpdates = 3;
         }
-        public override void AI()
+        public override void SafeAI()
         {
             int num357 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 212, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100, default(Color), 1f);
             Main.dust[num357].noGravity = true;

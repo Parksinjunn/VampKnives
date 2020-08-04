@@ -21,22 +21,10 @@ namespace VampKnives.Projectiles
             projectile.ignoreWater = true;
             projectile.timeLeft = 300;
         }
-        public float rotate = 20;
-        public override void AI()
+        int SpriteRotation = 45;
+        public override void SafeAI()
         {
-            rotate-=0.008f;
-            projectile.rotation += rotate;
-            projectile.localAI[0] += 1f;
-            //projectile.light = .04f;
-            //projectile.alpha = (int)projectile.localAI[0] * 2;
-        }
-
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
-            Hoods(n);
+            projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
         }
     }
 }

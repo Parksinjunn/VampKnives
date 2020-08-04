@@ -11,6 +11,15 @@ namespace VampKnives.Items
     {
         public float WepDamage;
 
+        public bool IsMagic()
+        {
+            if (item.type == ModContent.ItemType<SorcerersSarukh>() && item.type == ModContent.ItemType<TrueDemonsScourge>() && item.type == ModContent.ItemType<PrismaticArcanum>())
+            {
+                return true;
+            }
+            else
+                return false;
+        }
         public virtual void SafeSetDefaults()
         {
         }
@@ -20,35 +29,54 @@ namespace VampKnives.Items
             SafeSetDefaults();
             item.melee = false;
             item.ranged = false;
-            item.magic = false;
+            if (IsMagic() == false)
+            {
+                item.magic = false;
+            }
+            else
+            {
+                item.magic = true;
+            }
             item.thrown = false;
             item.summon = false;
         }
         public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
         {
-            add += KnifeDamagePlayer.ModPlayer(player).knifeDamageAdd;
-            mult *= KnifeDamagePlayer.ModPlayer(player).knifeDamageMult;
+            if (IsMagic() == false)
+            {
+                add += KnifeDamagePlayer.ModPlayer(player).knifeDamageAdd;
+                mult *= KnifeDamagePlayer.ModPlayer(player).knifeDamageMult;
+            }
         }
 
         public override void GetWeaponKnockback(Player player, ref float knockback)
         {
-            knockback = knockback + KnifeDamagePlayer.ModPlayer(player).KnifeKnockback;
+            if (IsMagic() == false)
+            {
+                knockback = knockback + KnifeDamagePlayer.ModPlayer(player).KnifeKnockback;
+            }
         }
 
         public override void GetWeaponCrit(Player player, ref int crit)
         {
-            crit = crit + KnifeDamagePlayer.ModPlayer(player).KnifeCrit;
+            if (IsMagic() == false)
+            {
+                crit = crit + KnifeDamagePlayer.ModPlayer(player).KnifeCrit;
+            }
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
-            if (tt != null)
+            if (IsMagic() == false)
             {
-                string[] splitText = tt.text.Split(' ');
-                string damageValue = splitText.First();
-                string damageWord = splitText.Last();
-                tt.text = damageValue + " Knife " + damageWord;
+                TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
+                if (tt != null)
+                {
+                    string[] splitText = tt.text.Split(' ');
+                    string damageValue = splitText.First();
+                    string damageWord = splitText.Last();
+                    tt.text = damageValue + " Knife " + damageWord;
+                }
             }
         }
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)

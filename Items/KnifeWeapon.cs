@@ -56,7 +56,6 @@ namespace VampKnives.Items
             myClone.DamagePurchases = DamagePurchases;
             myClone.CritPurchases = CritPurchases;
             myClone.RicochetPurchases = RicochetPurchases;
-            //myClone.examplePersonFreeGift = examplePersonFreeGift;
             return myClone;
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
@@ -101,6 +100,7 @@ namespace VampKnives.Items
                 crit += (int)(item.crit * (1 + (CritLevel / 10f))) - item.crit;
             }
         }
+
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             if (OriginalOwner.Length > 0)
@@ -157,14 +157,6 @@ namespace VampKnives.Items
             };
         }
 
-        public override void OnCraft(Item item, Recipe recipe)
-        {
-            if (item.maxStack == 1)
-            {
-                OriginalOwner = Main.LocalPlayer.name;
-            }
-        }
-
         public override void NetSend(Item item, BinaryWriter writer)
         {
             writer.Write(OriginalOwner);
@@ -183,16 +175,16 @@ namespace VampKnives.Items
         public override void NetReceive(Item item, BinaryReader reader)
         {
             OriginalOwner = reader.ReadString();
-            DamageLevel = reader.ReadByte();
-            CritLevel = reader.ReadByte();
-            RicochetChance = reader.ReadByte();
-            LifeStealBonus = reader.ReadByte();
-            PenetrationBonus = reader.ReadByte();
-            CritPurchases = reader.ReadByte();
-            LifeStealPurchases = reader.ReadByte();
-            DamagePurchases = reader.ReadByte();
-            PenetrationPurchases = reader.ReadByte();
-            RicochetPurchases = reader.ReadByte();
+            DamageLevel = reader.ReadInt32();
+            CritLevel = reader.ReadInt32();
+            RicochetChance = reader.ReadSingle();
+            LifeStealBonus = reader.ReadInt32();
+            PenetrationBonus = reader.ReadInt32();
+            CritPurchases = reader.ReadInt32();
+            LifeStealPurchases = reader.ReadInt32();
+            DamagePurchases = reader.ReadInt32();
+            PenetrationPurchases = reader.ReadInt32();
+            RicochetPurchases = reader.ReadInt32();
         }
     }
 }

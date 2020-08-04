@@ -35,7 +35,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.rotation = 120f * (float)(Math.PI / 180);
             projectile.Opacity = 0f;
         }
-        public override void AI()
+        public override void SafeAI()
         {
             Lighting.AddLight(projectile.Center, 0.58f, 0.41f, 0.98f);
 

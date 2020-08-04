@@ -725,7 +725,7 @@ namespace VampKnives.UI
             int BuyItem = ModContent.ItemType<Items.Materials.PiercingTip>();
             if (!_vanillaItemSlot.Item.IsAir)
             {
-                if(_vanillaItemSlot.Item.type == ModContent.ItemType<CorruptionNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<CrimsonNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<ButchersKnives>())
+                if(_vanillaItemSlot.Item.type == ModContent.ItemType<CorruptionNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<CrimsonNestKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<ButchersKnives>() || _vanillaItemSlot.Item.type == ModContent.ItemType<PrismaticArcanum>())
                 {
                     Main.NewText("You cannot add penetration to this weapon");
                 }

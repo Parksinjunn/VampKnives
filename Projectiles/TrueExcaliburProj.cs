@@ -22,20 +22,22 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 300;
         }
 
-        public override void AI()
+        public override void SafeAI()
         {
             //this make that the projectile faces the right way 
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             Lighting.AddLight(projectile.Center, (Main.DiscoR / 255f), (Main.DiscoG / 255f), (Main.DiscoB / 255f));
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override bool SafePreKill(int timeLeft)
         {
-            Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            Projectile.NewProjectile(projectile.position.X+n.width, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, 156, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
-
-            Hoods(n);
+            if (projectile.velocity.X == 0 && projectile.velocity.Y == 0)
+            {
+                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, Main.rand.NextFloat(-20f, 20f), Main.rand.NextFloat(-20f, 20f), 156, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
+            }
+            else
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, 156, projectile.damage / 2, projectile.knockBack, projectile.owner); //Creates a new Projectile
+            return base.SafePreKill(timeLeft); ;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace VampKnives.Items.Armor
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "+" + ((p.DefenseReflectChance-1))*100 + "% reflect chance");
-            line.overrideColor = new Color(255, 60, 28);
+            line.overrideColor = new Color(160, 0, 0);
             if (NPC.downedBoss2)
             {
                 tooltips.Add(line);
@@ -49,10 +49,10 @@ namespace VampKnives.Items.Armor
             if (p.VampiricArmorSet)
             {
                 TooltipLine line4 = new TooltipLine(mod, "Face", "Set Bonus:");
-                line4.overrideColor = new Color(255, 70, 38);
+                line4.overrideColor = new Color(180, 0, 0);
                 tooltips.Add(line4);
                 TooltipLine line3 = new TooltipLine(mod, "Face", "Enemies are more likely to target you\nHave a " + ((2f*p.VampiricSetScaler)/10f) + "% Chance to steal the life of the enemies around you upon being hit");
-                line3.overrideColor = new Color(255, 70, 38);
+                line3.overrideColor = new Color(180, 0, 0);
                 tooltips.Add(line3);
             }
 
@@ -60,57 +60,33 @@ namespace VampKnives.Items.Armor
             {
                 if (line5.mod == "Terraria" && line5.Name == "Equipable")
                 {
-                    line5.overrideColor = new Color(255, 40, 20);
+                    line5.overrideColor = new Color(160, 0, 0);
                 }
                 if (line5.mod == "Terraria" && line5.Name == "Defense")
                 {
-                    line5.overrideColor = new Color(235, 32, 12);
+                    line5.overrideColor = new Color(160, 0, 0);
                 }
                 if (line5.mod == "Terraria" && line5.Name == "Tooltip0")
                 {
-                    line5.overrideColor = new Color(215, 20, 2);
+                    line5.overrideColor = new Color(160, 0, 0);
                 }
                 if (line5.mod == "Terraria" && line5.Name == "ItemName")
                 {
                     if (Frame == 0)
                     {
-                        line5.text = ("[c/FF3333:Psionic Hood]");
+                        line5.text = ("[c/3B0000:Vampiric Helm]");
                     }
-                    if (Frame == 1)
+                    if(Frame == 1)
                     {
-                        line5.text = ("[c/B48C8C:Ps][c/FF3333:ionic Hood]");
+                        line5.text = ("[c/730600:Vampiric Helm]");
                     }
                     if (Frame == 2)
                     {
-                        line5.text = ("[c/75D6D6:Ps][c/B48C8C:io][c/FF3333:nic Hood]");
+                        line5.text = ("[c/AD0900:Vampiric Helm]");
                     }
                     if (Frame == 3)
                     {
-                        line5.text = ("[c/B48C8C:Ps][c/75D6D6:io][c/B48C8C:ni][c/FF3333:c Hood]");
-                    }
-                    if (Frame == 4)
-                    {
-                        line5.text = ("[c/FF3333:Ps][c/B48C8C:io][c/75D6D6:ni][c/B48C8C:c][c/FF3333: Hood]");
-                    }
-                    if (Frame == 5)
-                    {
-                        line5.text = ("[c/FF3333:Psio][c/B48C8C:ni][c/75D6D6:c][c/B48C8C: Ho][c/FF3333:od]");
-                    }
-                    if (Frame == 6)
-                    {
-                        line5.text = ("[c/FF3333:Psioni][c/B48C8C:c][c/75D6D6: Ho][c/B48C8C:od]");
-                    }
-                    if (Frame == 7)
-                    {
-                        line5.text = ("[c/FF3333:Psionic][c/B48C8C: Ho][c/75D6D6:od]");
-                    }
-                    if (Frame == 8)
-                    {
-                        line5.text = ("[c/FF3333:Psionic Ho][c/B48C8C:od]");
-                    }
-                    if (Frame == 9)
-                    {
-                        line5.text = ("[c/FF3333:Psionic Hood]");
+                        line5.text = ("[c/730600:Vampiric Helm]");
                     }
                 }
             }
@@ -118,7 +94,7 @@ namespace VampKnives.Items.Armor
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<PsionicChestplate>() && legs.type == ModContent.ItemType<PsionicLeggings>();
+            return body.type == ModContent.ItemType<VampiricChestplate>() && legs.type == ModContent.ItemType<VampiricGreaves>();
         }
 
         public override void UpdateArmorSet(Player player)
@@ -177,22 +153,22 @@ namespace VampKnives.Items.Armor
         public override void UpdateInventory(Player player)
         {
             FrameCounter++; //increase the frameCounter by one
-            if (FrameCounter >= 4) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
+            if (FrameCounter >= 8) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
             {
                 FrameCounter = 0;
                 Frame++; //go to the next frame
-                if (Frame > 9) //if past the last frame
+                if (Frame > 3) //if past the last frame
                     Frame = 0; //go back to the first frame
             }
         }
         public override void UpdateEquip(Player player)
         {
             FrameCounter++; //increase the frameCounter by one
-            if (FrameCounter >= 4) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
+            if (FrameCounter >= 8) //once the frameCounter has reached 3 - change the 10 to change how fast the projectile animates
             {
                 FrameCounter = 0;
                 Frame++; //go to the next frame
-                if (Frame > 9) //if past the last frame
+                if (Frame > 3) //if past the last frame
                     Frame = 0; //go back to the first frame
             }
             ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
@@ -202,7 +178,7 @@ namespace VampKnives.Items.Armor
             {
                 item.value = Item.sellPrice(0, 2, 0, 0);
                 p.DefenseReflectChance = 1.2f;
-                item.defense = 7;
+                item.defense = 5;
             }
             if (NPC.downedQueenBee)
             {
@@ -213,31 +189,31 @@ namespace VampKnives.Items.Armor
             {
                 item.value = Item.sellPrice(0, 4, 0, 0);
                 p.DefenseReflectChance = 1.5f;
-                item.defense = 9;
+                item.defense = 7;
             }
             if (Main.hardMode)
             {
                 item.value = Item.sellPrice(0, 5, 0, 0);
                 p.DefenseReflectChance = 1.6f;
-                item.defense = 11;
+                item.defense = 10;
             }
             if (NPC.downedMechBoss1)
             {
                 item.value = Item.sellPrice(0, 6, 0, 0);
                 p.DefenseReflectChance = 1.7f;
-                item.defense = 13;
+                item.defense = 12;
             }
             if (NPC.downedMechBoss2)
             {
                 item.value = Item.sellPrice(0, 7, 0, 0);
                 p.DefenseReflectChance = 1.8f;
-                item.defense = 14;
+                item.defense = 13;
             }
             if (NPC.downedMechBoss3)
             {
                 item.value = Item.sellPrice(0, 8, 0, 0);
                 p.DefenseReflectChance = 1.9f;
-                item.defense = 15;
+                item.defense = 14;
             }
             if (NPC.downedPlantBoss)
             {

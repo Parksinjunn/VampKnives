@@ -16,6 +16,7 @@ namespace VampKnives
         public static ModHotKey HoodUpDownHotkey;
         public static ModHotKey SupportHotKey;
         public static ModHotKey VampDashHotKey;
+        public static ModHotKey SupportArmorHotKey;
         public static int inventoryIndex;
         public UserInterface customRecources;
         public UserInterface customResources2;
@@ -148,13 +149,76 @@ namespace VampKnives
             recipe11.AddTile(TileID.Hellforge);
             recipe11.SetResult(ItemID.LivingFireBlock, 5);
             recipe11.AddRecipe();
+
+            HammerRecipe HammerConvertRecipe = new HammerRecipe(this);
+            //Sand
+            HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 6);
+            HammerConvertRecipe.AddTile(this.GetTile("KnifeBench"));
+            HammerConvertRecipe.SetResult(ItemID.SandBlock, 2);
+            HammerConvertRecipe.AddRecipe();
+            HammerConvertRecipe = new HammerRecipe(this);
+            HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 6);
+            HammerConvertRecipe.AddTile(this.GetTile("VampTableTile"));
+            HammerConvertRecipe.SetResult(ItemID.SandBlock, 2);
+            HammerConvertRecipe.AddRecipe();
+            //Silt
+            HammerConvertRecipe = new HammerRecipe(this);
+            HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 3);
+            HammerConvertRecipe.AddIngredient(ItemID.DirtBlock, 3);
+            HammerConvertRecipe.AddTile(this.GetTile("KnifeBench"));
+            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 2);
+            HammerConvertRecipe.AddRecipe();
+            HammerConvertRecipe = new HammerRecipe(this);
+            HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 3);
+            HammerConvertRecipe.AddIngredient(ItemID.DirtBlock, 3);
+            HammerConvertRecipe.AddTile(this.GetTile("VampTableTile"));
+            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 2);
+            HammerConvertRecipe.AddRecipe();
+
+            HammerAndChiselRecipe ConvertRecipe = new HammerAndChiselRecipe(this);
+            //Marble
+            ConvertRecipe.AddIngredient(ItemID.PearlstoneBlock,3);
+            ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
+            ConvertRecipe.SetResult(ItemID.Marble);
+            ConvertRecipe.AddRecipe();
+            ConvertRecipe = new HammerAndChiselRecipe(this);
+            ConvertRecipe.AddIngredient(ItemID.PearlstoneBlock,3);
+            ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
+            ConvertRecipe.SetResult(ItemID.Marble);
+            ConvertRecipe.AddRecipe();
+            //Granite
+            ConvertRecipe = new HammerAndChiselRecipe(this);
+            ConvertRecipe.AddIngredient(ItemID.Obsidian);
+            ConvertRecipe.AddIngredient(ItemID.CrimstoneBlock,5);
+            ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
+            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.AddRecipe();
+            ConvertRecipe = new HammerAndChiselRecipe(this);
+            ConvertRecipe.AddIngredient(ItemID.Obsidian);
+            ConvertRecipe.AddIngredient(ItemID.EbonstoneBlock,5);
+            ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
+            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.AddRecipe();
+            ConvertRecipe = new HammerAndChiselRecipe(this);
+            ConvertRecipe.AddIngredient(ItemID.Obsidian);
+            ConvertRecipe.AddIngredient(ItemID.CrimstoneBlock, 5);
+            ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
+            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.AddRecipe();
+            ConvertRecipe = new HammerAndChiselRecipe(this);
+            ConvertRecipe.AddIngredient(ItemID.Obsidian);
+            ConvertRecipe.AddIngredient(ItemID.EbonstoneBlock, 5);
+            ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
+            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.AddRecipe();
         }
         public override void Load()
         {
             instance = this;
-            HoodUpDownHotkey = RegisterHotKey("HoodUpDown", "P");
+            HoodUpDownHotkey = RegisterHotKey("Pull hood up or down", "P");
             SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
             VampDashHotKey = RegisterHotKey("Double tap to transform into a bat for a few seconds(Requires vampiric armor)", "D");
+            SupportArmorHotKey = RegisterHotKey("Key to use the support armor's buff", "C");
             if (!Main.dedServ)
             {
                 //AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
@@ -351,6 +415,7 @@ namespace VampKnives
             HoodUpDownHotkey = null;
             SupportHotKey = null;
             VampDashHotKey = null;
+            SupportArmorHotKey = null;
             instance = null;
             base.Unload();
         }
@@ -359,6 +424,8 @@ namespace VampKnives
         int Packet6 = 66;
         int BatTransformRecieve = 88;
         int BatTransformSend = 89;
+        int SupportArmorRecieve = 99;
+        int SupportArmorSend = 100;
         int Packet4 = 44;
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -430,6 +497,26 @@ namespace VampKnives
                 int playerID = reader.ReadInt32();
                 Main.player[playerID].GetModPlayer<ExamplePlayer>().Transform = Transform;
                 Main.player[playerID].GetModPlayer<ExamplePlayer>().HasTabletEquipped = HasTablet;
+            }
+            if(idVariable == SupportArmorRecieve)
+            {
+                int PlayerToBuff = reader.ReadInt32();
+                int BuffCountStore = reader.ReadInt32();
+                Main.NewText("Count2: " + BuffCountStore);
+                int PlayerID = reader.ReadInt32();
+                ModPacket packet = this.GetPacket();
+                packet.Write(SupportArmorSend);
+                packet.Write(PlayerToBuff);
+                packet.Write(BuffCountStore);
+                packet.Send(-1, PlayerID);
+            }
+            if(idVariable == SupportArmorSend)
+            {
+                int PlayerToBuff = reader.ReadInt32();
+                int BuffCountStore = reader.ReadInt32();
+                Main.NewText("Count3: " + BuffCountStore);
+                Main.player[PlayerToBuff].AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
+                Main.player[PlayerToBuff].GetModPlayer<ExamplePlayer>().BuffCountStore = BuffCountStore;
             }
             base.HandlePacket(reader, whoAmI);
         }

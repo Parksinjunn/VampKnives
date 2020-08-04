@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using VampKnives.Items;
 using VampKnives;
 using VampKnives.Buffs;
+using VampKnives.Projectiles.DefenseKnivesProj;
 
 namespace VampKnives.Projectiles
 {
@@ -18,33 +19,125 @@ namespace VampKnives.Projectiles
     {
         public int ShatterTarget;
         bool PenetrationBuffApplied = false;
+        public static bool ZenithActive = false;
+        public static int ZenithProjID;
+        public static bool ProjectileNotZenith = false;
+        float RandomVelocity;
+        bool Instanced;
         bool TileCollision;
+        float RotationSpeed;
+        public static int HealProjChanceScale = 101;
+        public static int HealProjChance = HealProjChanceScale;
         public KnifeWeapon ParentWeapon = new KnifeWeapon();
 
         public virtual void SafeSetDefaults() {
         }
+        public virtual void SafeAI() {
+        }
+        public virtual bool SafePreKill(int timeleft) {
+            return true;
+        }
         public virtual bool SafeOnTileCollide(Vector2 OldVelocity){
             return true;
+        }
+        public virtual void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit) {
         }
         public virtual void SafeModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
         }
         public override void SetDefaults()
         {
             SafeSetDefaults();
+            if(ZenithActive)
+            {
+                RandomVelocity = Main.rand.NextFloat(0.8f, 1.25f);
+                projectile.tileCollide = false;
+                projectile.aiStyle = 0;
+                projectile.penetrate = 1;
+                HealProjChance = 3;
+            }
+            else
+            {
+                HealProjChance = HealProjChanceScale;
+            }
         }
         public override bool PreAI()
         {
             if (ModContent.GetModItem(Main.LocalPlayer.HeldItem.type) is Items.KnifeDamageItem)
             {
                 ParentWeapon = Main.LocalPlayer.HeldItem.GetGlobalItem<KnifeWeapon>();
-                //Main.NewText("Weapon: " + ParentWeapon);
             }
             return true;
         }
+        public override void AI()
+        {
+            SafeAI();
+            if(ZenithActive)
+            {
+                for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
+                {
+                    if (Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<HealProj>())
+                    {
+                        Main.projectile[ProjCount.ZenithProj[g]].Kill();
+                    }
+                    projectile.frame = 0;
+                    Player p = Main.player[projectile.owner];
+
+                    //Factors for calculations
+                    double deg = (double)RotationSpeed + (60*g); //The degrees, you can multiply projectile.ai[1] to make it orbit faster, may be choppy depending on the value
+                    double rad = deg * (Math.PI / 180); //Convert degrees to radians
+
+                    float distX = 64; //Distance away from the player
+                    float distY = 64;
+
+                    distX = 80f + (40f * (float)Math.Sin(2 * rad));
+                    distY = 80f + (40f * (float)Math.Cos(2 * rad));
+
+                    /*Position the player based on where the player is, the Sin/Cos of the angle times the /
+                    /distance for the desired distance away from the player minus the projectile's width   /
+                    /and height divided by two so the center of the projectile is at the right place.     */
+                    Main.projectile[ProjCount.ZenithProj[g]].position.X = Main.projectile[ZenithProjID].Center.X - (int)(Math.Cos(rad) * distX) - Main.projectile[ProjCount.ZenithProj[g]].width / 2;
+                    Main.projectile[ProjCount.ZenithProj[g]].position.Y = Main.projectile[ZenithProjID].Center.Y - (int)(Math.Sin(rad) * distY) - Main.projectile[ProjCount.ZenithProj[g]].height / 2;
+
+                    //Increase the counter/angle in degrees by 1 point, you can change the rate here too, but the orbit may look choppy depending on the value
+                    RotationSpeed += 1.4f;
+                    Main.projectile[ProjCount.ZenithProj[g]].timeLeft = 120;
+
+                    Main.projectile[ProjCount.ZenithProj[g]].rotation = Main.projectile[ProjCount.ZenithProj[g]].rotation + (float)rad; // projectile faces sprite right
+                    projectile.netUpdate = true;
+                }      
+            }
+        }
+        public override bool PreKill(int timeLeft)
+        {
+            SafePreKill(timeLeft);
+            //if (projectile.owner == Main.projectile[ZenithProjID].owner && projectile.whoAmI != ZenithProjID)
+            //{
+            //    Main.NewText("Bye");
+            //     NumActiveZenithProj--;
+            //}
+            if (projectile.type == ModContent.ProjectileType<ZenithsTrueBladesProj>())
+            {
+                ZenithActive = false;
+                //Main.NewText("Length: " + ProjCount.ZenithProj.Count);
+                for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
+                {
+                    Main.projectile[ProjCount.ZenithProj[g]].Kill();
+                }
+            }
+            return base.PreKill(timeLeft);
+        }
         public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
+            //for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
+            //{
+            //    if (projectile.whoAmI == ProjCount.ZenithProj[g] && projectile.type == Main.projectile[ProjCount.ZenithProj[g]].type)
+            //    {
+            //        NumActiveZenithProj--;
+            //        ProjCount.ZenithProj.RemoveAt(g);
+            //    }
+            //}
             SafeModifyHitNPC(target,ref damage,ref knockback,ref crit,ref hitDirection);
-            if (projectile.penetrate != -1 && PenetrationBuffApplied == false && mod.ItemType("" + ParentWeapon.GetType()) != ModContent.ItemType<CorruptionNestKnives>())
+            if (projectile.penetrate != -1 && PenetrationBuffApplied == false && mod.ItemType("" + ParentWeapon.GetType()) != ModContent.ItemType<CorruptionNestKnives>() && mod.ItemType("" + ParentWeapon.GetType()) != ModContent.ItemType<CrimsonNestKnives>() && mod.ItemType("" + ParentWeapon.GetType()) != ModContent.ItemType<PrismaticArcanum>())
             {
                 projectile.penetrate += ParentWeapon.PenetrationBonus;
                 PenetrationBuffApplied = true;
@@ -143,8 +236,28 @@ namespace VampKnives.Projectiles
                 projectile.Kill();
             }
         }
+
+        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        {
+                Player owner = Main.player[projectile.owner];
+                if (Main.rand.Next(0, HealProjChanceScale) <= HealProjChance)
+                {
+                    Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+                }
+                SafeOnHitNPC(n, damage, knockback, crit);
+                Hoods(n);
+        }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            //for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
+            //{
+            //    if (ZenithActive && projectile.whoAmI == ProjCount.ZenithProj[g] && projectile.type == ModContent.ProjectileType<NyivesBigProj>())
+            //    {
+            //        NumActiveZenithProj--;
+            //        ProjCount.ZenithProj.RemoveAt(g);
+            //    }
+            //}
             //Main.NewText("Ricochet: " + ParentWeapon.RicochetChance);
             if (ParentWeapon.RicochetChance > Main.rand.NextFloat(0f, 1.0f))
             {

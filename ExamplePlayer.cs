@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 using Terraria.UI;
 using System;
 using Terraria.ModLoader.IO;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using VampKnives.Projectiles.DefenseKnivesProj;
 
 namespace VampKnives
 {
@@ -141,6 +144,17 @@ namespace VampKnives
 
         public int NumCrafted;
 
+        public bool SupportArmor = false;
+        public bool SupportArmorSetBuff;
+        public bool RunSupportTimer;
+        public bool SupportArmorBuff = false;
+        public bool SupportLegs = false;
+        public int SupportArmorSetBuffCount;
+        public int SupportArmorLifeSteal;
+        int SupportTimer;
+        public int BuffCountStore;
+        public bool SupportArmorKeyPressed;
+
         public override void ResetEffects()
         {
             Connor = false;
@@ -222,7 +236,22 @@ namespace VampKnives
             HasTabletEquipped = false;
             DefenseReflectChance = 0;
             DefenseExtraLives = 0;
+            TitaniumDefenseBuff = false;
+            VampiricArmorSet = false;
+            SupportArmor = false;
+            RunSupportTimer = SupportArmorSetBuff = SupportArmorBuff = false;
+            //SupportArmorKeyPressed = false;
             //Transform = false;
+            for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
+            {
+                if (!Main.projectile[ProjCount.ZenithProj[g]].active)
+                {
+                    ProjCount.ZenithProj.RemoveAt(g);
+                    ProjCount.ZenithType.RemoveAt(g);
+                    Projectiles.ZenithsTrueBladesProj.SpawnTimer = 15;
+                    //Main.NewText("Length: " + ProjCount.ZenithProj.Count);
+                }
+            }
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -253,6 +282,26 @@ namespace VampKnives
                 packet2.Write(Main.myPlayer);
                 packet2.Send();
             }
+            else if(SupportArmorKeyPressed != clone.SupportArmorKeyPressed)
+            {
+                for (int x = 0; x < Main.ActivePlayersCount; x++)
+                {
+                    float shootToX = player.position.X + (float)player.width * 0.5f - Main.player[x].Center.X;
+                    float shootToY = player.position.Y + (player.height / 2) - Main.player[x].Center.Y;
+                    float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+                    if (distance < 2000)
+                    {
+                        ModPacket packet2 = mod.GetPacket();
+                        packet2.Write(99);
+                        packet2.Write(Main.player[x].whoAmI);
+                        Main.NewText("Count: " + BuffCountStore);
+                        packet2.Write(BuffCountStore);
+                        packet2.Write(Main.myPlayer);
+                        packet2.Send();
+                    }
+                }
+                SupportArmorKeyPressed = clone.SupportArmorKeyPressed;
+            }
         }
 
         public override void UpdateDead()
@@ -261,6 +310,7 @@ namespace VampKnives
             SengosCurse = false;
             TitaniumDefenseBuff = false;
             ShroomiteBuff = false;
+            SupportArmorBuff = false;
         }
         public override void OnHitByNPC(NPC npc, int damage, bool crit)
         {
@@ -492,9 +542,135 @@ namespace VampKnives
         bool SeventhEnhancedText;
         bool EigthEnhancedText;
         bool NinthEnhancedText;
-
+        float DirectionSwitch;
+        int SupportTime = 300;
+        bool VisualRun = true;
+        int VisorAlpha = 220;
+        int MovementSoundTimer;
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
+            if (SupportArmorSetBuff == true)
+            {
+                RunSupportTimer = true;
+            }
+            if (RunSupportTimer)
+            {
+                if(SupportTimer < SupportTime && SupportArmorSetBuffCount < 6)
+                {
+                    SupportTimer++;
+                }
+                else if (SupportTimer >= SupportTime && SupportArmorSetBuffCount < 6)
+                {
+                    SupportArmorSetBuffCount++;
+                    SupportTime += 50 * SupportArmorSetBuffCount;
+                    SupportTimer = 0;
+                }
+            }
+            else
+            {
+                RunSupportTimer = false;
+                SupportTimer = 0;
+                SupportArmorSetBuffCount = 0;
+            }
+            if (StartStoreResetTimer && HasSupportBuff == false)
+            {
+                StoreResetTimer++;
+                if(StoreResetTimer >= 600)
+                {
+                    BuffCountStore = 0;
+                    StoreResetTimer = 0;
+                    StartStoreResetTimer = false;
+                }
+            }
+            if (SupportArmorBuff && BuffCountStore > 0)
+            {
+                player.maxRunSpeed *= (1.5f + (float)Math.Log(BuffCountStore));
+                player.accRunSpeed *= (1.5f + (float)Math.Log(BuffCountStore));
+                player.lifeRegenTime += (int)(15 * BuffCountStore);
+                player.allDamage *= (1f + (float)Math.Log(BuffCountStore));
+                player.statDefense += (2 + (int)BuffCountStore);
+            }
+            if (SupportArmorSetBuffCount >= 1 && Transform == false)
+            {
+                int DustType = 67;
+                float VisorScale = 0.5f;
+                Color VisorColor = new Color(0, 251, 255);
+                if(SupportArmorSetBuffCount == 1)
+                {
+                    VisorAlpha = 220;
+                }
+                if (SupportArmorSetBuffCount == 2 && VisualRun == true)
+                {
+                    VisorAlpha = 180;
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    VisualRun = false;
+                }
+                else if(SupportArmorSetBuffCount == 3 && VisualRun == false)
+                {
+                    VisorAlpha = 140;
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    VisualRun = true;
+                }
+                else if (SupportArmorSetBuffCount == 4 && VisualRun == true)
+                {
+                    VisorAlpha = 100;
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    VisualRun = false;
+                }
+                else if (SupportArmorSetBuffCount == 5 && VisualRun == false)
+                {
+                    VisorAlpha = 60;
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    VisualRun = true;
+                }
+                else if (SupportArmorSetBuffCount == 6 && VisualRun == true)
+                {
+                    VisorAlpha = 0;
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    VisualRun = false;
+                }
+                if (player.direction == 1)
+                {
+                    for (int x = 0; x < 5; x++)
+                    {
+                        if (x >= 1 && x < 3)
+                        {
+                            int VisorDust = Dust.NewDust(new Vector2((player.Center.X + (4 - (2 * x))), player.Center.Y - 12), 0, 0, DustType, 0f, 0f, VisorAlpha, VisorColor, VisorScale);
+                            Main.dust[VisorDust].noGravity = true;
+                            Main.dust[VisorDust].velocity *= 0;
+                            Main.dust[VisorDust].shader = GameShaders.Armor.GetSecondaryShader(88, Main.LocalPlayer);
+                        }
+                        else
+                        {
+                            int VisorDust = Dust.NewDust(new Vector2((player.Center.X + (4 - (2 * x))), player.Center.Y - 14), 0, 0, DustType, 0f, 0f, VisorAlpha, VisorColor, VisorScale);
+                            Main.dust[VisorDust].noGravity = true;
+                            Main.dust[VisorDust].velocity *= 0;
+                            Main.dust[VisorDust].shader = GameShaders.Armor.GetSecondaryShader(88, Main.LocalPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < 5; x++)
+                    {
+                        if (x >= 1 && x < 3)
+                        {
+                            int VisorDust = Dust.NewDust(new Vector2((player.Center.X - (12 - (2 * x))), player.Center.Y - 12), 0, 0, DustType, 0f, 0f, VisorAlpha, VisorColor, VisorScale);
+                            Main.dust[VisorDust].noGravity = true;
+                            Main.dust[VisorDust].velocity *= 0;
+                            Main.dust[VisorDust].shader = GameShaders.Armor.GetSecondaryShader(88, Main.LocalPlayer);
+                        }
+                        else
+                        {
+                            int VisorDust = Dust.NewDust(new Vector2((player.Center.X - (12 - (2 * x))), player.Center.Y - 14), 0, 0, DustType, 0f, 0f, VisorAlpha, VisorColor, VisorScale);
+                            Main.dust[VisorDust].noGravity = true;
+                            Main.dust[VisorDust].velocity *= 0;
+                            Main.dust[VisorDust].shader = GameShaders.Armor.GetSecondaryShader(88, Main.LocalPlayer);
+                        }
+                    }
+                }
+
+            }
             if (NumCrafted == 20 && !FirstEnhancedText)
             {
                 CombatText.NewText(new Rectangle((int)player.position.X, (int)player.position.Y - 50, player.width, player.height), new Color(255, 255, 255, 255), "Ammo Crafting Enhanced!", true);
@@ -586,6 +762,11 @@ namespace VampKnives
             {
                 player.AddBuff(ModContent.BuffType<Buffs.MageHoodBuff>(), 60, true);
             }
+            if(HasTabletEquipped == true && Transform == true && (player.bodyFrame.Y == 560 || player.bodyFrame.Y == 168))
+            {
+                Main.PlaySound(SoundID.Item32.WithVolume(0.5f), player.position);
+            }
+            //mod.Logger.Info("FRAME: " + player.bodyFrame.Y);
             if (HasTabletEquipped == false)
             {
                 Transform = false;
@@ -712,6 +893,9 @@ namespace VampKnives
             player.balloon = -1;
             nullified = true;
         }
+        bool HasSupportBuff;
+        bool StartStoreResetTimer;
+        int StoreResetTimer;
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (DoubleTapStart && HasTabletEquipped)
@@ -748,7 +932,6 @@ namespace VampKnives
                     IsSupportKeyPressed = false;
                     IsTrueSupport = false;
                 }
-
             }
             if(VampKnives.VampDashHotKey.JustPressed && HasTabletEquipped)
             {
@@ -768,6 +951,121 @@ namespace VampKnives
                     Transform = false;
                     DoubleTapStart = false;
                     DoubleTapTimer = 0;
+                }
+            }
+            if (VampKnives.SupportArmorHotKey.JustPressed)
+            {
+                for (int x = 0; x < Main.ActivePlayersCount; x++)
+                {
+                    if (Main.player[x].HasBuff(ModContent.BuffType<Buffs.SupportBuff>()))
+                    {
+                        HasSupportBuff = true;
+                    }
+                    else
+                    {
+                        HasSupportBuff = false;
+                    }
+                }
+                if (HasSupportBuff == false)
+                {
+                    BuffCountStore = SupportArmorSetBuffCount;
+                    SupportArmorSetBuffCount = 0;
+                    StartStoreResetTimer = true;
+                    StoreResetTimer = 0;
+                    Main.NewText("BuffCountStore: " + BuffCountStore);
+                    SupportArmorKeyPressed = true;
+                    OvalDust(new Vector2(player.Center.X - 5, player.Center.Y),3, 5, player, new Color(50, 182, 194), 15, 2f);
+                    player.AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
+                    SupportTime = 300;
+                    VisualRun = true;
+                }
+            }
+        }
+
+        public void OvalDust(Vector2 position, float width, float height, Player player, Color color, int DustType, float size, bool scattered = false, bool IsCut = false, Vector2? CutPositionsAndVelocityMult = null)
+        {
+            float VelocityX = 0;
+            float VelocityY = 0;
+            float End1;
+            float End2;
+            float End1Final = 0;
+            float End2Final = 0;
+            float a = width;
+            float b = height;
+            float Circle = 360f;
+            float DivisorFactor = 360f;
+            float Divisor = Circle / DivisorFactor;
+            float FirstLower = 0;
+            float FirstUpper = 90f/Divisor;
+            float SecondLower = 270f/Divisor;
+            float SecondUpper = 360f/Divisor;
+            float ThirdLower = 90f/Divisor;
+            float ThirdUpper = 270f/Divisor;
+            float HalfOfFirstUpper = FirstUpper / 2;
+            float DoubleOfFirstUpper = FirstUpper * 2;
+            int ScatteredWeight = 0;
+            //bool IsCut = false;
+            //if(CutPositions != null)
+            //{
+            //    IsCut = true;
+            //}
+            if(scattered)
+            {
+                ScatteredWeight = 96;
+            }
+
+            for (int iteration = 0; iteration < SecondUpper; iteration += 12)
+            {
+                if (Main.rand.Next(1, 100) > ScatteredWeight)
+                {
+                    if (IsCut)
+                    {
+                        End1 = CutPositionsAndVelocityMult.Value.X;
+                        End2 = CutPositionsAndVelocityMult.Value.Y;
+                        if (End1 > End2)
+                        {
+                            End1Final = End2;
+                            End2Final = End1;
+                            if (iteration > End1Final && iteration <= End2Final)
+                            {
+                                float radian = MathHelper.ToRadians(iteration);
+                                Vector2 vector = radian.ToRotationVector2() * new Vector2(a, b);
+                                int DustID3 = Dust.NewDust(position, 1, 1, DustType, 0f, 0f, 10, color, size);
+                                Main.dust[DustID3].noGravity = true;
+                                Main.dust[DustID3].velocity = vector;
+                            }
+                        }
+                        else
+                        {
+                            End1Final = End1;
+                            End2Final = End2;
+                            if (iteration < End1Final || iteration >= End2Final)
+                            {
+                                float radian = MathHelper.ToRadians(iteration);
+                                Vector2 vector = radian.ToRotationVector2() * new Vector2(a, b);
+                                int DustID3 = Dust.NewDust(position, 1, 1, DustType, 0f, 0f, 10, color, size);
+                                Main.dust[DustID3].noGravity = true;
+                                Main.dust[DustID3].velocity = vector;
+                            }
+                        }
+                    }
+
+                    else if (!IsCut)
+                    {
+                        if ((iteration >= FirstLower && iteration < FirstUpper) || iteration > SecondLower && iteration <= SecondUpper)
+                        {
+                            VelocityX = (float)((a * b) / Math.Sqrt(Math.Pow(b, 2) + Math.Pow(a, 2) * Math.Pow(Math.Tan(MathHelper.ToRadians(iteration)), 2)));
+                            VelocityY = (float)((a * b * Math.Tan(MathHelper.ToRadians(iteration))) / Math.Sqrt(Math.Pow(b, 2) + Math.Pow(a, 2) * Math.Pow(Math.Tan(MathHelper.ToRadians(iteration)), 2)));
+                        }
+                        else if (iteration >= ThirdLower && iteration < ThirdUpper)
+                        {
+                            VelocityX = -(float)((a * b) / Math.Sqrt(Math.Pow(b, 2) + Math.Pow(a, 2) * Math.Pow(Math.Tan(MathHelper.ToRadians(iteration)), 2)));
+                            VelocityY = -(float)((a * b * Math.Tan(MathHelper.ToRadians(iteration))) / Math.Sqrt(Math.Pow(b, 2) + Math.Pow(a, 2) * Math.Pow(Math.Tan(MathHelper.ToRadians(iteration)), 2)));
+                        }
+                        int DustID3 = Dust.NewDust(position, 1, 1, DustType, 0f, 0f, 10, color, size);
+                        Main.dust[DustID3].noGravity = true;
+                        Main.dust[DustID3].velocity = new Vector2(VelocityX, VelocityY);
+                    }
                 }
             }
         }
