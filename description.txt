@@ -2,6 +2,18 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Update 3.4, The Armor and QoL update:
+----------------------------------------------------
+-A few new knives have been added that fill the gaps that were previously present, please feel free to give me feedback on how they can be balanced.
+-**Two new armor sets** allowing for specialization between support, damage, and tanking
+-You can now **upgrade your knives at your knife workbench** by using the little hammer button
+-Added ways to **make Silt,Sand,Marble, and Granite.(All from dirt, stone, and obsidian)** Working on a more conventional and fun way of doing this, but that's later down the road. Hope this reduces the grind a bit for whetstones while still not making them easier to craft.
+-Temporarily,** obsidian is now renewable to aid with crafting granite**, this can be obtained by throwing bottled water into lava.
+-Non-vampire-knives items will no longer appear with the vampire upgrade stats tool-tips upon being crafted
+I'm sure there are other changes, but these are the major big ones.
+
+Recent Changes:
+
 Hotfix 3.3.2: Slight optimization of defense knives
 Hotfix 3.3.1: Living Fire block added, fixed difficulty options not showing
 Update 3.3, The Upgrade Update:
@@ -9,8 +21,6 @@ Added the ability to upgrade your knives at the Vampire Altar (menu opened by ri
 Added the Crit Emblem, this boosts crit chance by 8% for all damage types and can be used to upgrade your knives at the knife altar (stacks to 20)
 Made the whetstone slightly harder to make and stacks to 20 (now required to upgrade your knives)
 Two new material drops that are used to upgrade your knives (for details on exact drops check the wiki, which is posted in the discord)
-
-Recent Changes:
 
 Hotfix 3.2.3: Fixed support projectile
 Hotfix 3.2.2: Fixed lifesteal imbalance and slight balance to luminite knives
@@ -41,17 +51,3 @@ Complete change to vampire necklace (Based on bosses killed)
 Addition of a skin shop for the necklace (Talk to the Vampire NPC)
 Addition of new tier of defense knives
 Addition of new tier of support knives (Tier 3 scales as you defeat bosses)
-
-
-Past Changes: 
-
-New town NPC - Arrives after either BoC or EoW is defeated.
-New healing system - The more damage you do, the more Blood Essence you accrue.
-A new crafting table that allows you to craft anything and everything from the mod, and will even decrease the material costs of every item.
-A TON of new knives, more than I could remember.
-A new knife damage class.
-A new armor set, that scales with each boss you defeat.
-A few new accessories to make the new damage class viable.
-MANY Many changes to balance.
-New way to craft the casts, knives, throwing knives, etc. w/out spawning another at random. (For more info on recipes that require casts, hammers, chisels, etc. join the discord, though, a wiki is in the works!)
-Probably a whole lot more I'm forgetting :P

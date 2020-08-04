@@ -154,62 +154,62 @@ namespace VampKnives
             //Sand
             HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 6);
             HammerConvertRecipe.AddTile(this.GetTile("KnifeBench"));
-            HammerConvertRecipe.SetResult(ItemID.SandBlock, 2);
+            HammerConvertRecipe.SetResult(ItemID.SandBlock, 5);
             HammerConvertRecipe.AddRecipe();
             HammerConvertRecipe = new HammerRecipe(this);
             HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 6);
             HammerConvertRecipe.AddTile(this.GetTile("VampTableTile"));
-            HammerConvertRecipe.SetResult(ItemID.SandBlock, 2);
+            HammerConvertRecipe.SetResult(ItemID.SandBlock, 5);
             HammerConvertRecipe.AddRecipe();
             //Silt
             HammerConvertRecipe = new HammerRecipe(this);
             HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 3);
             HammerConvertRecipe.AddIngredient(ItemID.DirtBlock, 3);
             HammerConvertRecipe.AddTile(this.GetTile("KnifeBench"));
-            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 2);
+            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 5);
             HammerConvertRecipe.AddRecipe();
             HammerConvertRecipe = new HammerRecipe(this);
             HammerConvertRecipe.AddIngredient(ItemID.StoneBlock, 3);
             HammerConvertRecipe.AddIngredient(ItemID.DirtBlock, 3);
             HammerConvertRecipe.AddTile(this.GetTile("VampTableTile"));
-            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 2);
+            HammerConvertRecipe.SetResult(ItemID.SiltBlock, 5);
             HammerConvertRecipe.AddRecipe();
 
             HammerAndChiselRecipe ConvertRecipe = new HammerAndChiselRecipe(this);
             //Marble
             ConvertRecipe.AddIngredient(ItemID.PearlstoneBlock,3);
             ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
-            ConvertRecipe.SetResult(ItemID.Marble);
+            ConvertRecipe.SetResult(ItemID.Marble, 2);
             ConvertRecipe.AddRecipe();
             ConvertRecipe = new HammerAndChiselRecipe(this);
             ConvertRecipe.AddIngredient(ItemID.PearlstoneBlock,3);
             ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
-            ConvertRecipe.SetResult(ItemID.Marble);
+            ConvertRecipe.SetResult(ItemID.Marble, 2);
             ConvertRecipe.AddRecipe();
             //Granite
             ConvertRecipe = new HammerAndChiselRecipe(this);
             ConvertRecipe.AddIngredient(ItemID.Obsidian);
             ConvertRecipe.AddIngredient(ItemID.CrimstoneBlock,5);
             ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
-            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.SetResult(ItemID.Granite, 5);
             ConvertRecipe.AddRecipe();
             ConvertRecipe = new HammerAndChiselRecipe(this);
             ConvertRecipe.AddIngredient(ItemID.Obsidian);
             ConvertRecipe.AddIngredient(ItemID.EbonstoneBlock,5);
             ConvertRecipe.AddTile(this.GetTile("KnifeBench"));
-            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.SetResult(ItemID.Granite, 5);
             ConvertRecipe.AddRecipe();
             ConvertRecipe = new HammerAndChiselRecipe(this);
             ConvertRecipe.AddIngredient(ItemID.Obsidian);
             ConvertRecipe.AddIngredient(ItemID.CrimstoneBlock, 5);
             ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
-            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.SetResult(ItemID.Granite, 5);
             ConvertRecipe.AddRecipe();
             ConvertRecipe = new HammerAndChiselRecipe(this);
             ConvertRecipe.AddIngredient(ItemID.Obsidian);
             ConvertRecipe.AddIngredient(ItemID.EbonstoneBlock, 5);
             ConvertRecipe.AddTile(this.GetTile("VampTableTile"));
-            ConvertRecipe.SetResult(ItemID.Granite);
+            ConvertRecipe.SetResult(ItemID.Granite, 5);
             ConvertRecipe.AddRecipe();
         }
         public override void Load()
