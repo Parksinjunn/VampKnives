@@ -502,7 +502,7 @@ namespace VampKnives
             {
                 int PlayerToBuff = reader.ReadInt32();
                 int BuffCountStore = reader.ReadInt32();
-                Main.NewText("Count2: " + BuffCountStore);
+                //Main.NewText("Count2: " + BuffCountStore);
                 int PlayerID = reader.ReadInt32();
                 ModPacket packet = this.GetPacket();
                 packet.Write(SupportArmorSend);
@@ -514,7 +514,7 @@ namespace VampKnives
             {
                 int PlayerToBuff = reader.ReadInt32();
                 int BuffCountStore = reader.ReadInt32();
-                Main.NewText("Count3: " + BuffCountStore);
+                //Main.NewText("Count3: " + BuffCountStore);
                 Main.player[PlayerToBuff].AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
                 Main.player[PlayerToBuff].GetModPlayer<ExamplePlayer>().BuffCountStore = BuffCountStore;
             }

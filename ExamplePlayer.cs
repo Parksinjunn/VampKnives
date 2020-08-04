@@ -941,7 +941,7 @@ namespace VampKnives
             {
                 if(Transform == false)
                 {
-                    Main.NewText("Transformed");
+                    //Main.NewText("Transformed");
                     Transform = true;
                     DoubleTapStart = false;
                     DoubleTapTimer = 0;
@@ -972,7 +972,7 @@ namespace VampKnives
                     SupportArmorSetBuffCount = 0;
                     StartStoreResetTimer = true;
                     StoreResetTimer = 0;
-                    Main.NewText("BuffCountStore: " + BuffCountStore);
+                    //Main.NewText("BuffCountStore: " + BuffCountStore);
                     SupportArmorKeyPressed = true;
                     OvalDust(new Vector2(player.Center.X - 5, player.Center.Y),3, 5, player, new Color(50, 182, 194), 15, 2f);
                     player.AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
