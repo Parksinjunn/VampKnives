@@ -40,19 +40,16 @@ namespace VampKnives.Items
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("NebulaKnives"));
-            recipe.AddIngredient(mod.GetItem("VortexKnives"));
-            recipe.AddIngredient(mod.GetItem("SolarKnives"));
-            recipe.AddIngredient(mod.GetItem("StardustKnives"));
-            recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.FragmentSolar, 18);
-            recipe.AddIngredient(ItemID.FragmentStardust, 18);
-            recipe.AddIngredient(ItemID.FragmentVortex, 18);
-            recipe.AddIngredient(ItemID.FragmentNebula, 18);
+            recipe.AddIngredient(ModContent.ItemType<TerraKnives>());
+            recipe.AddIngredient(ModContent.ItemType<Nyives>());
+            recipe.AddIngredient(ModContent.ItemType<WrathfulStar>());
+            recipe.AddIngredient(ModContent.ItemType<RukasusTeslaKnives>());
+            recipe.AddIngredient(ModContent.ItemType<HorsemansKnives>());
+            recipe.AddIngredient(ModContent.ItemType<BossDrops.BloomingTerror>());
+            recipe.AddIngredient(ModContent.ItemType<StarfuryKnives>());
+            recipe.AddIngredient(ModContent.ItemType<BeeKnives>());
+            recipe.AddIngredient(ModContent.ItemType<EnchantedKnives>());
+            recipe.AddIngredient(ModContent.ItemType<MaterialKnives.CopperKnives>());
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();

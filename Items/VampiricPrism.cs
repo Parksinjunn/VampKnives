@@ -19,11 +19,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Vampiric Prism");
-            Tooltip.SetDefault("Fires boomerang-like knives");
+            Tooltip.SetDefault("Fires knives extremely fast at the cost of life");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 100; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 95; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 26;
             item.height = 30;
             item.useTime = 10;
@@ -112,17 +112,10 @@ namespace VampKnives.Items
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.LightsBane, 1);
-            recipe.AddIngredient(ItemID.DemoniteBar, 10);
-            recipe.AddIngredient(ItemID.RottenChunk, 5);
-            recipe.AddTile(mod.GetTile("KnifeBench"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.LightsBane, 1);
-            recipe.AddIngredient(ItemID.DemoniteBar, 8);
-            recipe.AddIngredient(ItemID.RottenChunk, 3);
+            recipe.AddIngredient(ModContent.ItemType<SengosForgottenBlades>());
+            recipe.AddIngredient(ItemID.VampireKnives, 1);
+            recipe.AddIngredient(ItemID.LastPrism, 1);
+            recipe.AddIngredient(ItemID.LunarBar, 7);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();

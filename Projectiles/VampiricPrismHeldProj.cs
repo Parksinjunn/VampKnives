@@ -23,6 +23,7 @@ namespace VampKnives.Projectiles
         int ShootTimer;
         static int DustTimerMax = 17;
         int DustTimer;
+        int HealthTimer;
 
         // This value controls how many frames it takes for the beams to begin dealing damage. Before then they can't hit anything.
         public const float DamageStart = 1f;
@@ -89,10 +90,14 @@ namespace VampKnives.Projectiles
             Player player = Main.player[projectile.owner];
             ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
 
-            Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
+            HealthTimer += (int)(1 + (ChargeCounter / 72));
+            if(HealthTimer > 10)
+            {
+                HealthTimer = 0;
+                player.statLife-= (int)(1 + (ChargeCounter / 360));
+            }
 
-            // Update the Prism's damage every frame so that it is dynamically affected by Mana Sickness.
-            UpdateDamageForManaSickness(player);
+            Vector2 rrp = player.RotatedRelativePoint(player.MountedCenter, true);
 
             // Update the frame counter.
             FrameCounter += 1f;
@@ -110,13 +115,9 @@ namespace VampKnives.Projectiles
                 // Slightly re-aim the Prism every frame so that it gradually sweeps to point towards the mouse.
                 UpdateAim(rrp, player.HeldItem.shootSpeed);
 
-                // player.CheckMana returns true if the mana cost can be paid. Since the second argument is true, the mana is actually consumed.
-                // If mana shouldn't consumed this frame, the || operator short-circuits its evaluation player.CheckMana never executes.
-                bool manaIsAvailable = !ShouldConsumeMana() || player.CheckMana(player.HeldItem.mana, true, false);
-
                 // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
                 // player.channel indicates whether the player is still holding down the mouse button to use the item.
-                bool stillInUse = player.channel && manaIsAvailable && !player.noItems && !player.CCed;
+                bool stillInUse = player.channel && !player.noItems && !player.CCed;
 
                 // Spawn in the Prism's lasers on the first frame if the player is capable of using the item.
                 if (stillInUse)
@@ -231,12 +232,6 @@ namespace VampKnives.Projectiles
             projectile.timeLeft = 2;
         }
 
-        private void UpdateDamageForManaSickness(Player player)
-        {
-            float ownerCurrentMagicDamage = player.allDamage + (player.magicDamage - 1f);
-            projectile.damage = (int)(player.HeldItem.damage * ownerCurrentMagicDamage);
-        }
-
         private void UpdateAnimation()
         {
             projectile.frameCounter++;
@@ -285,28 +280,6 @@ namespace VampKnives.Projectiles
 
             // If you do not multiply by projectile.direction, the player's hand will point the wrong direction while facing left.
             player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
-        }
-
-        private bool ShouldConsumeMana()
-        {
-            // If the mana consumption timer hasn't been initialized yet, initialize it and consume mana on frame 1.
-            if (ManaConsumptionRate == 0f)
-            {
-                NextManaFrame = ManaConsumptionRate = MaxManaConsumptionDelay;
-                return true;
-            }
-
-            // Should mana be consumed this frame?
-            bool consume = FrameCounter == NextManaFrame;
-
-            // If mana is being consumed this frame, update the rate of mana consumption and write down the next frame mana will be consumed.
-            if (consume)
-            {
-                // MathHelper.Clamp(X,A,B) guarantees that A <= X <= B. If X is outside the range, it will be set to A or B accordingly.
-                ManaConsumptionRate = MathHelper.Clamp(ManaConsumptionRate - 1f, MinManaConsumptionDelay, MaxManaConsumptionDelay);
-                NextManaFrame += ManaConsumptionRate;
-            }
-            return consume;
         }
 
         private void UpdateAim(Vector2 source, float speed)

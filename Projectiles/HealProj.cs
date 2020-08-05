@@ -57,7 +57,7 @@ namespace VampKnives.Projectiles
             projectile.localAI[0] += 1f;
 
             int num498 = (int)projectile.ai[0];
-            float num499 = 12f;
+            float num499 = 26f;
             Vector2 vector31 = new Vector2(projectile.position.X + (float)projectile.width * 0.5f, projectile.position.Y + (float)projectile.height * 0.5f);
             float num500 = Main.player[num498].Center.X - vector31.X;
             float num501 = Main.player[num498].Center.Y - vector31.Y;
@@ -72,7 +72,7 @@ namespace VampKnives.Projectiles
                     if (((int)(damage * 0.40)) < 1)
                         p.VampCurrent += 1f;
                     p.DelayTimer = 30;
-                    int statLifeCalc = (int)((p.HealAccMult) * ((p.VampCurrent / 230) + (0.6 * ((0.000000180527267 * Math.Pow(damage, 4)) - (0.0000551402375 * Math.Pow(damage, 3)) + (0.00382482 * Math.Pow(damage, 2)) + (0.09874884 * damage) + 1.34702863)) + Main.rand.NextFloat(-2, 2)));
+                    int statLifeCalc = (int)((p.HealAccMult) * ((p.VampCurrent / 230) + (1.21015154 * Math.Log(damage) - 0.04153757)));
                     if (statLifeCalc > 20)
                         statLifeCalc = 20 + Main.rand.Next(-3, 3) + (int)p.VampCurrent / 330;
                     if (VampKnives.Unforgiving && statLifeCalc > 10)

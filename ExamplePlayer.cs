@@ -112,7 +112,7 @@ namespace VampKnives
         public float VampDecSlow = 1f;
         public int DelayTimer;
         public double DelayAdd;
-        public float HealAccMult = 0.4f;
+        public float HealAccMult = 1f;
         public bool PsionicArmorSet;
         public bool PsionicPower;
         public int numProj;
@@ -213,15 +213,15 @@ namespace VampKnives
             VampNecklace = false;
             if(VampKnives.Legacy)
             {
-                HealAccMult = 0.8f;
+                HealAccMult = 1.3f;
             }
             if (VampKnives.Normal)
             {
-                HealAccMult = 0.4f;
+                HealAccMult = 1f;
             }
             if (VampKnives.Unforgiving)
             {
-                HealAccMult = 0.2f;
+                HealAccMult = 0.7f;
             }
             DelayAdd = 0;
             PsionicArmorSet = false;

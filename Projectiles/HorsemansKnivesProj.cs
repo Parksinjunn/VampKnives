@@ -56,54 +56,54 @@ namespace VampKnives.Projectiles
                         int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 1, projectile.velocity.X * 0.2f, projectile.velocity.Y * -0.2f, 10, Color.Gray, 1f);
                     }
                 }
-
-                if(Main.rand.Next(1,(int)(200 * (float)Math.Log(10*ProjCount.GetPumpkinActiveCount()))) == 90)
-                {
-                    for (int i = 0; i < 200; i++)
-                    {
-                        if(Main.npc[i].CanBeChasedBy())
-                        {
-                            ActiveTargets++;
-                            TargetIDs.Add(i);
-                            //Main.NewText("ID: " + i);
-                        }
-                    }
-                    //Main.NewText("ActiveTargets: " + ActiveTargets);
-                    //Main.NewText("TargetIDs Stored: " + TargetIDs.Count);
-                    for (int i = 0; i < TargetIDs.Count; i++)
-                    {
-                        //Main.NewText("FinalID: " + TargetIDs[i]);
-                        if(!Main.npc[TargetIDs[i]].active)
-                        {
-                            TargetIDs.RemoveAt(i);
-                            i++;
-                        }
-                        if (Main.rand.Next(1, ActiveTargets) <= 2)
-                        {
-                            int logicCheckScreenHeight = Main.LogicCheckScreenHeight;
-                            int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
-                            int num = Main.rand.Next(100, 300);
-                            int num2 = Main.rand.Next(100, 300);
-                            num = ((Main.rand.Next(2) != 0) ? (num + (logicCheckScreenWidth / 2 - num)) : (num - (logicCheckScreenWidth / 2 + num)));
-                            num2 = ((Main.rand.Next(2) != 0) ? (num2 + (logicCheckScreenHeight / 2 - num2)) : (num2 - (logicCheckScreenHeight / 2 + num2)));
-                            num += (int)projectile.position.X;
-                            num2 += (int)projectile.position.Y;
-                            float num3 = 8f;
-                            Vector2 vector = new Vector2((float)num, (float)num2);
-                            float num4 = Main.npc[TargetIDs[i]].position.X - vector.X;
-                            float num5 = Main.npc[TargetIDs[i]].position.Y - vector.Y;
-                            float num6 = (float)Math.Sqrt((double)(num4 * num4 + num5 * num5));
-                            num6 = num3 / num6;
-                            num4 *= num6;
-                            num5 *= num6;
-                            Projectile.NewProjectile((float)num, (float)num2, num4, num5, 321, projectile.damage / 2, projectile.knockBack, projectile.owner, (float)TargetIDs[i], 0f);
-                        }
-                    }
-                    ActiveTargets = 0;
-                    TargetIDs.Clear();
-                }
             }
-            if(HitCount > 10)
+
+            if (Main.rand.Next(1, (int)(200 * (float)Math.Log(10 * ProjCount.GetPumpkinActiveCount()))) == 90)
+            {
+                for (int i = 0; i < 200; i++)
+                {
+                    if (Main.npc[i].CanBeChasedBy())
+                    {
+                        ActiveTargets++;
+                        TargetIDs.Add(i);
+                        //Main.NewText("ID: " + i);
+                    }
+                }
+                //Main.NewText("ActiveTargets: " + ActiveTargets);
+                //Main.NewText("TargetIDs Stored: " + TargetIDs.Count);
+                for (int i = 0; i < TargetIDs.Count; i++)
+                {
+                    //Main.NewText("FinalID: " + TargetIDs[i]);
+                    if (!Main.npc[TargetIDs[i]].active)
+                    {
+                        TargetIDs.RemoveAt(i);
+                        i++;
+                    }
+                    if (Main.rand.Next(1, ActiveTargets) <= 2)
+                    {
+                        int logicCheckScreenHeight = Main.LogicCheckScreenHeight;
+                        int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
+                        int num = Main.rand.Next(100, 300);
+                        int num2 = Main.rand.Next(100, 300);
+                        num = ((Main.rand.Next(2) != 0) ? (num + (logicCheckScreenWidth / 2 - num)) : (num - (logicCheckScreenWidth / 2 + num)));
+                        num2 = ((Main.rand.Next(2) != 0) ? (num2 + (logicCheckScreenHeight / 2 - num2)) : (num2 - (logicCheckScreenHeight / 2 + num2)));
+                        num += (int)projectile.position.X;
+                        num2 += (int)projectile.position.Y;
+                        float num3 = 40f;
+                        Vector2 vector = new Vector2((float)num, (float)num2);
+                        float num4 = Main.npc[TargetIDs[i]].position.X - vector.X;
+                        float num5 = Main.npc[TargetIDs[i]].position.Y - vector.Y;
+                        float num6 = (float)Math.Sqrt((double)(num4 * num4 + num5 * num5));
+                        num6 = num3 / num6;
+                        num4 *= num6;
+                        num5 *= num6;
+                        Projectile.NewProjectile((float)num, (float)num2, num4, num5, 321, projectile.damage / 2, projectile.knockBack, projectile.owner, (float)TargetIDs[i], 0f);
+                    }
+                }
+                ActiveTargets = 0;
+                TargetIDs.Clear();
+            }
+            if(HitCount > 4)
             {
                 projectile.Kill();
             }
@@ -117,6 +117,15 @@ namespace VampKnives.Projectiles
         {
             projectile.penetrate++;
             HitCount++;
+        }
+        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        {
+            Player owner = Main.player[projectile.owner];
+            if (HitCount == 1)
+            {
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+            }
+            Hoods(n);
         }
         public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {

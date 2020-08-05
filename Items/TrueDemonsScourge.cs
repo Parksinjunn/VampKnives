@@ -11,7 +11,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("True Demon's Scourge");
-            Tooltip.SetDefault("A wand possessing the power of the sorcerers of old");
+            Tooltip.SetDefault("An aimed whip possessing the power of a true demon");
         }
         public override void SafeSetDefaults()
         {
