@@ -47,6 +47,10 @@ namespace VampKnives
         private WorkbenchSlotState WorkbenchSlotPanel;
         public UserInterface UpgradePanelUI;
         private UpgradePanel UpgradePanelState;
+        internal UserInterface BloodAltarUIPanel;
+        private BloodAltarUI BloodAltarUIState;
+
+        //public static List<int> BloodAltarPosition = new List<int>();
 
         public static int SharpnessUpgradeCounter;
         public static int CritUpgradeCounter;
@@ -256,6 +260,10 @@ namespace VampKnives
                 UpgradePanelUI = new UserInterface();
                 UpgradePanelState = new UpgradePanel();
                 UpgradePanelUI.SetState(UpgradePanelState);
+
+                BloodAltarUIPanel = new UserInterface();
+                BloodAltarUIState = new BloodAltarUI();
+                BloodAltarUIPanel.SetState(BloodAltarUIState);
             }
             base.Load();
         }
@@ -384,6 +392,11 @@ namespace VampKnives
                         UpgradePanelUI.Update(Main._drawInterfaceGameTime);
                         UpgradePanelState.Draw(Main.spriteBatch);
                     }
+                    if(BloodAltarUI.visible)
+                    {
+                        BloodAltarUIPanel.Update(Main._drawInterfaceGameTime);
+                        BloodAltarUIState.Draw(Main.spriteBatch);
+                    }
                     return true;
                 }));
                 if(Main.playerInventory == false && WorkbenchSlotState.visible)
@@ -393,6 +406,10 @@ namespace VampKnives
                 if (Main.playerInventory == false && UpgradePanel.visible)
                 {
                     UpgradePanel.visible = false;
+                }
+                if (Main.playerInventory == false && BloodAltarUI.visible)
+                {
+                    BloodAltarUI.visible = false;
                 }
             }
             inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));

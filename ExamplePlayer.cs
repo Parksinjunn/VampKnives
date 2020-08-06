@@ -9,6 +9,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using VampKnives.Projectiles.DefenseKnivesProj;
+using VampKnives.Tiles;
 
 namespace VampKnives
 {
@@ -155,6 +156,10 @@ namespace VampKnives
         public int BuffCountStore;
         public bool SupportArmorKeyPressed;
 
+        public int BloodPoints;
+        public static List<int> AltarBeingUsed = new List<int>();
+        public static Vector2 MostRecentClick;
+
         public override void ResetEffects()
         {
             Connor = false;
@@ -250,6 +255,13 @@ namespace VampKnives
                     ProjCount.ZenithType.RemoveAt(g);
                     Projectiles.ZenithsTrueBladesProj.SpawnTimer = 15;
                     //Main.NewText("Length: " + ProjCount.ZenithProj.Count);
+                }
+            }
+            for(int iterations = 0; iterations < AltarBeingUsed.Count; iterations += 2)
+            {
+                if (BloodAltarStorage.RitualOfTheStone[iterations] == true)
+                {
+                        BloodAltarStorage.StoneRitual((int)AltarBeingUsed[iterations], (int)AltarBeingUsed[iterations + 1], player);
                 }
             }
         }
@@ -432,6 +444,7 @@ namespace VampKnives
                 {"Normal", NormalPlayer},
                 {"Unforgiving", UnforgivingPlayer},
                 {"NumCrafted", NumCrafted },
+                {"BloodPoints", BloodPoints }
             };
         }
         public override void Load(TagCompound tag)
@@ -444,6 +457,7 @@ namespace VampKnives
             NormalPlayer = tag.GetBool("Normal");
             UnforgivingPlayer = tag.GetBool("Unforgiving");
             NumCrafted = tag.GetInt("NumCrafted");
+            BloodPoints = tag.GetInt("BloodPoints");
         }
         public override void UpdateBadLifeRegen()
         {
@@ -602,31 +616,31 @@ namespace VampKnives
                 if (SupportArmorSetBuffCount == 2 && VisualRun == true)
                 {
                     VisorAlpha = 180;
-                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, VisorColor, DustType, 1.2f, true);
                     VisualRun = false;
                 }
                 else if(SupportArmorSetBuffCount == 3 && VisualRun == false)
                 {
                     VisorAlpha = 140;
-                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, VisorColor, DustType, 1.2f, true);
                     VisualRun = true;
                 }
                 else if (SupportArmorSetBuffCount == 4 && VisualRun == true)
                 {
                     VisorAlpha = 100;
-                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, VisorColor, DustType, 1.2f, true);
                     VisualRun = false;
                 }
                 else if (SupportArmorSetBuffCount == 5 && VisualRun == false)
                 {
                     VisorAlpha = 60;
-                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, VisorColor, DustType, 1.2f, true);
                     VisualRun = true;
                 }
                 else if (SupportArmorSetBuffCount == 6 && VisualRun == true)
                 {
                     VisorAlpha = 0;
-                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, player, VisorColor, DustType, 1.2f, true);
+                    OvalDust(new Vector2(player.Center.X, player.Center.Y - 13), 1.5f, 0.5f, VisorColor, DustType, 1.2f, true);
                     VisualRun = false;
                 }
                 if (player.direction == 1)
@@ -974,7 +988,7 @@ namespace VampKnives
                     StoreResetTimer = 0;
                     //Main.NewText("BuffCountStore: " + BuffCountStore);
                     SupportArmorKeyPressed = true;
-                    OvalDust(new Vector2(player.Center.X - 5, player.Center.Y),3, 5, player, new Color(50, 182, 194), 15, 2f);
+                    OvalDust(new Vector2(player.Center.X - 5, player.Center.Y),3, 5, new Color(50, 182, 194), 15, 2f);
                     player.AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
                     SupportTime = 300;
                     VisualRun = true;
@@ -982,7 +996,7 @@ namespace VampKnives
             }
         }
 
-        public void OvalDust(Vector2 position, float width, float height, Player player, Color color, int DustType, float size, bool scattered = false, bool IsCut = false, Vector2? CutPositionsAndVelocityMult = null)
+        public void OvalDust(Vector2 position, float width, float height, Color color, int DustType, float size, bool scattered = false, bool IsCut = false, Vector2? CutPositionsAndVelocityMult = null)
         {
             float VelocityX = 0;
             float VelocityY = 0;

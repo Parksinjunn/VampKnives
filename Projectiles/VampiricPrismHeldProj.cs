@@ -214,11 +214,11 @@ namespace VampKnives.Projectiles
                         //SizeY *= 5f;
                         if (player.velocity.X == 0 && player.velocity.Y == 0)
                         {
-                            p.OvalDust(DustPosition, SizeY, SizeX, player, Color.Red, 15, 1f, false, true, new Vector2(End1, End2));
+                            p.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false, true, new Vector2(End1, End2));
                         }
                         else
                         {
-                            p.OvalDust(DustPosition, SizeY, SizeX, player, Color.Red, 15, 1f, false);
+                            p.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false);
                         }
                         //END DUST SPAWN CODE
                         ShootTimer = 0;

@@ -24,14 +24,14 @@ namespace VampKnives.Items
             item.noUseGraphic = true;
             item.useStyle = 1;
             item.noMelee = true;
-            item.knockBack = 3;
+            item.knockBack = 0;
             item.value = Item.sellPrice(0, 5, 0, 0);
             item.rare = 6;
             item.UseSound = SoundID.Item39; 
             item.autoReuse = true;
             item.shoot = mod.ProjectileType("CorruptionNestKnivesProj");
             item.shootSpeed = 15f;
-            item.scale = 0.25f;
+            item.scale = 0.10f;
         }
 
         public override void AddRecipes()

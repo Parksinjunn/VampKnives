@@ -28,9 +28,18 @@ namespace VampKnives.NPCs
         }
         public override void NPCLoot(NPC npc)
         {
+            ExamplePlayer p = Main.player[npc.lastInteraction].GetModPlayer<ExamplePlayer>();
+            if(!npc.boss)
+            {
+                p.BloodPoints += 1 + npc.lifeMax / 100;
+            }
+            else
+            {
+                p.BloodPoints += 1 + npc.lifeMax / 500;
+            }
+
             if (npc.lastInteraction != 255)
             {
-                ExamplePlayer p = Main.player[npc.lastInteraction].GetModPlayer<ExamplePlayer>();
                 if (p.VampNecklace)
                 {
                     if (Main.netMode == 0)
@@ -118,7 +127,7 @@ namespace VampKnives.NPCs
                 if (ran == 5)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionShard>());
             }
-            if (npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater)
+            if ((npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater) && Main.hardMode)
             {
                 if (Main.rand.Next(1, 50) == 25)
                 {
@@ -139,7 +148,7 @@ namespace VampKnives.NPCs
                 if (ran == 5)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
             }
-            if(npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera)
+            if((npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera) && Main.hardMode)
             {
                 if(Main.rand.Next(1,50) == 25)
                 {
@@ -160,7 +169,7 @@ namespace VampKnives.NPCs
             if (npc.type == NPCID.KingSlime)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Superglue>());
-                if (Main.rand.Next(0, 5) == 3)
+                if (Main.rand.Next(0, 5) >= 3)
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
                 }
@@ -169,14 +178,14 @@ namespace VampKnives.NPCs
             {
                 if (!Main.hardMode)
                 {
-                    if (Main.rand.Next(0, 1000) <= 1 * npc.lifeMax)
+                    if (Main.rand.Next(0, 700) <= 25 * npc.lifeMax)
                     {
                         Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
                     }
                 }
                 else if (Main.hardMode)
                 {
-                    if (Main.rand.Next(0, 1000) <= 1 * npc.lifeMax + 50)
+                    if (Main.rand.Next(0, 700) <= 25 * npc.lifeMax + 50)
                     {
                         Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
                     }

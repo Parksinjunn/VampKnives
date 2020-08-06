@@ -4,6 +4,7 @@ using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace VampKnives.UI
 {
@@ -11,10 +12,10 @@ namespace VampKnives.UI
     {
         public static bool visible = false;
         public UIPanel VampMainPanel;
-
+        public UIPanel BloodPointsCounter;
+        public UIText BloodPointsNum;
         public override void OnInitialize()
         {
-
             VampMainPanel = new UIPanel();
             VampMainPanel.SetPadding(0);
             VampMainPanel.Left.Set(Main.screenWidth - Main.screenWidth / 4, 0f);
@@ -36,6 +37,21 @@ namespace VampKnives.UI
             VampBar.Width.Set(57, 0f);
             VampBar.Height.Set(93, 0f);
 
+            BloodPointsCounter = new UIPanel();
+            //BloodPointsCounter.SetPadding(0);
+            BloodPointsCounter.HAlign = 0.5f;
+            BloodPointsCounter.VAlign = 1.3f;
+            BloodPointsCounter.Width.Set(200f, 0f);
+            BloodPointsCounter.Height.Set(20f, 0f);
+            BloodPointsCounter.BackgroundColor = new Color(0, 0, 0);
+            //VampMainPanel.Append(BloodPointsCounter);
+
+            BloodPointsNum = new UIText("");
+            BloodPointsNum.HAlign = 0.5f;
+            BloodPointsNum.VAlign = 0.5f;
+            //BloodPointsCounter.Append(BloodPointsNum);
+
+
             //UIFlatPanel barBackground = new UIFlatPanel();
             //barBackground.Left.Set(0f, 0f);
             //barBackground.Top.Set(0f, 0f);
@@ -52,7 +68,17 @@ namespace VampKnives.UI
             VampMainPanel.Append(VampBar);
             base.Append(VampMainPanel);
         }
-
+        public override void Update(GameTime gameTime)
+        {
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            if(p.BloodPoints <= 9999)
+                BloodPointsNum.SetText("" + p.BloodPoints);
+            else if (p.BloodPoints > 9999)
+                BloodPointsNum.SetText("" + Math.Truncate((double)(p.BloodPoints/1000)) + "K");
+            else if (p.BloodPoints > 999999)
+                BloodPointsNum.SetText("" + Math.Truncate((double)(p.BloodPoints / 1000000)) + "M");
+            base.Update(gameTime);
+        }
         Vector2 offset;
         public bool dragging = false;
         private void DragStart(UIMouseEvent evt, UIElement listeningElement)
