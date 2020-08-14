@@ -49,7 +49,7 @@ namespace VampKnives.Projectiles
                     if (Main.rand.Next(1, 101) >= 95)
                     {
                         Player owner = Main.player[projectile.owner];
-                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y - 390, 0, 20f, mod.ProjectileType("LightningProj"), (int)(projectile.damage * 0.65), 0, owner.whoAmI);
+                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y - 390, 0, 20f, mod.ProjectileType("LightningProj"), (int)(projectile.damage * 0.55), 0, owner.whoAmI);
                         DefenseKnivesProj.ProjCount.LightningActiveCount += 1;
                     }
                 }
@@ -58,7 +58,7 @@ namespace VampKnives.Projectiles
                     if (Main.rand.Next(1, 101) == 50)
                     {
                         Player owner = Main.player[projectile.owner];
-                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y - 390, 0, 20f, mod.ProjectileType("LightningProj"), (int)(projectile.damage * 0.45), 0, owner.whoAmI);
+                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y - 390, 0, 20f, mod.ProjectileType("LightningProj"), (int)(projectile.damage * 0.35), 0, owner.whoAmI);
                         DefenseKnivesProj.ProjCount.LightningActiveCount += 1;
                     }
                 }

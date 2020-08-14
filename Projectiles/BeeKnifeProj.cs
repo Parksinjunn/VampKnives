@@ -33,9 +33,8 @@ namespace VampKnives.Projectiles
             projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             projectile.localAI[0] += 1f;
             //projectile.light = .04f;
-			//projectile.alpha = (int)projectile.localAI[0] * 2;
+            projectile.alpha = 255;
         }
-
         public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             float ran1 = Main.rand.Next(-1, 1);

@@ -42,7 +42,7 @@ namespace VampKnives.Items.Materials
                 spriteBatch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
                 return false;
             }
-            if (stack >= 5)
+            if (stack == 5)
             {
                 Item.NewItem(Main.LocalPlayer.getRect(), ModContent.ItemType<CrimsonCrystal>());
 

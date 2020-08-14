@@ -2,12 +2,17 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Update 3.5, The Blood Altar:
+----------------------------------------------------
+-Added a new blood altar that allows you to perform rituals. These rituals cost blood essence which is obtained by killing enemy npc's and bosses.  (These altars are only breakable by copper pickaxes! I STRONGLY enourage you to think before you place, as placing them in the wrong place could cause issues (due to the way that I coded them). If you encounter issues, reload and everything should fix itself!)
+-Fixed a few bugs and made balance changes
+
+Recent Changes:
 Hotfix 3.4.3: Fixed drop of nest knives to only be in hardmode, removed knockback
 Hotfix 3.4.2: Optimized and balanced heal code, updated recipes
 Hotfix 3.4.1: Removed left over testing code
 
 Update 3.4, The Armor and QoL update:
-----------------------------------------------------
 -A few new knives have been added that fill the gaps that were previously present, please feel free to give me feedback on how they can be balanced.
 -**Two new armor sets** allowing for specialization between support, damage, and tanking
 -You can now **upgrade your knives at your knife workbench** by using the little hammer button
@@ -15,8 +20,6 @@ Update 3.4, The Armor and QoL update:
 -Temporarily,** obsidian is now renewable to aid with crafting granite**, this can be obtained by throwing bottled water into lava.
 -Non-vampire-knives items will no longer appear with the vampire upgrade stats tool-tips upon being crafted
 I'm sure there are other changes, but these are the major big ones.
-
-Recent Changes:
 
 Hotfix 3.3.2: Slight optimization of defense knives
 Hotfix 3.3.1: Living Fire block added, fixed difficulty options not showing

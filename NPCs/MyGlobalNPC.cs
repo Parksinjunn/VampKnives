@@ -29,13 +29,13 @@ namespace VampKnives.NPCs
         public override void NPCLoot(NPC npc)
         {
             ExamplePlayer p = Main.player[npc.lastInteraction].GetModPlayer<ExamplePlayer>();
-            if(!npc.boss)
+            if(!npc.boss && !npc.SpawnedFromStatue)
             {
                 p.BloodPoints += 1 + npc.lifeMax / 100;
             }
-            else
+            else if(npc.boss)
             {
-                p.BloodPoints += 1 + npc.lifeMax / 500;
+                p.BloodPoints += 1 + npc.lifeMax / 400;
             }
 
             if (npc.lastInteraction != 255)
@@ -178,14 +178,14 @@ namespace VampKnives.NPCs
             {
                 if (!Main.hardMode)
                 {
-                    if (Main.rand.Next(0, 700) <= 25 * npc.lifeMax)
+                    if (Main.rand.Next(0, 1000) <= 25 * npc.lifeMax)
                     {
                         Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
                     }
                 }
                 else if (Main.hardMode)
                 {
-                    if (Main.rand.Next(0, 700) <= 25 * npc.lifeMax + 50)
+                    if (Main.rand.Next(0, 1000) <= 25 * npc.lifeMax + 50)
                     {
                         Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<RicochetEssence>());
                     }

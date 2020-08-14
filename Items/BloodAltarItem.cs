@@ -10,7 +10,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Blood Altar");
-            Tooltip.SetDefault("");
+            Tooltip.SetDefault("An altar to perform rituals at");
         }
 
         public override void SetDefaults()
@@ -27,39 +27,23 @@ namespace VampKnives.Items
             item.createTile = mod.TileType("BloodAltar");
         }
 
-        //public override void AddRecipes()
-        //{
-        //    ModRecipe recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ItemID.VampireKnives);
-        //    recipe.AddIngredient(ItemID.Obsidian, 75);
-        //    recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 2);
-        //    recipe.AddTile(TileID.WorkBenches);
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.Obsidian, 40);
+            recipe.AddIngredient(ItemID.HallowedBar, 12);
+            recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 4);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
 
-        //    recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ModContent.ItemType<VampireKnivesMagic>());
-        //    recipe.AddIngredient(ItemID.Obsidian, 75);
-        //    recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 2);
-        //    recipe.AddTile(TileID.WorkBenches);
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
-
-        //    recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ItemID.VampireKnives);
-        //    recipe.AddIngredient(ItemID.Obsidian, 75);
-        //    recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 2);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
-
-        //    recipe = new ModRecipe(mod);
-        //    recipe.AddIngredient(ModContent.ItemType<VampireKnivesMagic>());
-        //    recipe.AddIngredient(ItemID.Obsidian, 75);
-        //    recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 2);
-        //    recipe.AddTile(mod.GetTile("KnifeBench"));
-        //    recipe.SetResult(this);
-        //    recipe.AddRecipe();
-        //}
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.Obsidian, 40);
+            recipe.AddIngredient(ItemID.HallowedBar, 12);
+            recipe.AddIngredient(ModContent.ItemType<StableCrimsonCrystal>(), 4);
+            recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+        }
     }
 }

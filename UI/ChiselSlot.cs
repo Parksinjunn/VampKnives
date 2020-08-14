@@ -21,8 +21,8 @@ namespace VampKnives.UI
         {
             _vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f)
             {
-                Left = { Pixels = 100 },
-                Top = { Pixels = 270 },
+                Left = { Pixels = 0 },
+                Top = { Pixels = 0 },
                 HoverText = "Chisel Slot",
                 ValidItemFunc = item => item.IsAir || !item.IsAir && (GetModItem(item.type) is Items.Materials.Chisel)
             };

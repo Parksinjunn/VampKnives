@@ -88,7 +88,6 @@ namespace VampKnives.Projectiles
                 ChargeCounter++;
             }
             Player player = Main.player[projectile.owner];
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
 
             HealthTimer += (int)(1 + (ChargeCounter / 72));
             if(HealthTimer > 10)
@@ -214,11 +213,11 @@ namespace VampKnives.Projectiles
                         //SizeY *= 5f;
                         if (player.velocity.X == 0 && player.velocity.Y == 0)
                         {
-                            p.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false, true, new Vector2(End1, End2));
+                            ExamplePlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false, true, new Vector2(End1, End2));
                         }
                         else
                         {
-                            p.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false);
+                            ExamplePlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false);
                         }
                         //END DUST SPAWN CODE
                         ShootTimer = 0;

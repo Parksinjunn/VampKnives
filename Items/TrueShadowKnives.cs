@@ -34,8 +34,7 @@ namespace VampKnives.Items
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 45; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
-            
+            item.damage = 56; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 38;
             item.height = 38;
             item.useTime = 15;

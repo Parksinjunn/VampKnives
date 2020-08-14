@@ -10,7 +10,7 @@ namespace VampKnives.Buffs
         {
             DisplayName.SetDefault("You're being supported");
             Description.SetDefault("You've been supported!\nYou've gained:\n-Increased Movement Speed\n-Increased Damage\n-Increased Life Regen\n-Increased Armor");
-            Main.debuff[Type] = false;
+            Main.debuff[Type] = true;
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
             canBeCleared = false;

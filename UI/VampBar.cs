@@ -44,12 +44,12 @@ namespace VampKnives.UI
             BloodPointsCounter.Width.Set(200f, 0f);
             BloodPointsCounter.Height.Set(20f, 0f);
             BloodPointsCounter.BackgroundColor = new Color(0, 0, 0);
-            //VampMainPanel.Append(BloodPointsCounter);
+            VampMainPanel.Append(BloodPointsCounter);
 
             BloodPointsNum = new UIText("");
             BloodPointsNum.HAlign = 0.5f;
             BloodPointsNum.VAlign = 0.5f;
-            //BloodPointsCounter.Append(BloodPointsNum);
+            BloodPointsCounter.Append(BloodPointsNum);
 
 
             //UIFlatPanel barBackground = new UIFlatPanel();

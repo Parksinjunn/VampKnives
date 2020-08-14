@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
@@ -57,6 +58,25 @@ namespace VampKnives.Items
             myClone.CritPurchases = CritPurchases;
             myClone.RicochetPurchases = RicochetPurchases;
             return myClone;
+        }
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if (item.type == ItemID.CobaltOre || item.type == ItemID.PalladiumOre)
+            {
+                ExamplePlayer.HasHeldTier1 = true;
+            }
+            if (item.type == ItemID.OrichalcumOre || item.type == ItemID.MythrilOre)
+            {
+                ExamplePlayer.HasHeldTier1 = true;
+                ExamplePlayer.HasHeldTier2 = true;
+            }
+            if (item.type == ItemID.AdamantiteOre || item.type == ItemID.TitaniumOre)
+            {
+                ExamplePlayer.HasHeldTier3 = true;
+                ExamplePlayer.HasHeldTier2 = true;
+                ExamplePlayer.HasHeldTier1 = true;
+            }
+            base.UpdateInventory(item, player);
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {

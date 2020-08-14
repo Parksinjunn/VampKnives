@@ -28,7 +28,6 @@ namespace VampKnives.NPCs
             name = "Vampire NPC";
             return mod.Properties.Autoload;
         }
-
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[npc.type] = 25;
@@ -184,7 +183,21 @@ namespace VampKnives.NPCs
             nextSlot++;
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<PsionicLeggings>());
             nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<VampiricHelm>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<VampiricChestplate>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<VampiricGreaves>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<SpectralHood>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<SpectralRobes>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<SpectralBoots>());
+            nextSlot++;
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.VampNecklaces.VampNecklaceBee>());
+            nextSlot++;
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SacrificialDagger>());
             nextSlot++;
             if (NPC.downedSlimeKing)
             {

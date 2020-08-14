@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -18,9 +19,8 @@ namespace VampKnives.Tiles
         {
             Main.tileLighted[Type] = true;
             Main.tileFrameImportant[Type] = true;
-            Main.tileNoAttach[Type] = true;
             //Main.tileTable[Type] = true;
-            Main.tileLavaDeath[Type] = true;
+            Main.tileLavaDeath[Type] = false;
             Main.tileSolid[Type] = true;
             TileObjectData.newTile.Width = 3;
             TileObjectData.newTile.Height = 1;
@@ -44,6 +44,14 @@ namespace VampKnives.Tiles
         {
             num = fail ? 1 : 3;
         }
+        public override void PlaceInWorld(int i, int j, Item item)
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                ExamplePlayer p = Main.player[item.owner].GetModPlayer<ExamplePlayer>();
+                p.SendPackage = true;
+            }
+        }
 
         //public override void NearbyEffects(int i, int j, bool closer)
         //{
@@ -64,6 +72,28 @@ namespace VampKnives.Tiles
         //        }
         //    }
         //}
+        bool identifier;
+        public override bool CanKillTile(int i, int j, ref bool blockDamaged)
+        {
+            identifier = false;
+            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            {
+                if (VampireWorld.RitualOfTheStone[iterations] || VampireWorld.RitualOfTheMiner[iterations] || VampireWorld.RitualOfMidas[iterations])
+                {
+                    identifier = true;
+                }
+            }
+            if (Main.player[0].HeldItem.type == ItemID.CopperPickaxe && identifier == false)
+            {
+                blockDamaged = true;
+                return true;
+            }
+            else
+            {
+                blockDamaged = false;
+                return false;
+            }
+        }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             Tile tile = Main.tile[i, j];
@@ -100,27 +130,21 @@ namespace VampKnives.Tiles
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            //Main.NewText("Ritual: " + BloodAltarStorage.RitualOfTheStone);
-            FrameTimeCounter++;
-            if (FrameTimeCounter >= 3)
-            {
-                FrameTimeCounter = 0;
-            }
             if (p.BloodPoints >= 2000)
             {
-                Offset = 216;
+                Offset = 360;
             }
             else if (p.BloodPoints >= 1500)
             {
-                Offset = 162;
+                Offset = 270;
             }
             else if (p.BloodPoints >= 1000)
             {
-                Offset = 108;
+                Offset = 180;
             }
             else if (p.BloodPoints >= 500)
             {
-                Offset = 54;
+                Offset = 90;
             }
             else if (p.BloodPoints < 500)
             {
@@ -128,90 +152,42 @@ namespace VampKnives.Tiles
             }
             
 
-            CalculatedOffset = (short)(Offset + (18 * FrameTimeCounter));
-            Main.tile[i, j].frameX = CalculatedOffset;
-            //tileX = Main.tile[i, j].frameX;
-            //tileY = Main.tile[i, j].frameY;
-            //if (frameCount > 12)
-            //{
-            //    if (tileX == 54 && tileY == 54)
-            //    {
-            //        int DustID2 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -6, -6, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID2].fadeIn = 1.05f;
-            //        int DustID3 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -7, -9, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID3].fadeIn = 1.05f;
-            //        int DustID4 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -6, -3, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID4].fadeIn = 1.05f;
-            //        int DustID5 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 224, -8, -4, 10, Color.Red, 1f);
-            //        Main.dust[DustID5].fadeIn = 1.05f;
-            //        Main.dust[DustID2].noGravity = true;
-            //        Main.dust[DustID3].noGravity = true;
-            //        Main.dust[DustID4].noGravity = true;
-            //        Main.dust[DustID5].noGravity = true;
-            //        Main.dust[DustID5].shader = GameShaders.Armor.GetSecondaryShader(58, Main.LocalPlayer);
-            //    }
-            //    if (tileX == 108 && tileY == 54)
-            //    {
-
-            //        int DustID2 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 6, -6, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID2].fadeIn = 1.05f;
-            //        int DustID3 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 7, -8, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID3].fadeIn = 1.05f;
-            //        int DustID4 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 6, -3, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID4].fadeIn = 1.05f;
-            //        int DustID5 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 224, 8, -4, 10, Color.Red, 1f);
-            //        Main.dust[DustID5].fadeIn = 1.05f;
-            //        Main.dust[DustID2].noGravity = true;
-            //        Main.dust[DustID3].noGravity = true;
-            //        Main.dust[DustID4].noGravity = true;
-            //        Main.dust[DustID5].noGravity = true;
-            //        Main.dust[DustID5].shader = GameShaders.Armor.GetSecondaryShader(58, Main.LocalPlayer);
-            //    }
-            //    if (tileX == 54 && tileY == 90)
-            //    {
-            //        int DustID2 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID2].fadeIn = 1.05f;
-            //        int DustID3 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID3].fadeIn = 1.05f;
-            //        int DustID4 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, -8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID4].fadeIn = 1.05f;
-            //        int DustID5 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 224, -8, 0.5f, 10, Color.Red, 1f);
-            //        Main.dust[DustID5].fadeIn = 1.05f;
-            //        Main.dust[DustID2].noGravity = true;
-            //        Main.dust[DustID3].noGravity = true;
-            //        Main.dust[DustID4].noGravity = true;
-            //        Main.dust[DustID5].noGravity = true;
-            //        Main.dust[DustID5].shader = GameShaders.Armor.GetSecondaryShader(58, Main.LocalPlayer);
-            //    }
-            //    if (tileX == 108 && tileY == 90)
-            //    {
-            //        int DustID2 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID2].fadeIn = 1.05f;
-            //        int DustID3 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID3].fadeIn = 1.05f;
-            //        int DustID4 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 73, 8, 0.5f, 10, Color.Red, 0.5f);
-            //        Main.dust[DustID4].fadeIn = 1.05f;
-            //        int DustID5 = Dust.NewDust(new Vector2(i, j) * 16, 0, 21, 224, 8, 0.5f, 10, Color.Red, 1f);
-            //        Main.dust[DustID5].fadeIn = 1.05f;
-            //        Main.dust[DustID2].noGravity = true;
-            //        Main.dust[DustID3].noGravity = true;
-            //        Main.dust[DustID4].noGravity = true;
-            //        Main.dust[DustID5].noGravity = true;
-            //        Main.dust[DustID5].shader = GameShaders.Armor.GetSecondaryShader(58, Main.LocalPlayer);
-            //    }
-            //}
+            CalculatedOffset = (short)(Offset);
+            Main.tile[i, j].frameY = CalculatedOffset;
             return true;
         }
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             Item.NewItem(i * 16, j * 16, 32, 16, ModContent.ItemType<Items.BloodAltarItem>());
+            //for(int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+            //{
+            //    if(VampireWorld.AltarBeingUsed[g] == i && VampireWorld.AltarBeingUsed[g+1] == j)
+            //    {
+            //        //VampireWorld.AltarBeingUsed.RemoveAt(g);
+            //        //VampireWorld.AltarBeingUsed.RemoveAt(g + 1);
+            //        //VampireWorld.RitualOfTheStone.RemoveAt(g);
+            //        //VampireWorld.RitualOfTheStone.RemoveAt(g + 1);
+            //        //VampireWorld.RitualOfTheMiner.RemoveAt(g);
+            //        //VampireWorld.RitualOfTheMiner.RemoveAt(g + 1);
+            //        //VampireWorld.RitualOfMidas.RemoveAt(g);
+            //        //VampireWorld.RitualOfMidas.RemoveAt(g + 1);
+            //        //VampireWorld.RoEType.RemoveAt(g);
+            //        //VampireWorld.RoEType.RemoveAt(g + 1);
+            //        //VampireWorld.RoMType.RemoveAt(g);
+            //        //VampireWorld.RoMType.RemoveAt(g + 1);
+            //        //VampireWorld.RoMiType.RemoveAt(g);
+            //        //VampireWorld.RoMiType.RemoveAt(g + 1);
+            //    }
+            //}
+            //Main.NewText("TileCount: " + VampireWorld.AltarBeingUsed.Count);
         }
         bool CanBeAdded;
         public override bool NewRightClick(int i, int j)
         {
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             Tile tile = Framing.GetTileSafely(i, j);
-            Point16 topLeft = new Point16(i, j) - new Point16(tile.frameX / 18, tile.frameY / 18);
+            Point16 topLeft = new Point16(i, j) - new Point16(tile.frameX / 18, 0);
             //Main.NewText("AltarList: (" + topLeft.X + "," + topLeft.Y + ")");
             if (BloodAltarUI.visible)
             {
@@ -222,27 +198,112 @@ namespace VampKnives.Tiles
             else if (BloodAltarUI.visible == false)
             {
                 //Main.NewText("ListSize: " + ExamplePlayer.AltarBeingUsed.Count);
-                ExamplePlayer.MostRecentClick = new Vector2(topLeft.X, topLeft.Y);
-                for (int b = 0; b < ExamplePlayer.AltarBeingUsed.Count; b += 2)
+                VampireWorld.MostRecentClick = new Vector2(topLeft.X, topLeft.Y);
+                for (int b = 0; b < VampireWorld.AltarBeingUsed.Count; b += 2)
                 {
-                    //Main.NewText("AltarList: (" + ExamplePlayer.AltarBeingUsed[b] + "," + ExamplePlayer.AltarBeingUsed[b + 1] + ")");
-                    if (ExamplePlayer.AltarBeingUsed[b] == topLeft.X && ExamplePlayer.AltarBeingUsed[b + 1] == topLeft.Y)
+                    //Main.NewText("AltarList: (" + VampireWorld.AltarBeingUsed[b] + "," + VampireWorld.AltarBeingUsed[b + 1] + ")");
+                    if (VampireWorld.AltarBeingUsed[b] == topLeft.X && VampireWorld.AltarBeingUsed[b + 1] == topLeft.Y)
                     {
                         //Main.NewText("Already in list");
                         CanBeAdded = false;
                     }
                 }
-                if (ExamplePlayer.AltarBeingUsed.Count == 0)
+                if (VampireWorld.AltarBeingUsed.Count == 0)
                 {
-                    ExamplePlayer.AltarBeingUsed.Add(topLeft.X);
-                    ExamplePlayer.AltarBeingUsed.Add(topLeft.Y);
+                    VampireWorld.AltarBeingUsed.Add(topLeft.X);
+                    VampireWorld.AltarBeingUsed.Add(topLeft.Y);
+                    VampireWorld.RitualOfTheStone.Add(false);
+                    VampireWorld.RitualOfTheStone.Add(false);
+                    VampireWorld.RoEType.Add(TileID.AmberGemspark);
+                    VampireWorld.RoEType.Add(TileID.AmberGemspark);
+                    VampireWorld.RitualOfTheMiner.Add(false);
+                    VampireWorld.RitualOfTheMiner.Add(false);
+                    VampireWorld.RoMType.Add(TileID.AmberGemspark);
+                    VampireWorld.RoMType.Add(TileID.AmberGemspark);
+                    VampireWorld.RitualOfMidas.Add(false);
+                    VampireWorld.RitualOfMidas.Add(false);
+                    VampireWorld.RoMiType.Add(ItemID.CopperCoin);
+                    VampireWorld.RoMiType.Add(ItemID.CopperCoin);
+                    VampireWorld.AltarOwner.Add(Main.LocalPlayer.whoAmI);
+                    VampireWorld.AltarOwner.Add(Main.LocalPlayer.whoAmI);
+
+                    if(Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        //mod.Logger.Warn("SendingChanges");
+                        ModPacket RitualClientSend = mod.GetPacket();
+                        RitualClientSend.Write(VampKnives.AltarPressedRecieveLists);
+                        RitualClientSend.Write(VampireWorld.AltarBeingUsed.Count);
+                        for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                        {
+                            RitualClientSend.Write(VampireWorld.AltarBeingUsed[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfTheStone[g]);
+                            RitualClientSend.Write(VampireWorld.RoEType[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfTheMiner[g]);
+                            RitualClientSend.Write(VampireWorld.RoMType[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfMidas[g]);
+                            RitualClientSend.Write(VampireWorld.RoMiType[g]);
+                            RitualClientSend.Write(VampireWorld.AltarOwner[g]);
+                        }
+                        RitualClientSend.Write(Main.LocalPlayer.whoAmI);
+                        RitualClientSend.Send();
+                    }
+
+                    List<int> AltarBeingUsedList = new List<int>();
+                    for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                    {
+                        AltarBeingUsedList.Add(VampireWorld.AltarBeingUsed[g]);
+                    }
+                    //Main.NewText("Altar Length: " + AltarBeingUsedList.Count);
                 }
                 else if (CanBeAdded == true)
                 {
-                    ExamplePlayer.AltarBeingUsed.Add(topLeft.X);
-                    ExamplePlayer.AltarBeingUsed.Add(topLeft.Y);
+                    VampireWorld.AltarBeingUsed.Add(topLeft.X);
+                    VampireWorld.AltarBeingUsed.Add(topLeft.Y);
+                    VampireWorld.RitualOfTheStone.Add(false);
+                    VampireWorld.RitualOfTheStone.Add(false);
+                    VampireWorld.RoEType.Add(TileID.AmberGemspark);
+                    VampireWorld.RoEType.Add(TileID.AmberGemspark);
+                    VampireWorld.RitualOfTheMiner.Add(false);
+                    VampireWorld.RitualOfTheMiner.Add(false);
+                    VampireWorld.RoMType.Add(TileID.AmberGemspark);
+                    VampireWorld.RoMType.Add(TileID.AmberGemspark);
+                    VampireWorld.RitualOfMidas.Add(false);
+                    VampireWorld.RitualOfMidas.Add(false);
+                    VampireWorld.RoMiType.Add(ItemID.CopperCoin);
+                    VampireWorld.RoMiType.Add(ItemID.CopperCoin);
+                    VampireWorld.AltarOwner.Add(Main.LocalPlayer.whoAmI);
+                    VampireWorld.AltarOwner.Add(Main.LocalPlayer.whoAmI);
+
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        //mod.Logger.Warn("SendingChanges");
+                        ModPacket RitualClientSend = mod.GetPacket();
+                        RitualClientSend.Write(VampKnives.AltarPressedRecieveLists);
+                        //Main.NewText("ListNum: " + v.AltarPressedRecieveLists);
+                        RitualClientSend.Write(VampireWorld.AltarBeingUsed.Count);
+                        for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                        {
+                            RitualClientSend.Write(VampireWorld.AltarBeingUsed[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfTheStone[g]);
+                            RitualClientSend.Write(VampireWorld.RoEType[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfTheMiner[g]);
+                            RitualClientSend.Write(VampireWorld.RoMType[g]);
+                            RitualClientSend.Write(VampireWorld.RitualOfMidas[g]);
+                            RitualClientSend.Write(VampireWorld.RoMiType[g]);
+                            RitualClientSend.Write(VampireWorld.AltarOwner[g]);
+                        }
+                        RitualClientSend.Write(Main.LocalPlayer.whoAmI);
+                        RitualClientSend.Send();
+                    }
+                    //List<int> AltarBeingUsedList = new List<int>();
+                    //for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                    //{
+                    //    AltarBeingUsedList.Add(VampireWorld.AltarBeingUsed[g]);
+                    //}
+                    //mod.Logger.Debug("Altar Length: " + AltarBeingUsedList.Count);
                 }
-                //Main.NewText("MostRecent: "+ ExamplePlayer.MostRecentClick);
+                //Main.NewText("ListSize: " + VampireWorld.AltarBeingUsed.Count);
+                //Main.NewText("MostRecent: "+ VampireWorld.MostRecentClick);
                 Main.playerInventory = true;
                 BloodAltarUI.visible = true;
                 Main.PlaySound(SoundID.MenuOpen);

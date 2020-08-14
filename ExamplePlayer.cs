@@ -2,7 +2,6 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameInput;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria.UI;
 using System;
 using Terraria.ModLoader.IO;
@@ -10,6 +9,9 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using VampKnives.Projectiles.DefenseKnivesProj;
 using VampKnives.Tiles;
+using VampKnives.Items;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace VampKnives
 {
@@ -157,8 +159,14 @@ namespace VampKnives
         public bool SupportArmorKeyPressed;
 
         public int BloodPoints;
-        public static List<int> AltarBeingUsed = new List<int>();
-        public static Vector2 MostRecentClick;
+        public bool SacrificialDebuff;
+        public bool Bandaged;
+        public bool SendPackage;
+        public bool SendKillPackage;
+        public int SendKillDelay;
+        public static bool HasHeldTier1;
+        public static bool HasHeldTier2;
+        public static bool HasHeldTier3;
 
         public override void ResetEffects()
         {
@@ -245,6 +253,8 @@ namespace VampKnives
             VampiricArmorSet = false;
             SupportArmor = false;
             RunSupportTimer = SupportArmorSetBuff = SupportArmorBuff = false;
+            SacrificialDebuff = false;
+            Bandaged = false;
             //SupportArmorKeyPressed = false;
             //Transform = false;
             for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
@@ -256,14 +266,7 @@ namespace VampKnives
                     Projectiles.ZenithsTrueBladesProj.SpawnTimer = 15;
                     //Main.NewText("Length: " + ProjCount.ZenithProj.Count);
                 }
-            }
-            for(int iterations = 0; iterations < AltarBeingUsed.Count; iterations += 2)
-            {
-                if (BloodAltarStorage.RitualOfTheStone[iterations] == true)
-                {
-                        BloodAltarStorage.StoneRitual((int)AltarBeingUsed[iterations], (int)AltarBeingUsed[iterations + 1], player);
-                }
-            }
+            }   
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -272,12 +275,13 @@ namespace VampKnives
             // Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
             clone.HoodIsVisible = this.HoodIsVisible;
             clone.Transform = this.Transform;
+            clone.SendPackage = this.SendPackage;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             ExamplePlayer clone = clientPlayer as ExamplePlayer;
-            if(HoodIsVisible != clone.HoodIsVisible)
+            if (HoodIsVisible != clone.HoodIsVisible)
             {
                 ModPacket packet = mod.GetPacket();
                 packet.Write(Packet1);
@@ -435,29 +439,76 @@ namespace VampKnives
         }
         public override TagCompound Save()
         {
+            var staticVars = new List<string>();
+            if (LegacyPlayer)
+            {
+                staticVars.Add("Legacy");
+            }
+            else if (NormalPlayer)
+            {
+                staticVars.Add("Normal");
+            }
+            else if (UnforgivingPlayer)
+            {
+                staticVars.Add("Unforgiving");
+            }
+            if (HasHeldTier3)
+            {
+                staticVars.Add("Tier3");
+            }
+            if (HasHeldTier2)
+            {
+                staticVars.Add("Tier2");
+            }
+            if (HasHeldTier1)
+            {
+                staticVars.Add("Tier1");
+            }
+
             return new TagCompound {
                 {"NeckProgress", NeckProgress},
                 {"Given", Given},
                 {"NeckAdd", NeckAdd},
                 {"KillText", KillText},
-                {"Legacy", LegacyPlayer},
-                {"Normal", NormalPlayer},
-                {"Unforgiving", UnforgivingPlayer},
                 {"NumCrafted", NumCrafted },
-                {"BloodPoints", BloodPoints }
+                {"BloodPoints", BloodPoints },
+                {"staticVars", staticVars }
             };
         }
         public override void Load(TagCompound tag)
         {
+            var staticVars = tag.GetList<string>("staticVars");
+
             NeckProgress = tag.GetInt("NeckProgress");
             Given = tag.GetBool("Given");
             NeckAdd = tag.GetFloat("NeckAdd");
             KillText = tag.GetString("KillText");
-            LegacyPlayer = tag.GetBool("Legacy");
-            NormalPlayer = tag.GetBool("Normal");
-            UnforgivingPlayer = tag.GetBool("Unforgiving");
+            LegacyPlayer = staticVars.Contains("Legacy");
+            NormalPlayer = staticVars.Contains("Normal");
+            UnforgivingPlayer = staticVars.Contains("Unforgiving");
             NumCrafted = tag.GetInt("NumCrafted");
             BloodPoints = tag.GetInt("BloodPoints");
+            HasHeldTier1 = staticVars.Contains("Tier1");
+            HasHeldTier2 = staticVars.Contains("Tier2");
+            HasHeldTier3 = staticVars.Contains("Tier3");
+            //if (staticVars.Contains("Tier3"))
+            //{
+            //    HasHeldTier3 = staticVars.Contains("Tier3");
+            //    HasHeldTier2 = staticVars.Contains("Tier3");
+            //    HasHeldTier1 = staticVars.Contains("Tier3");
+            //}
+            //else if (staticVars.Contains("Tier3"))
+            //{
+            //    HasHeldTier3 = staticVars.Contains("Tier2");
+            //    HasHeldTier2 = staticVars.Contains("Tier2");
+            //    HasHeldTier1 = staticVars.Contains("Tier2");
+            //}
+            //else if (staticVars.Contains("Tier1"))
+            //{
+            //    HasHeldTier3 = staticVars.Contains("Tier1");
+            //    HasHeldTier2 = staticVars.Contains("Tier2");
+            //    HasHeldTier1 = staticVars.Contains("Tier2");
+            //}
         }
         public override void UpdateBadLifeRegen()
         {
@@ -490,6 +541,28 @@ namespace VampKnives
                 VampCurrent = 0;
             if (VampCurrent > VampMax)
                 VampCurrent = VampMax;
+            if(SacrificialDebuff)
+            {
+                KnifeDamagePlayer p = KnifeDamagePlayer.ModPlayer(player);
+
+                if (!Bandaged)
+                {
+                    player.lifeRegen -= 16;
+                }
+                p.KnifeDamage *= 0.6f;
+                player.pickSpeed *= 2f;
+                player.maxRunSpeed *= 0.7f;
+                player.allDamage *= 0.6f;
+                
+            }
+        }
+        public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
+        {
+            if(player.HasBuff(ModContent.BuffType<Buffs.BleedingOutDebuff>()))
+            {
+                damageSource = PlayerDeathReason.ByCustomReason(" lost too much blood");
+            }
+            base.Kill(damage, hitDirection, pvp, damageSource);
         }
         public override void UpdateVanityAccessories()
         {
@@ -561,8 +634,65 @@ namespace VampKnives
         bool VisualRun = true;
         int VisorAlpha = 220;
         int MovementSoundTimer;
+        int identifier;
+        public override void PostUpdate()
+        {
+            VampKnives v = new VampKnives();
+            if (SendKillPackage)
+            {
+                SendKillDelay++;
+                if(SendKillDelay > 2)
+                {
+                    //Main.NewText("SendingKillPackage");
+                    for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+                    {
+                        if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
+                        {
+                            //Main.NewText("FoundAltar");
+                            identifier = iterations;
+                        }
+                        //Main.NewText("Identifier" + identifier);
+                    }
+                    SendKillPackage = false;
+                    ModPacket KillBlocksSend = mod.GetPacket();
+                    KillBlocksSend.Write(VampKnives.KillBlocksRecieve);
+                    KillBlocksSend.Write(identifier);
+                    KillBlocksSend.Write(VampireWorld.AltarBeingUsed[identifier] + 1);
+                    KillBlocksSend.Write(VampireWorld.AltarBeingUsed[identifier + 1] - 2);
+                    KillBlocksSend.Write(VampireWorld.AltarBeingUsed.Count);
+                    for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                    {
+                        KillBlocksSend.Write(VampireWorld.RitualOfTheStone[g]);
+                        KillBlocksSend.Write(VampireWorld.RitualOfTheMiner[g]);
+                        KillBlocksSend.Write(VampireWorld.RitualOfMidas[g]);
+                    }
+                    KillBlocksSend.Send();
+                }        
+            }
+        }
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
+            VampKnives v = new VampKnives();
+            if (SendPackage)
+            {
+                SendPackage = false;
+                ModPacket RitualClientSend = mod.GetPacket();
+                RitualClientSend.Write(VampKnives.RitualsRecieve);
+                RitualClientSend.Write(VampireWorld.AltarBeingUsed.Count);
+                RitualClientSend.Write(player.whoAmI);
+                for (int g = 0; g < VampireWorld.AltarBeingUsed.Count; g++)
+                {
+                    //RitualClientSend.Write(VampireWorld.AltarBeingUsed[g]);
+                    RitualClientSend.Write(VampireWorld.RitualOfTheStone[g]);
+                    RitualClientSend.Write(VampireWorld.RoEType[g]);
+                    RitualClientSend.Write(VampireWorld.RitualOfTheMiner[g]);
+                    RitualClientSend.Write(VampireWorld.RoMType[g]);
+                    RitualClientSend.Write(VampireWorld.RitualOfMidas[g]);
+                    RitualClientSend.Write(VampireWorld.RoMiType[g]);
+                    RitualClientSend.Write(VampireWorld.AltarOwner[g]);
+                }
+                RitualClientSend.Send();
+            }
             if (SupportArmorSetBuff == true)
             {
                 RunSupportTimer = true;
@@ -996,7 +1126,7 @@ namespace VampKnives
             }
         }
 
-        public void OvalDust(Vector2 position, float width, float height, Color color, int DustType, float size, bool scattered = false, bool IsCut = false, Vector2? CutPositionsAndVelocityMult = null)
+        public static void OvalDust(Vector2 position, float width, float height, Color color, int DustType, float size, bool scattered = false, bool IsCut = false, Vector2? CutPositionsAndVelocityMult = null)
         {
             float VelocityX = 0;
             float VelocityY = 0;

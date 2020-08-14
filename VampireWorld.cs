@@ -1,14 +1,30 @@
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using VampKnives.Items.RecipePages;
+using VampKnives.Tiles;
 using static Terraria.ModLoader.ModContent;
 
 namespace VampKnives
 {
-    public class VariableResets : ModWorld
+    public class VampireWorld : ModWorld
     {
+        public static List<int> AltarBeingUsed = new List<int>();
+        public static List<bool> RitualOfTheStone = new List<bool>();
+        public static List<ushort> RoEType = new List<ushort>();
+        public static List<bool> RitualOfTheMiner = new List<bool>();
+        public static List<ushort> RoMType = new List<ushort>();
+        public static List<bool> RitualOfMidas = new List<bool>();
+        public static List<short> RoMiType = new List<short>();
+        public static List<int> AltarOwner = new List<int>(); //MAKE INTO A LIST TO SET OWNER FOR EACH ALTAR
+        public static Vector2 MostRecentClick;
+
+        static int DustTimer;
+        int DustType;
+
         public override TagCompound Save()
         {
             Projectiles.DefenseKnivesProj.ProjCount.ShroomiteActiveGasCount = 0;

@@ -20,7 +20,7 @@ namespace VampKnives.Projectiles
             projectile.friendly = true;
             projectile.penetrate = 2;
             projectile.hostile = false;
-            projectile.tileCollide = false;                 //this make that the projectile does not go thru walls
+            projectile.tileCollide = true;                 //this make that the projectile does not go thru walls
             projectile.ignoreWater = false;
             projectile.timeLeft = 320;
         }
@@ -51,6 +51,7 @@ namespace VampKnives.Projectiles
             }
             if (HitNewTarget)
             {
+                projectile.tileCollide = false;
                 if (delay <= 30)
                 {
                     delay++;

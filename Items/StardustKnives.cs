@@ -15,7 +15,7 @@ namespace VampKnives.Items
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 72;
+            item.damage = 66;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

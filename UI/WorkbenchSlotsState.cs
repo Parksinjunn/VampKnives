@@ -17,55 +17,58 @@ namespace VampKnives.UI
         public static bool visible = false;
         public HammerSlot HammerSlot;
         public ChiselSlot ChiselSlot;
+        public EntranceBackgroundPanel Background;
+        public EntranceButton UpgradeButton;
+
 
         public override void OnInitialize()
         {
+            Background = new EntranceBackgroundPanel();
+            Background.BackgroundColor = Color.Black;
+            Background.BorderColor = Color.DarkGray;
+            Background.Left.Set(150,0);
+            Background.Top.Set(270,0) ;
+            Background.Height.Set(50f, 0);
+            Background.Width.Set(50f, 0);
+            base.Append(Background);
+
+            UpgradeButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/ReforgeButton"), "Upgrade");
+            UpgradeButton.VAlign = 0.5f;
+            UpgradeButton.HAlign = 0.5f;
+            UpgradeButton.Height.Set(32, 0f);
+            UpgradeButton.Width.Set(32, 0f);
+            UpgradeButton.OnClick += new MouseEvent(OnUpgradeHit);
+            Background.Append(UpgradeButton);
 
             HammerSlot = new HammerSlot();
-            base.Append(HammerSlot);
+            HammerSlot.Left.Set(-110, 0);
+            HammerSlot.Top.Set(-9, 0);
+            Background.Append(HammerSlot);
 
             ChiselSlot = new ChiselSlot();
-            base.Append(ChiselSlot);
+            ChiselSlot.Left.Set(-60, 0);
+            ChiselSlot.Top.Set(-9, 0) ;
+            Background.Append(ChiselSlot);
 
 
         }
-        private bool tickPlayed;
-
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            const int slotX = 100;
-            const int slotY = 255;
-            int reforgeX = slotX + 70;
-            int reforgeY = slotY + 40;
-            bool hoveringOverReforgeButton = Main.mouseX > reforgeX - 15 && Main.mouseX < reforgeX + 15 && Main.mouseY > reforgeY - 15 && Main.mouseY < reforgeY + 15 && !PlayerInput.IgnoreMouseInterface;
-            Texture2D reforgeTexture = Main.reforgeTexture[hoveringOverReforgeButton ? 1 : 0];
-            Main.spriteBatch.Draw(reforgeTexture, new Vector2(reforgeX, reforgeY), null, Color.White, 0f, reforgeTexture.Size() / 2f, 0.8f, SpriteEffects.None, 0f);
-            if (hoveringOverReforgeButton)
+            base.DrawSelf(spriteBatch);
+            Main.HidePlayerCraftingMenu = false;
+        }
+
+        private void OnUpgradeHit(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (UpgradePanel.visible)
             {
-                Main.hoverItemName = Language.GetTextValue("LegacyInterface.19");
-                if (!tickPlayed)
-                {
-                    Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
-                }
-                tickPlayed = true;
-                Main.LocalPlayer.mouseInterface = true;
-                if (Main.mouseLeftRelease && Main.mouseLeft)
-                {
-                    if (UpgradePanel.visible)
-                    {
-                        UpgradePanel.visible = false;
-                        Main.PlaySound(SoundID.MenuClose);
-                    }
-                    else if (UpgradePanel.visible == false)
-                    {
-                        UpgradePanel.visible = true;
-                        Main.PlaySound(SoundID.MenuOpen);
-                    }
-                }
+                UpgradePanel.visible = false;
+                Main.PlaySound(SoundID.MenuClose);
             }
-            else
+            else if (UpgradePanel.visible == false)
             {
-                tickPlayed = false;
+                UpgradePanel.visible = true;
+                Main.PlaySound(SoundID.MenuOpen);
             }
         }
     }
