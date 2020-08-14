@@ -21,6 +21,7 @@ namespace VampKnives.UI
         public EntranceButton UpgradeSpecialButton;
         public EntranceButton UpgradeSpecialButton2;
         public EntranceButton UpgradeSpecialButton3;
+        public EntranceButton CloseButton;
         public EntranceBackgroundPanel Background;
         public UIFlatPanel centerTest;
         private VanillaItemSlotWrapper _vanillaItemSlot;
@@ -90,6 +91,14 @@ namespace VampKnives.UI
             Background.Height.Set(BackgroundHeight, 0f);
             Background.HAlign = Background.VAlign = 0.5f; // 1
             base.Append(Background);
+
+            CloseButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/CloseButton"), "Close the UI");
+            CloseButton.VAlign = 0.015f;
+            CloseButton.HAlign = 0.97f;
+            CloseButton.Width.Set(32, 0f);
+            CloseButton.Height.Set(32, 0f);
+            CloseButton.OnClick += new MouseEvent(CloseButtonClicked);
+            Background.Append(CloseButton);
 
             _vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f)
             {
@@ -572,6 +581,10 @@ namespace VampKnives.UI
                 PenetratePrice.SetText("x1");
                 LifeStealPrice.SetText("x1");
             }
+        }
+        private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+        {
+            UpgradePanel.visible = false;
         }
         private void LegacyButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
