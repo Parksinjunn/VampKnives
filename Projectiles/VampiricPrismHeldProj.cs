@@ -80,17 +80,15 @@ namespace VampKnives.Projectiles
             // Use CloneDefaults to clone all basic projectile statistics from the vanilla Last Prism.
             projectile.CloneDefaults(ProjectileID.LastPrism);
         }
-
         public override void AI()
         {
+            Player player = Main.player[projectile.owner];
             if (ChargeCounter < 360)
             {
                 ChargeCounter++;
             }
-            Player player = Main.player[projectile.owner];
-
             HealthTimer += (int)(1 + (ChargeCounter / 72));
-            if(HealthTimer > 10)
+            if(HealthTimer > 20)
             {
                 HealthTimer = 0;
                 player.statLife-= (int)(1 + (ChargeCounter / 360));

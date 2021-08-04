@@ -76,7 +76,8 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.Plantera)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<BloomingTerror>());
+                if(Main.rand.Next(20) > 10)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<BloomingTerror>());
                 for (int x = 0; x < 5; x++)
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Superglue>());
@@ -88,7 +89,12 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.WyvernHead)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<WyvernHead>());
+                if(Main.rand.Next(0,101) > 88)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<WyvernHead>());
+                }
+                else
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Misc.DamagedWyvernHead>());
             }
             if (npc.type == NPCID.Harpy)
             {
@@ -102,6 +108,7 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.CultistBoss)
             {
+                if(Main.rand.Next(10) > 7)
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.MagesHood>());
             }
             if (npc.type == NPCID.BrainofCthulhu)
@@ -238,39 +245,6 @@ namespace VampKnives.NPCs
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.AncientVampiricTablet>());
                 }
-            }
-        }
-        public override void SetupShop(int type, Chest shop, ref int nextSlot)
-        {
-            if (type == NPCID.WitchDoctor)
-            {
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.MudkipBall>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.LucarioBall>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.ArcanineBall>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.EeveeBall>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.Bagutte>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.MasterSword>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
-
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.ConnorPet>());
-                shop.item[nextSlot].shopCustomPrice = new int?(100000);
-                nextSlot++;
             }
         }
 

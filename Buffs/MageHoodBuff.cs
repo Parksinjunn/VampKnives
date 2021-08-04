@@ -25,7 +25,6 @@ namespace VampKnives.Buffs
             if (p.HoodIsVisible == true && p.MageAccessoryPrevious)
             {
                 p.MagePower = true;
-
             }
             else
             {

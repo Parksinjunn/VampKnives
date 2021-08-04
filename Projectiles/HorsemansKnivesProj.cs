@@ -43,17 +43,20 @@ namespace VampKnives.Projectiles
 
         public override void SafeAI()
         {
-            projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
             Lighting.AddLight(projectile.Center, (255 / 255f), (117 / 255f), (24 / 255f));
-            if (HitTile)
+            if (!ZenithActive)
             {
-                projectile.velocity = projectile.velocity * 0.55f;
-                if (HasDoneEffect == false)
+                projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
+                if (HitTile)
                 {
-                    HasDoneEffect = true;
-                    for (int i = 0; i < 10; i++)
+                    projectile.velocity = projectile.velocity * 0.55f;
+                    if (HasDoneEffect == false)
                     {
-                        int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 1, projectile.velocity.X * 0.2f, projectile.velocity.Y * -0.2f, 10, Color.Gray, 1f);
+                        HasDoneEffect = true;
+                        for (int i = 0; i < 10; i++)
+                        {
+                            int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 1, projectile.velocity.X * 0.2f, projectile.velocity.Y * -0.2f, 10, Color.Gray, 1f);
+                        }
                     }
                 }
             }
@@ -118,15 +121,15 @@ namespace VampKnives.Projectiles
             projectile.penetrate++;
             HitCount++;
         }
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-            if (HitCount == 1)
-            {
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            }
-            Hoods(n);
-        }
+        //public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        //{
+        //    Player owner = Main.player[projectile.owner];
+        //    if (HitCount == 1)
+        //    {
+        //        Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+        //    }
+        //    Hoods(n);
+        //}
         public override bool SafeOnTileCollide(Vector2 oldVelocity)
         {
                 HitTile = true;

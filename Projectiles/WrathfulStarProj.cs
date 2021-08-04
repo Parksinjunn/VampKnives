@@ -31,11 +31,10 @@ namespace VampKnives.Projectiles
                 projectile.soundDelay = 20 + Main.rand.Next(40);
                 Main.PlaySound(SoundID.Item9, projectile.position);
             }
-            projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
-            //Lighting.AddLight(projectile.Center, 0.8f, 0.8f, 0.8f);
-            //int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 60, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, new Color(184, 0, 255), 0.75f);
-            //Main.dust[DustID2].noGravity = true;
-
+            if (!ZenithActive)
+            {
+                projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation);
+            }
             if (Main.rand.Next(16) == 0)
             {
                 Vector2 value3 = Vector2.UnitX.RotatedByRandom(1.5707963705062866).RotatedBy((double)projectile.velocity.ToRotation(), default(Vector2));

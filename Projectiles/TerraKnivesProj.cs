@@ -28,19 +28,22 @@ namespace VampKnives.Projectiles
         }
 
         public override void SafeAI()
-        {
-            projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+        {            
             Lighting.AddLight(projectile.Center, 0, (Main.DiscoG / 255f), 0);
-            if (HitTile)
+            if (!ZenithActive)
             {
-                for (int iteration = 0; iteration < 360; iteration++)
+                projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+                if (HitTile)
                 {
-                    int DustID3 = Dust.NewDust(new Vector2(projectile.Center.X, projectile.Center.Y), 1, 1, 15, 0f, 0f, 10, new Color(0,255,0), 2f);
-                    Main.dust[DustID3].noGravity = true;
-                    Main.dust[DustID3].velocity = new Vector2(VelocityFactor * (float)Math.Cos(iteration / VelocityFactor), VelocityFactor * (float)Math.Sin(iteration / VelocityFactor));
+                    for (int iteration = 0; iteration < 360; iteration++)
+                    {
+                        int DustID3 = Dust.NewDust(new Vector2(projectile.Center.X, projectile.Center.Y), 1, 1, 15, 0f, 0f, 10, new Color(0, 255, 0), 2f);
+                        Main.dust[DustID3].noGravity = true;
+                        Main.dust[DustID3].velocity = new Vector2(VelocityFactor * (float)Math.Cos(iteration / VelocityFactor), VelocityFactor * (float)Math.Sin(iteration / VelocityFactor));
+                    }
+                    HitTile = false;
+                    EffectTimer++;
                 }
-                HitTile = false;
-                EffectTimer++;
             }
         }
         public override bool SafePreKill(int timeLeft)

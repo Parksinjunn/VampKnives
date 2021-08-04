@@ -25,8 +25,11 @@ namespace VampKnives.Projectiles
 
 		public override void SafeAI()
 		{
-            projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
-            projectile.localAI[0] += 1f;
+			if (!ZenithActive)
+			{
+				projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+				projectile.localAI[0] += 1f;
+			}
         }
     }
 }

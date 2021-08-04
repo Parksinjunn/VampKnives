@@ -27,6 +27,8 @@ namespace VampKnives.Projectiles
         bool TileCollision;
         float RotationSpeed;
         public static int HealProjChanceScale = 101;
+        public static int HealProjBossChanceScale = 101;
+        public static int HealProjBossChance = 25;
         public static int HealProjChance = HealProjChanceScale;
         public KnifeWeapon ParentWeapon = new KnifeWeapon();
 
@@ -49,10 +51,11 @@ namespace VampKnives.Projectiles
             SafeSetDefaults();
             if(ZenithActive)
             {
-                RandomVelocity = Main.rand.NextFloat(0.8f, 1.25f);
+                RandomVelocity = 0f;
                 projectile.tileCollide = false;
                 projectile.aiStyle = 0;
                 projectile.penetrate = 1;
+                projectile.timeLeft = 20;
                 HealProjChance = 3;
             }
             else
@@ -75,36 +78,36 @@ namespace VampKnives.Projectiles
             {
                 for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
                 {
-                    if (Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<HealProj>())
+                    if (Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<HealProj>() || Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<ManaHeal>() || Main.projectile[ProjCount.ZenithProj[g]].type == ProjectileID.Bee)
                     {
                         Main.projectile[ProjCount.ZenithProj[g]].Kill();
                     }
-                    projectile.frame = 0;
+                    //Main.NewText("ProjXBefore: " + Main.projectile[ProjCount.ZenithProj[g]].position.X);
                     Player p = Main.player[projectile.owner];
 
-                    //Factors for calculations
-                    double deg = (double)RotationSpeed + (60*g); //The degrees, you can multiply projectile.ai[1] to make it orbit faster, may be choppy depending on the value
-                    double rad = deg * (Math.PI / 180); //Convert degrees to radians
+                    double deg = (double)RotationSpeed + (60*g); 
+                    double rad = deg * (Math.PI / 180);
 
-                    float distX = 64; //Distance away from the player
-                    float distY = 64;
+                    float distX = 120f; 
+                    float distY = 120f;
 
-                    distX = 80f + (40f * (float)Math.Sin(2 * rad));
-                    distY = 80f + (40f * (float)Math.Cos(2 * rad));
+                    //float a = (Main.projectile[ZenithProjID].position.X - p.position.X);
+                    //float b = (Main.projectile[ZenithProjID].position.Y - p.position.Y);
+                    float a = 1f;
+                    float b = 1f;
 
-                    /*Position the player based on where the player is, the Sin/Cos of the angle times the /
-                    /distance for the desired distance away from the player minus the projectile's width   /
-                    /and height divided by two so the center of the projectile is at the right place.     */
-                    Main.projectile[ProjCount.ZenithProj[g]].position.X = Main.projectile[ZenithProjID].Center.X - (int)(Math.Cos(rad) * distX) - Main.projectile[ProjCount.ZenithProj[g]].width / 2;
-                    Main.projectile[ProjCount.ZenithProj[g]].position.Y = Main.projectile[ZenithProjID].Center.Y - (int)(Math.Sin(rad) * distY) - Main.projectile[ProjCount.ZenithProj[g]].height / 2;
+                    Main.projectile[ProjCount.ZenithProj[g]].position.X = Main.projectile[ZenithProjID].Center.X - (float)(a * (Math.Cos(rad) * distX)) - Main.projectile[ProjCount.ZenithProj[g]].width / 2f;
+                    Main.projectile[ProjCount.ZenithProj[g]].position.Y = Main.projectile[ZenithProjID].Center.Y - (float)(b * (Math.Sin(rad) * distY)) - Main.projectile[ProjCount.ZenithProj[g]].height / 2f;
 
-                    //Increase the counter/angle in degrees by 1 point, you can change the rate here too, but the orbit may look choppy depending on the value
-                    RotationSpeed += 1.4f;
-                    Main.projectile[ProjCount.ZenithProj[g]].timeLeft = 120;
-
-                    Main.projectile[ProjCount.ZenithProj[g]].rotation = Main.projectile[ProjCount.ZenithProj[g]].rotation + (float)rad; // projectile faces sprite right
+                    RotationSpeed += 1f;
+                    //Main.projectile[ProjCount.ZenithProj[g]].alpha+=1; //WHAT THE FUCK DID I DO
+                    //int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 184, projectile.velocity.X * 0f, projectile.velocity.Y * 0f, 10, Color.LightGreen, 1.5f);
+                    //Main.dust[DustID2].noGravity = false;
+                    //Main.projectile[ProjCount.ZenithProj[g]].rotation = (float)rad + MathHelper.PiOver2 + 0.5f;
                     projectile.netUpdate = true;
-                }      
+                    //Main.NewText("ProjXAfter: " + Main.projectile[ProjCount.ZenithProj[g]].position.X);
+                }
+                //Main.NewText("NumProj: " + countOfProj);
             }
         }
         public override bool PreKill(int timeLeft)
@@ -239,13 +242,23 @@ namespace VampKnives.Projectiles
 
         public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-                Player owner = Main.player[projectile.owner];
-                if (Main.rand.Next(0, HealProjChanceScale) <= HealProjChance)
+            Player owner = Main.player[projectile.owner];
+            if(!n.boss)
+            {
+                if (Main.rand.Next(0, HealProjChanceScale) <= VampKnives.HealProjectileSpawn)
                 {
                     Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
                 }
-                SafeOnHitNPC(n, damage, knockback, crit);
-                Hoods(n);
+            }
+            else if(n.boss)
+            {
+                if (Main.rand.Next(0, HealProjBossChanceScale) <= HealProjBossChance)
+                {
+                    Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
+                }
+            }
+            SafeOnHitNPC(n, damage, knockback, crit);
+            Hoods(n);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

@@ -33,14 +33,7 @@ namespace VampKnives.Projectiles.Ammo
         {
             //Main.NewText("Defense 1: " + n.defense);
             Hoods(n);
-            if(VampKnives.Normal || VampKnives.Legacy)
-            {
-                n.defense = (int)(n.defense / (1.05f * ArmorPiercingMult));
-            }
-            if(VampKnives.Unforgiving)
-            {
-                n.defense = (int)(n.defense / (1.00001f));
-            }
+            n.defense = (int)(n.defense / ((1.05f * ArmorPiercingMult) * VampKnives.AmmoDefenseDecrease));
             //Main.NewText("Defense 2: " + n.defense);
         }
         public override bool SafeOnTileCollide(Vector2 oldVelocity)

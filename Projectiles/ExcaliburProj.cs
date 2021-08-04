@@ -24,7 +24,10 @@ namespace VampKnives.Projectiles
         int SpriteRotation = 45;
         public override void SafeAI()
         {
-            projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
+            if (!ZenithActive)
+            {
+                projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(SpriteRotation); // projectile faces sprite right
+            }
         }
     }
 }

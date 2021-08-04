@@ -21,41 +21,43 @@ namespace VampKnives.Projectiles
             projectile.magic = true;                        //this make the projectile do magic damage
             projectile.tileCollide = true;                 //this make that the projectile does not go thru walls
             projectile.ignoreWater = false;
-            projectile.timeLeft = 300;
+            projectile.timeLeft = 100;
         }
 
         public override void SafeAI()
         {
-            //this is projectile dust
-            int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 20, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.LightBlue, 0.5f);
-            Main.dust[DustID2].noGravity = false;
-            //this make that the projectile faces the right way 
-            projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
-            projectile.localAI[0] += 1f;
-            //projectile.light = .04f;
-            //projectile.alpha = (int)projectile.localAI[0] * 2;
+            if (!ZenithActive)
+            {
+                //this is projectile dust
+                int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 20, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 10, Color.LightBlue, 0.5f);
+                Main.dust[DustID2].noGravity = false;
+                //this make that the projectile faces the right way 
+                projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+                projectile.localAI[0] += 1f;
+            }
 
         }
 
         public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             n.AddBuff(BuffID.Electrified, 240);
-
-            int speedX = 15;
-            int speedY = 15;
-            int numProjectiles2 = 18;
-            Random random = new Random();
-            int ran = random.Next(320, 360);
-            float spread = MathHelper.ToRadians(ran);
-            float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-            double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
-            double deltaAngle = spread / (float)numProjectiles2;
-            double offsetAngle;
-
-            for (int j = 0; j < numProjectiles2; j++)
+            if(ZenithActive == false)
             {
-                offsetAngle = startAngle + deltaAngle * j;
-                Projectile.NewProjectile(n.position.X, n.position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), mod.ProjectileType("RukasusTeslaProj"), 15, 1);
+                int speedX = 15;
+                int speedY = 15;
+                int numProjectiles2 = 18;
+                Random random = new Random();
+                int ran = random.Next(320, 360);
+                float spread = MathHelper.ToRadians(ran);
+                float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
+                double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
+                double deltaAngle = spread / (float)numProjectiles2;
+                double offsetAngle;
+                for (int j = 0; j < numProjectiles2; j++)
+                {
+                    offsetAngle = startAngle + deltaAngle * j;
+                    Projectile.NewProjectile(n.position.X, n.position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), mod.ProjectileType("RukasusTeslaProj"), 15, 1);
+                }
             }
         }
 

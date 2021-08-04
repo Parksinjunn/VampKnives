@@ -80,8 +80,6 @@ namespace VampKnives.Projectiles
                     int statLifeCalc = (int)((p.HealAccMult) * ((p.VampCurrent / 230) + (1.21015154 * Math.Log(damage) - 0.04153757)));
                     if (statLifeCalc > 20)
                         statLifeCalc = 20 + Main.rand.Next(-3, 3) + (int)p.VampCurrent / 330;
-                    if (VampKnives.Unforgiving && statLifeCalc > 10)
-                        statLifeCalc = 10 + Main.rand.Next(-5, 3);
                     if (statLifeCalc < 1)
                         statLifeCalc = 1;
                     statLifeCalc += ParentWeapon.LifeStealBonus;

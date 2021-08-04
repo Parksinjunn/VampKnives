@@ -61,19 +61,11 @@ namespace VampKnives.Items.Armor
         {
             //if (Main.rand.Next(20) == 0)
             //{
-                ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-                //Dust.NewDust(player.position, player.width, player.height, 5);
-                if (p.Mage == true && p.HoodKeyPressed == true)
-                {
-                    player.statMana += 50;
-                if (Main.rand.NextFloat() < 1f)
-                {
-                    Dust dust;
-                    // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                    dust = Main.dust[Terraria.Dust.NewDust(new Vector2(player.position.X - (player.width / 2), player.position.Y - (player.height)), 47, 0, 226, 0f, 7f, 3, new Color(255, 255, 255), 0.6f)];
-                    dust.noGravity = true;
-                    dust.shader = GameShaders.Armor.GetSecondaryShader(22, Main.LocalPlayer);
-                }
+            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            //Dust.NewDust(player.position, player.width, player.height, 5);
+            if (p.Mage == true && p.HoodKeyPressed == true)
+            {
+                player.statMana += 50;
             }
 
             //}

@@ -346,6 +346,14 @@ namespace VampKnives.UI
             PlatinumCoinButton.OnClick += new MouseEvent(PlatinumCoinButtonClick);
             RitualOfMidasButton.Append(PlatinumCoinButton);
         }
+        //public override void Update(GameTime gameTime)
+        //{
+        //    if (visible == true && Main.netMode == NetmodeID.MultiplayerClient)
+        //    {
+        //        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        //        p.UIOpen = true;
+        //    }
+        //}
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();

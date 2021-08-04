@@ -23,7 +23,6 @@ namespace VampKnives
         public UserInterface FirstLoadUI;
         private VampBar vampBar;
         private RecipePageState RecipePage;
-        private EntranceDamageSettingsPanel FirstLoadUIPanel;
         private WarningMessage warning;
         //private UserInterface WarningMessage;
         internal UserInterface WarningMessagePerson;
@@ -36,11 +35,6 @@ namespace VampKnives
         public static bool IsAmmoSculptRecipe;
         public static bool IsKnifeSculptRecipe;
         public static bool IsSharpeningSculptRecipe;
-        public static bool ChosenDifficulty;
-        public static bool Legacy;
-        public static bool Normal = true;
-        public static bool Unforgiving;
-        public static bool ChangeItemIsHeld;
         public static bool HammerInSlot;
         public static bool ChiselInSlot;
         public UserInterface WorkbenchSlots;
@@ -50,6 +44,11 @@ namespace VampKnives
         internal UserInterface BloodAltarUIPanel;
         private BloodAltarUI BloodAltarUIState;
         bool MarkForDeletion;
+        public static bool UIOpenElsewhere;
+        public static float ConfigDamageMult = 1f;
+        public static float ConfigHealAmntMult = 1f;
+        public static float HealProjectileSpawn = 1f;
+        public static float AmmoDefenseDecrease = 1f;
 
         //public static List<int> BloodAltarPosition = new List<int>();
 
@@ -222,6 +221,7 @@ namespace VampKnives
         }
         public override void MidUpdateTimeWorld()
         {
+            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
             {
 
@@ -236,7 +236,6 @@ namespace VampKnives
                     VampireWorld.RitualOfTheStone[iterations] = false;
                     VampireWorld.RitualOfTheMiner[iterations] = false;
                     VampireWorld.RitualOfMidas[iterations] = false;
-                    ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
                     if (Main.netMode == NetmodeID.MultiplayerClient)
                     {
                         p.SendPackage = true;
@@ -322,6 +321,10 @@ namespace VampKnives
                 Error = false;
                 ErrorTimer = 0;
             }
+            if (p.BloodPoints <= 1)
+            {
+                p.TurnOffRituals(Main.LocalPlayer);
+            }
         }
         public override void Load()
         {
@@ -346,17 +349,15 @@ namespace VampKnives
                 AddEquipTexture(null, EquipType.Head, "BatTransformHidden", "VampKnives/Items/Armor/BatTransformHidden");
                 AddEquipTexture(null, EquipType.Wings, "BatFlyMovement", "VampKnives/Items/Armor/BatFlyMovement");
                 AddEquipTexture(null, EquipType.Wings, "BatWingsHidden", "VampKnives/Items/Armor/BatWingsHidden");
-
+                AddEquipTexture(null, EquipType.Head, "VeiTransform", "VampKnives/Items/VtuberItems/VeiFullTransform");
                 customRecources = new UserInterface();
                 customResources2 = new UserInterface();
                 FirstLoadUI = new UserInterface();
-                FirstLoadUIPanel = new EntranceDamageSettingsPanel();
                 vampBar = new VampBar();
                 VampBar.visible = true;
                 RecipePage = new RecipePageState();
                 customResources2.SetState(RecipePage);
                 customRecources.SetState(vampBar);
-                FirstLoadUI.SetState(FirstLoadUIPanel);
                 VampireUserInterface = new UserInterface();
                 VampireUserInterface2 = new UserInterface();
 
@@ -376,14 +377,6 @@ namespace VampKnives
         }
         public override void UpdateUI(GameTime gameTime)
         {
-            if (!Legacy && !Normal && !Unforgiving)
-            {
-                EntranceDamageSettingsPanel.visible = true;
-            }
-            else if ((Legacy || Normal || Unforgiving) && !ChangeItemIsHeld && ChosenDifficulty)
-            {
-                EntranceDamageSettingsPanel.visible = false;
-            }
             VampireUserInterface?.Update(gameTime);
             VampireUserInterface2?.Update(gameTime);
             if (IsKnifeRecipe)
@@ -485,11 +478,6 @@ namespace VampKnives
                         customResources2.Update(Main._drawInterfaceGameTime);
                         RecipePage.Draw(Main.spriteBatch);
                     }
-                    if (EntranceDamageSettingsPanel.visible)
-                    {
-                        FirstLoadUI.Update(Main._drawInterfaceGameTime);
-                        FirstLoadUIPanel.Draw(Main.spriteBatch);
-                    }
                     if (WorkbenchSlotState.visible)
                     {
                         WorkbenchSlots.Update(Main._drawInterfaceGameTime);
@@ -549,6 +537,8 @@ namespace VampKnives
         int Packet6 = 66;
         int BatTransformRecieve = 88;
         int BatTransformSend = 89;
+        int VeiTransormRecieve = 420;
+        int VeiTransformSend = 421;
         int SupportArmorRecieve = 99;
         int SupportArmorSend = 100;
         int Packet4 = 44;
@@ -564,6 +554,8 @@ namespace VampKnives
         int MinerRitualSend = 39;
         int MidasRitualRecieve = 40;
         int MidasRitualSend = 41;
+        int UIOpenRecieve = 28;
+        int UIOpenSend = 29;
 
         int DustType;
         int DustTimer;
@@ -638,6 +630,21 @@ namespace VampKnives
                 int playerID = reader.ReadInt32();
                 Main.player[playerID].GetModPlayer<ExamplePlayer>().Transform = Transform;
                 Main.player[playerID].GetModPlayer<ExamplePlayer>().HasTabletEquipped = HasTablet;
+            }
+            if(idVariable == VeiTransormRecieve)
+            {
+                bool VeiTransform = reader.ReadBoolean();
+                int PlayerID = reader.ReadInt32();
+                ModPacket packet = this.GetPacket();
+                packet.Write(VeiTransform);
+                packet.Write(PlayerID);
+                packet.Send(-1, PlayerID);
+            }
+            if(idVariable == VeiTransformSend)
+            {
+                bool VeiTransform = reader.ReadBoolean();
+                int playerID = reader.ReadInt32();
+                Main.player[playerID].GetModPlayer<ExamplePlayer>().VeiTransform = VeiTransform;
             }
             if (idVariable == SupportArmorRecieve)
             {
@@ -1105,6 +1112,25 @@ namespace VampKnives
                     DustTimer = 0;
                 }
             }
+            if (idVariable == UIOpenRecieve)
+            {
+                bool UIOpen = reader.ReadBoolean();
+                UIOpenElsewhere = UIOpen;
+                //int PlayerID = reader.ReadInt32();
+                //for (int iterations = 0; iterations < Main.ActivePlayersCount - 1; iterations++)
+                //{
+
+                //}
+
+                //ModPacket packet = this.GetPacket();
+                //packet.Write(UIOpen);
+                //packet.Send(-1, PlayerID);
+            }
+            //if (idVariable == UIOpenSend)
+            //{
+            //    bool UIOpen = reader.ReadBoolean();
+            //    Main.LocalPlayer.GetModPlayer<ExamplePlayer>().UIOpenElsewhere = UIOpen;
+            //}
             base.HandlePacket(reader, whoAmI);
         }
         public void StoneRitual(int i, int j, Player player, ushort tileid)

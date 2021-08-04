@@ -12,6 +12,7 @@ using VampKnives.Tiles;
 using VampKnives.Items;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace VampKnives
 {
@@ -131,10 +132,6 @@ namespace VampKnives
         public bool IsSupportKeyPressed;
         public float TrueSupportBuff;
 
-        public bool LegacyPlayer;
-        public bool NormalPlayer;
-        public bool UnforgivingPlayer;
-
         public float DefenseReflectChance = 0f;
         public int DefenseExtraLives = 0;
 
@@ -159,6 +156,8 @@ namespace VampKnives
         public bool SupportArmorKeyPressed;
 
         public int BloodPoints;
+        public bool UIOpen=false;
+        public bool UIOpenElsewhere;
         public bool SacrificialDebuff;
         public bool Bandaged;
         public bool SendPackage;
@@ -168,8 +167,16 @@ namespace VampKnives
         public static bool HasHeldTier2;
         public static bool HasHeldTier3;
 
+        public bool VeiWingsEquipped;
+        public bool VeiTransform;
+
         public override void ResetEffects()
         {
+            if (MagePower && HoodKeyPressed)
+            {
+                player.velocity *= 0f;
+                player.gravity *= 0f;
+            }
             Connor = false;
             Cobalt = false;
             Mudkip = false;
@@ -224,28 +231,13 @@ namespace VampKnives
             VampDecreaseRate = 2f;
             VampDecSlow = 1f;
             VampNecklace = false;
-            if(VampKnives.Legacy)
-            {
-                HealAccMult = 1.3f;
-            }
-            if (VampKnives.Normal)
-            {
-                HealAccMult = 1f;
-            }
-            if (VampKnives.Unforgiving)
-            {
-                HealAccMult = 0.7f;
-            }
+            HealAccMult = 1f * VampKnives.ConfigHealAmntMult;
             DelayAdd = 0;
             PsionicArmorSet = false;
             IsTrueSupport = false;
             TrueSupportBuff = 1f;
             TitaniumDefenseBuff = false;
             ShroomiteBuff = false;
-            VampKnives.ChangeItemIsHeld = false;
-            LegacyPlayer = VampKnives.Legacy;
-            NormalPlayer = VampKnives.Normal;
-            UnforgivingPlayer = VampKnives.Unforgiving;
             HasTabletEquipped = false;
             DefenseReflectChance = 0;
             DefenseExtraLives = 0;
@@ -255,6 +247,8 @@ namespace VampKnives
             RunSupportTimer = SupportArmorSetBuff = SupportArmorBuff = false;
             SacrificialDebuff = false;
             Bandaged = false;
+            VeiWingsEquipped = false;
+            VeiTransform = false;
             //SupportArmorKeyPressed = false;
             //Transform = false;
             for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
@@ -266,7 +260,8 @@ namespace VampKnives
                     Projectiles.ZenithsTrueBladesProj.SpawnTimer = 15;
                     //Main.NewText("Length: " + ProjCount.ZenithProj.Count);
                 }
-            }   
+            }
+            //Main.NewText("UIOpen: " + UIOpen + "    UIOpenElseWHere: " + UIOpenElsewhere);
         }
         public override void clientClone(ModPlayer clientClone)
         {
@@ -276,6 +271,7 @@ namespace VampKnives
             clone.HoodIsVisible = this.HoodIsVisible;
             clone.Transform = this.Transform;
             clone.SendPackage = this.SendPackage;
+            clone.VeiTransform = this.VeiTransform;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -298,6 +294,14 @@ namespace VampKnives
                 packet2.Write(Main.myPlayer);
                 packet2.Send();
             }
+            else if(VeiTransform != clone.VeiTransform)
+            {
+                ModPacket packet3 = mod.GetPacket();
+                packet3.Write(420);
+                packet3.Write(VeiTransform);
+                packet3.Write(Main.myPlayer);
+                packet3.Send();
+            }
             else if(SupportArmorKeyPressed != clone.SupportArmorKeyPressed)
             {
                 for (int x = 0; x < Main.ActivePlayersCount; x++)
@@ -317,6 +321,15 @@ namespace VampKnives
                     }
                 }
                 SupportArmorKeyPressed = clone.SupportArmorKeyPressed;
+            }
+            else if (UIOpen != clone.UIOpen)
+            {
+                //Main.NewText("Sent");
+                ModPacket packet2 = mod.GetPacket();
+                packet2.Write(28);
+                packet2.Write(UIOpen);
+                packet2.Write(Main.myPlayer);
+                packet2.Send();
             }
         }
 
@@ -440,18 +453,6 @@ namespace VampKnives
         public override TagCompound Save()
         {
             var staticVars = new List<string>();
-            if (LegacyPlayer)
-            {
-                staticVars.Add("Legacy");
-            }
-            else if (NormalPlayer)
-            {
-                staticVars.Add("Normal");
-            }
-            else if (UnforgivingPlayer)
-            {
-                staticVars.Add("Unforgiving");
-            }
             if (HasHeldTier3)
             {
                 staticVars.Add("Tier3");
@@ -483,9 +484,6 @@ namespace VampKnives
             Given = tag.GetBool("Given");
             NeckAdd = tag.GetFloat("NeckAdd");
             KillText = tag.GetString("KillText");
-            LegacyPlayer = staticVars.Contains("Legacy");
-            NormalPlayer = staticVars.Contains("Normal");
-            UnforgivingPlayer = staticVars.Contains("Unforgiving");
             NumCrafted = tag.GetInt("NumCrafted");
             BloodPoints = tag.GetInt("BloodPoints");
             HasHeldTier1 = staticVars.Contains("Tier1");
@@ -670,6 +668,7 @@ namespace VampKnives
                 }        
             }
         }
+
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
             VampKnives v = new VampKnives();
@@ -905,6 +904,14 @@ namespace VampKnives
             if (HoodKeyPressed == true && MageAccessory)
             {
                 player.AddBuff(ModContent.BuffType<Buffs.MageHoodBuff>(), 60, true);
+                if (Main.rand.NextFloat() < 1f)
+                {
+                    Dust dust;
+                    // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
+                    dust = Main.dust[Terraria.Dust.NewDust(new Vector2(player.position.X - (player.width / 2), player.position.Y - (player.height)), 47, 0, 226, 0f, 7f, 3, new Color(255, 255, 255), 0.6f)];
+                    dust.noGravity = true;
+                    dust.shader = GameShaders.Armor.GetSecondaryShader(22, Main.LocalPlayer);
+                }
             }
             if(HasTabletEquipped == true && Transform == true && (player.bodyFrame.Y == 560 || player.bodyFrame.Y == 168))
             {
@@ -979,6 +986,31 @@ namespace VampKnives
                     player.wings = mod.GetEquipSlot("BatWingsHidden", EquipType.Wings);
                 }
             }
+            if(VeiTransform && !HasTabletEquipped)
+            {
+                player.head = mod.GetEquipSlot("VeiTransform", EquipType.Head);
+            }
+            //if(VeiWingsEquipped)
+            //{
+            //    if (player.bodyFrameCounter == 0 && (player.velocity.X < 0 || player.velocity.X > 0 || player.velocity.Y < 0 || player.velocity.Y > 0))
+            //    {
+            //        player.wings = mod.GetEquipSlot("BatFlyMovement", EquipType.Wings);
+            //        int num74 = 4;
+            //        if (player.direction == 1)
+            //        {
+            //            num74 = -40;
+            //        }
+            //        int num75 = Dust.NewDust(new Vector2(player.position.X + (float)(player.width / 2) + (float)num74, player.position.Y + (float)(player.height / 2) - 15f), 30, 30, 182, 0f, 0f, 100, Color.Red, 0.5f);
+            //        Main.dust[num75].noGravity = true;
+            //        Dust dust3 = Main.dust[num75];
+            //        dust3.velocity *= 0.3f;
+            //        Lighting.AddLight(new Vector2(player.position.X + (float)(player.width / 2) + (float)num74, player.position.Y + (float)(player.height / 2) - 15f), new Vector3(0.45f, 0.02f, 0.02f));
+            //    }
+            //    else
+            //    {
+            //        player.wings = mod.GetEquipSlot("BatWingsHidden", EquipType.Wings);
+            //    }
+            //}
             if (nullified)
             {
                 Nullify();
@@ -994,8 +1026,66 @@ namespace VampKnives
             }
             base.SetControls();
         }
+        int VeiWingFrame = 0;
+        int WingTimer = 0;
+        public static readonly PlayerLayer VeiWings = new PlayerLayer("VampKnives", "VeiWings", PlayerLayer.MiscEffectsBack, delegate (PlayerDrawInfo drawInfo)
+        {
+            if (drawInfo.shadow != 0f)
+            {
+                return;
+            }
+            Player drawPlayer = drawInfo.drawPlayer;
+            Mod mod = ModLoader.GetMod("VampKnives");
+            ExamplePlayer modPlayer = drawPlayer.GetModPlayer<ExamplePlayer>();
+            if(drawPlayer.bodyFrameCounter == 0 && (drawPlayer.velocity.X < 0 || drawPlayer.velocity.X > 0 || drawPlayer.velocity.Y < 0 || drawPlayer.velocity.Y > 0))
+            {
+                modPlayer.WingTimer++;
+                if (drawPlayer.wingTime == 0)
+                    modPlayer.VeiWingFrame = 0;
+                else if (modPlayer.WingTimer % 2 == 0)
+                {
+                    if (modPlayer.VeiWingFrame < 9 && drawPlayer.controlJump)
+                    {
+                        modPlayer.VeiWingFrame++;
+                    }
+                    else
+                        modPlayer.VeiWingFrame = 0;
+                }
+                if (modPlayer.WingTimer >= 60)
+                {
+                    modPlayer.WingTimer = 0;
+                }
+            }
+            else
+            {
+                modPlayer.VeiWingFrame = 6;
+            }
+            if (modPlayer.VeiWingsEquipped)
+            {
+                Texture2D texture = mod.GetTexture("Items/VtuberItems/VeiWingsAnim");
+                int frameSize = texture.Height / 10;
+                int drawX;
+                if(drawPlayer.direction == 1)
+                {
+                    drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - (Main.screenPosition.X+4));
+                }
+                else
+                {
+                    drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - (Main.screenPosition.X-4));
+                }
+                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - (Main.screenPosition.Y-236));
+                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), new Rectangle(0, frameSize * modPlayer.VeiWingFrame, texture.Width, frameSize), Color.White, 0f, new Vector2(texture.Width / 2f, texture.Height / 2f), 1f, SpriteEffects.None, 0);
+                Main.playerDrawData.Add(data);
+            }
+        });
         public override void ModifyDrawLayers(List<PlayerLayer> layers)
         {
+            if(VeiWingsEquipped)
+            {
+                layers.Remove(PlayerLayer.Wings);
+                VeiWings.visible = true;
+                layers.Insert(0, VeiWings);
+            }
             if (Transform && HasTabletEquipped)
             {
                 //layers.Remove(PlayerLayer.Head);
@@ -1015,6 +1105,14 @@ namespace VampKnives
                 layers.Remove(PlayerLayer.ShieldAcc);
                 layers.Remove(PlayerLayer.ShoeAcc);
                 layers.Remove(PlayerLayer.WaistAcc);
+                layers.Remove(PlayerLayer.Arms);
+            }
+            if(VeiTransform && !HasTabletEquipped)
+            {
+                layers.Remove(PlayerLayer.Body);
+                layers.Remove(PlayerLayer.Legs);
+                layers.Remove(PlayerLayer.Skin);
+                layers.Remove(PlayerLayer.Face);
                 layers.Remove(PlayerLayer.Arms);
             }
             base.ModifyDrawLayers(layers);
@@ -1122,6 +1220,33 @@ namespace VampKnives
                     player.AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
                     SupportTime = 300;
                     VisualRun = true;
+                }
+            }
+        }
+
+        public void TurnOffRituals(Player p)
+        {
+            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            {
+                identifier = iterations;
+                if (VampireWorld.AltarOwner[identifier] == p.whoAmI)
+                {
+                    if (VampireWorld.RitualOfTheStone[identifier])
+                    {
+                        VampireWorld.RitualOfTheStone[identifier] = false;
+                    }
+                    if (VampireWorld.RitualOfMidas[identifier])
+                    {
+                        VampireWorld.RitualOfMidas[identifier] = false;
+                    }
+                    if (VampireWorld.RitualOfTheMiner[identifier])
+                    {
+                        VampireWorld.RitualOfTheMiner[identifier] = false;
+                    }
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        SendPackage = true;
+                    }
                 }
             }
         }

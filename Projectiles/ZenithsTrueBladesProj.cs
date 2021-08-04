@@ -36,22 +36,21 @@ namespace VampKnives.Projectiles
             {
                 projectile.Kill();
                 Main.NewText("MORE THAN ONE NOT ALLOWED");
+                ZenithCount--;
             }
-            ZenithCount = 0;
         }
         public override void AI()
         {
             Player owner = Main.player[projectile.owner];
             ZenithProjID = projectile.whoAmI;
             ZenithActive = true;
-            //int DustID3 = Dust.NewDust(new Vector2(projectile.Center.X, projectile.Center.Y), 1, 1, 15, 0f, 0f, 10, new Color(0, 255, 0), 2f);
             projectile.timeLeft = 2;
             if(ProjCount.ZenithProj.Count < 6)
             {
                 SpawnTimer++;
-                if(SpawnTimer >= 5)
+                if(SpawnTimer >= 2)
                 {
-                    int knifeSelect = Main.rand.Next(0, 19);
+                    int knifeSelect = Main.rand.Next(0, 20);
                     if (knifeSelect == 0)
                         ProjType = ModContent.ProjectileType<Ammo.CopperProj>();
                     if (knifeSelect == 1)
@@ -92,9 +91,8 @@ namespace VampKnives.Projectiles
                         ProjType = ModContent.ProjectileType<NyivesBigProj>();
                     if (knifeSelect == 19)
                         ProjType = ModContent.ProjectileType<VampireKnifeProj>();
-
+                    ProjType = ModContent.ProjectileType<NyivesBigProj>();
                     int i = Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ProjType, (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-
                     ProjCount.ZenithProj.Add(i);
                     ProjCount.ZenithType.Add(Main.projectile[i].type);
                     SpawnTimer = 0;
@@ -173,7 +171,7 @@ namespace VampKnives.Projectiles
                     projectile.rotation += (float)projectile.direction * 0.8f;
                 }
                 projectile.rotation += (float)projectile.direction * 0.8f;
-                projectile.velocity *= 1.5f;
+                projectile.velocity *= 3f;
             }
             else
             {

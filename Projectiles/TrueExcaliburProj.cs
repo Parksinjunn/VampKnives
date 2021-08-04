@@ -24,8 +24,8 @@ namespace VampKnives.Projectiles
 
         public override void SafeAI()
         {
-            //this make that the projectile faces the right way 
-            projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
+            if (!ZenithActive)
+                projectile.rotation = (float)Math.Atan2((double)projectile.velocity.Y, (double)projectile.velocity.X) + 1.57f;
             Lighting.AddLight(projectile.Center, (Main.DiscoR / 255f), (Main.DiscoG / 255f), (Main.DiscoB / 255f));
         }
 

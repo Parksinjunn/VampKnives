@@ -108,6 +108,7 @@ namespace VampKnives.Items
         {
             return true;
         }
+        
 
         public override void AddRecipes()
         {
@@ -120,7 +121,22 @@ namespace VampKnives.Items
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
-        public override bool CanUseItem(Player player) => player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.VampiricPrismHeldProj>()] <= 0;
+        public bool RegenedHealth;
+        public override bool CanUseItem(Player player)
+        {
+            if(player.statLife > 1)
+            {
+                RegenedHealth = true;
+            }
+            if(player.statLife <= 1 && RegenedHealth)
+            {
+                ExamplePlayer.OvalDust(player.position, 5f, 5f, Color.Red, 67, 1.2f);
+                RegenedHealth = false;
+                return false;
+            }
+            else if(player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.VampiricPrismHeldProj>()] <= 0 && RegenedHealth);
+                return true;
+        }
     }
 
 }

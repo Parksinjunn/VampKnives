@@ -150,9 +150,7 @@ namespace VampKnives.Tiles
             {
                 Offset = 0;
             }
-            
-
-            CalculatedOffset = (short)(Offset);
+                CalculatedOffset = (short)(Offset);
             Main.tile[i, j].frameY = CalculatedOffset;
             return true;
         }
@@ -183,8 +181,16 @@ namespace VampKnives.Tiles
             //Main.NewText("TileCount: " + VampireWorld.AltarBeingUsed.Count);
         }
         bool CanBeAdded;
+
+        bool CurrentlyOpen;
+
         public override bool NewRightClick(int i, int j)
         {
+            //Main.NewText("Currently Open: " + CurrentlyOpen);
+            if(BloodAltarUI.visible == false)
+            {
+                CurrentlyOpen = false;
+            }
             ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
             Tile tile = Framing.GetTileSafely(i, j);
             Point16 topLeft = new Point16(i, j) - new Point16(tile.frameX / 18, 0);
@@ -194,9 +200,11 @@ namespace VampKnives.Tiles
                 Main.playerInventory = false;
                 BloodAltarUI.visible = false;
                 Main.PlaySound(SoundID.MenuClose);
+                CurrentlyOpen = false;
             }
-            else if (BloodAltarUI.visible == false)
+            else if (BloodAltarUI.visible == false && CurrentlyOpen == false)
             {
+                CurrentlyOpen = true;
                 //Main.NewText("ListSize: " + ExamplePlayer.AltarBeingUsed.Count);
                 VampireWorld.MostRecentClick = new Vector2(topLeft.X, topLeft.Y);
                 for (int b = 0; b < VampireWorld.AltarBeingUsed.Count; b += 2)
