@@ -171,6 +171,7 @@ namespace VampKnives
         public bool VeiTransform;
 
         public bool SpectreGlovesOn;
+        public bool BookReset;
 
         public override void ResetEffects()
         {
@@ -253,6 +254,7 @@ namespace VampKnives
             VeiWingsEquipped = false;
             VeiTransform = false;
             SpectreGlovesOn = false;
+            //BookReset = false;
             //SupportArmorKeyPressed = false;
             //Transform = false;
             for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
@@ -318,7 +320,7 @@ namespace VampKnives
                         ModPacket packet2 = mod.GetPacket();
                         packet2.Write(99);
                         packet2.Write(Main.player[x].whoAmI);
-                        Main.NewText("Count: " + BuffCountStore);
+                        //Main.NewText("Count: " + BuffCountStore);
                         packet2.Write(BuffCountStore);
                         packet2.Write(Main.myPlayer);
                         packet2.Send();
@@ -1196,14 +1198,15 @@ namespace VampKnives
             }
             if (VampKnives.BookHotKey.JustPressed)
             {
-                Main.NewText("True");
-                if (UI.StartupBookUI.visible == false)
+                if (BookReset == false)
                 {
                     UI.StartupBookUI.visible = true;
+                    BookReset = true;
                 }
                 else
                 {
-                    UI.StartupBookUI.visible = true;
+                    BookReset = false;
+                    UI.StartupBookUI.visible = false;
                 }
             }
             if (DoubleTapTimer > 1 && VampKnives.VampDashHotKey.JustPressed)

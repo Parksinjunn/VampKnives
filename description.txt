@@ -1,6 +1,9 @@
 Vampire Knives Extended adds many new knives and vampire-based accessories into the game. You'll want a recipe browser.
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
+
+Hotfix 3.6.1: Fixed hotkey for book
+
 Update 3.6, The Quality Update:
 ----------------------------------------------------
 - Completely reworked the spectre knives to look more fluid and to have a more unique attack. This may make the spectre knives more or less powerful, so consider this in beta testing, and let me know in the discord how they feel.
