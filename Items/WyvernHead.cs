@@ -14,6 +14,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Wyvern's Head");
+            Tooltip.SetDefault("A clean-cut head of a wyvern that summons magical feathers that continue to hit whatever enemy they first hit");
         }
         public override void SafeSetDefaults()
         {

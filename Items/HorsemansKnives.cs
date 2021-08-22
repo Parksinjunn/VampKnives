@@ -11,12 +11,12 @@ namespace VampKnives.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Horsemans Knives");
-            Tooltip.SetDefault("");
+            DisplayName.SetDefault("Horsemans Blades");
+            Tooltip.SetDefault("Blades that stick into the ground and randomly spawn pumpkins that home in on enemies");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 62; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 68; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 68;
             item.height = 68;
             item.useTime = 15;

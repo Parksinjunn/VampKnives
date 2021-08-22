@@ -12,11 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Penumbra");
-            Tooltip.SetDefault("Very Dark");
+            Tooltip.SetDefault("Very Dark\nThe knives fall to the ground and bounce back to the user");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 21; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 25; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             
             item.width = 38;
             item.height = 38;

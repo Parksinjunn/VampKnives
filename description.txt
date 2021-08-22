@@ -1,6 +1,21 @@
-Vampire Knives Extended adds many new knives and vampire-based accessories into the game, along with a few random (poorly sprited) pets. You'll want a recipe browser.
+Vampire Knives Extended adds many new knives and vampire-based accessories into the game. You'll want a recipe browser.
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
+Update 3.6, The Quality Update:
+----------------------------------------------------
+- Completely reworked the spectre knives to look more fluid and to have a more unique attack. This may make the spectre knives more or less powerful, so consider this in beta testing, and let me know in the discord how they feel.
+- Moved the difficulty settings to the mod configuration tab, there are presets you can play with (select one at a time), or make your own custom difficulty by changing the affected values.
+- Bosses are now more "Resilient" to your lifesteal knives, meaning that healing projectiles will spawn much less frequently from bosses, however their minions and all other npcs will still have the default drop chance (changed in the mod config).
+- Greatly decreased the drop rate of "clean" wyvern heads, wyvern's will now mainly drop "damaged" heads which stack (so they don't clutter your inventory) and can be sold for a bit of extra cash or sacrificed (come next update) at the blood altar for points.
+- Greatly decreased the drop rate of all mob-dropped knives.
+- The Zenith has been reworked and should work cleanly now with a pure eliptical path. It is still a bit buggy in multiplayer, but part of that I'm afraid can't be fixed.
+- Finally added sticky bomb and dynamite pouches.
+- Removed a lot of unrelated/old/glitchy items from the mod.
+- Cleaned up some code for the blood altar to make it more reliable especially in multiplayer. (still weird and buggy sometimes tho, and still continuing to work on them!)
+- Cleaned up most item descriptions so they actually make sense and tell what they do (let me know in the discord if I missed any please)
+- A lot of changes to knife damage to aim for more balance with some weapons, likely will make some knives op, please let me know in the discord!
+- Decreased cost of recipe pages cuz 2 gold each was insane
+- You now start with a book that leads straight to the wiki, this will eventually be a full on in-game guide, but this will be a project for over the next few updates. (at the moment you start with two, I'm trying my best to fix this, I have no clue why this is happening...)
 
 Update 3.5, The Blood Altar:
 ----------------------------------------------------

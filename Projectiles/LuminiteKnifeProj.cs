@@ -38,13 +38,10 @@ namespace VampKnives.Projectiles
 			
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
-            Player owner = Main.player[projectile.owner];
             n.AddBuff(169, 300); //Bleeding! debuff for 5 seconds
             n.AddBuff(164, 60); //Distorted for 1 second
-            Projectile.NewProjectile(n.position.X, n.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            Hoods(n);
         }
         //int hit = 0;
         //public override bool OnTileCollide(Vector2 velocityChange)

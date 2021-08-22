@@ -278,6 +278,8 @@ namespace VampKnives.NPCs
         public bool partyBuff = false;
         public bool potentPoison = false;
         public bool ShroomitePoison = false;
+        public bool VeiLove = false;
+        public int VeiLoveStack;
 
         public override void ResetEffects(NPC npc)
         {
@@ -292,6 +294,7 @@ namespace VampKnives.NPCs
             potentPoison = false;
             VortexBuff = false;
             ShroomitePoison = false;
+            VeiLove = false;
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
@@ -386,6 +389,35 @@ namespace VampKnives.NPCs
                         damage = damage + x;
                 }
             }
+        }
+        int DamageStore;
+        bool Init;
+        int VeiDelay;
+        public override void PostAI(NPC npc)
+        {
+            if (VeiLove == true && !npc.boss)
+            {
+                if(!Init)
+                {
+                    Init = true;
+                    DamageStore = npc.damage;
+                }
+                npc.defense = 0;
+                npc.damage = 0;
+                VeiDelay++;
+                if(VeiDelay >= 5)
+                {
+                    int num589 = Dust.NewDust(new Vector2(npc.Top.X, npc.Top.Y), 1, 1, ModContent.DustType<Dusts.HeartDust>(), 0f, -3f, 100, Color.Pink, 1f);
+                    Main.dust[num589].noGravity = true;
+                    VeiDelay = 0;
+                }
+            }
+            else if(!VeiLove && Init == true)
+            {
+                npc.damage = DamageStore;
+                Init = false;
+            }
+            base.PostAI(npc);
         }
         public override bool StrikeNPC(NPC npc, ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
         {

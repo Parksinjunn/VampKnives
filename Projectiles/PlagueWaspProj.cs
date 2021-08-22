@@ -37,7 +37,7 @@ namespace VampKnives.Projectiles
 			
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             float ran1 = Main.rand.Next(-3, 3);
             float ran2 = Main.rand.Next(-3, 3);
@@ -52,16 +52,14 @@ namespace VampKnives.Projectiles
 
             for (int x=0; x<= random; x++)
             {
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, ran1, ran2, 189, 21, projectile.knockBack, Main.myPlayer);
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, ran1, ran2, ModContent.ProjectileType<PlagueWasp>(), 21, projectile.knockBack, Main.myPlayer);
             }
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-            Hoods(n);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, 189, 21, projectile.knockBack, Main.myPlayer);
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, 189, 21, projectile.knockBack, Main.myPlayer);
+            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ModContent.ProjectileType<PlagueWasp>(), 21, projectile.knockBack, Main.myPlayer);
+            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ModContent.ProjectileType<PlagueWasp>(), 21, projectile.knockBack, Main.myPlayer);
             return true;
         }
 

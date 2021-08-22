@@ -12,7 +12,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Terra Blades");
-            Tooltip.SetDefault("");
+            Tooltip.SetDefault("Upon collision these blades become ethereal for a short while");
         }
         public override void SafeSetDefaults()
         {

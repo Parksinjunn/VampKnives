@@ -30,11 +30,11 @@ namespace VampKnives.Items
 
             //Defaults
             DisplayName.SetDefault("Rukasu's Bundle o' Tesla Coils");
-            Tooltip.SetDefault("They're... Shocking");
+            Tooltip.SetDefault("They're... Shocking\nUpon hitting an enemy, fires lightning out at all angles");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 40; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
+            item.damage = 46; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

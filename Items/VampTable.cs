@@ -10,7 +10,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Vampire Altar");
-            Tooltip.SetDefault("Used to craft knives");
+            Tooltip.SetDefault("Used to craft knives more efficiently \n(most recipes from this mod are cheaper at this altar)");
         }
 
         public override void SetDefaults()

@@ -16,7 +16,7 @@ namespace VampKnives.Items.Accessories
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Crit Emblem");
-            Tooltip.SetDefault("8% increased knife critical strike chance to all damage types");
+            Tooltip.SetDefault("8% increased knife critical strike chance to all damage types\nUsed in upgrading your knives");
         }
 
         public override void SetDefaults()

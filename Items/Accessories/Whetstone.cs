@@ -13,7 +13,7 @@ namespace VampKnives.Items.Accessories
             DisplayName.SetDefault("Whetstone");
             Tooltip.SetDefault("2,000 grit stone and 5,000 grit stone"
                 + "\nput together in one brick"
-                + "\n20% increased knife damage");
+                + "\n20% increased knife damage\nUsed in upgrading your knives");
         }
 
         public override void SetDefaults()

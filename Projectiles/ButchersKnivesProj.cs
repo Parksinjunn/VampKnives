@@ -248,6 +248,8 @@ namespace VampKnives.Projectiles
                     }
                 }
             }
+            else
+                projectile.frame = 1;
             return true;
         }
     }

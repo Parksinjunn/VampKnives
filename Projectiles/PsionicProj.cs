@@ -88,10 +88,5 @@ namespace VampKnives.Projectiles
                 }
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-            Player owner = Main.player[projectile.owner];
-            Projectile.NewProjectile(projectile.position.X + Main.rand.Next(-3, 3), projectile.position.Y + Main.rand.Next(-3, 3), 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.005), 0, owner.whoAmI);
-        }
     }
 }

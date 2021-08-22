@@ -148,7 +148,7 @@ namespace VampKnives.Projectiles
                         double offsetAngle;
 
                         offsetAngle = startAngle + deltaAngle;
-                        Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), ProjectileType<VampiricPrismProj>(), projectile.damage, projectile.knockBack, player.whoAmI);
+                        Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), ProjectileType<VampiricPrismProj>(), 1 + (int)((float)projectile.damage * ((float)ShootTimerAdd /4f)), projectile.knockBack, player.whoAmI);
 
                         //DUST SPAWN CODE
                         float ProjectileRotationDeg = MathHelper.ToDegrees(projectile.rotation - (90f * (float)Math.PI / 180f));

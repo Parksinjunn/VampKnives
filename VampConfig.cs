@@ -6,7 +6,7 @@ namespace VampKnives
 	public class VampConfig : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
-		[Header("[c/FF0000:Difficulty Presets]")]
+		[Header("[c/FF0000:Difficulty Presets (Select only one at a time)]")]
 		[BackgroundColor(0, 0, 0)]
 		public bool Easy;
 		[BackgroundColor(0, 0, 0)]

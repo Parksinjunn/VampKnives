@@ -27,7 +27,7 @@ namespace VampKnives.Items.Armor
             DisplayName.SetDefault("Witch Doctor's Hood");
             Tooltip.SetDefault("The power of Voodoo" +
                 "\nWho do?" +
-                "\nYou Do!");
+                "\nYou Do!\nPress the hood key to pull up the hood for a stronger effect\n(set the hood key in the settings)");
         }
 
         public override void SetDefaults()

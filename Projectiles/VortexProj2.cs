@@ -65,11 +65,10 @@ namespace VampKnives.Projectiles
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.AddBuff(BuffID.Confused, 60);
             timer = 0;
-            base.OnHitNPC(target, damage, knockback, crit);
         }
     }
 }

@@ -42,6 +42,5 @@ namespace VampKnives.Projectiles
             Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("SupportProj"), (int)(projectile.damage * 1.5), 0, owner.whoAmI);
             Hoods(n);
         }
-
     }
 }

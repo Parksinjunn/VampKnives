@@ -17,10 +17,13 @@ namespace VampKnives
         public static ModHotKey SupportHotKey;
         public static ModHotKey VampDashHotKey;
         public static ModHotKey SupportArmorHotKey;
+        public static ModHotKey BookHotKey;
         public static int inventoryIndex;
         public UserInterface customRecources;
         public UserInterface customResources2;
         public UserInterface FirstLoadUI;
+        public UserInterface StartupInterface;
+        private StartupBookUI StartupState;
         private VampBar vampBar;
         private RecipePageState RecipePage;
         private WarningMessage warning;
@@ -333,6 +336,7 @@ namespace VampKnives
             SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
             VampDashHotKey = RegisterHotKey("Double tap to transform into a bat for a few seconds(Requires vampiric armor)", "D");
             SupportArmorHotKey = RegisterHotKey("Key to use the support armor's buff", "C");
+            BookHotKey = RegisterHotKey("Key to open the in-game guide", "H");
             if (!Main.dedServ)
             {
                 //AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
@@ -372,6 +376,10 @@ namespace VampKnives
                 BloodAltarUIPanel = new UserInterface();
                 BloodAltarUIState = new BloodAltarUI();
                 BloodAltarUIPanel.SetState(BloodAltarUIState);
+
+                StartupInterface = new UserInterface();
+                StartupState = new StartupBookUI();
+                StartupInterface.SetState(StartupState);
             }
             base.Load();
         }
@@ -493,6 +501,11 @@ namespace VampKnives
                         BloodAltarUIPanel.Update(Main._drawInterfaceGameTime);
                         BloodAltarUIState.Draw(Main.spriteBatch);
                     }
+                    if (StartupBookUI.visible)
+                    {
+                        StartupInterface.Update(Main._drawInterfaceGameTime);
+                        StartupState.Draw(Main.spriteBatch);
+                    }
                     return true;
                 }));
                 if (Main.playerInventory == false && WorkbenchSlotState.visible)
@@ -506,6 +519,10 @@ namespace VampKnives
                 if (Main.playerInventory == false && BloodAltarUI.visible)
                 {
                     BloodAltarUI.visible = false;
+                }
+                if (Main.playerInventory == true && StartupBookUI.visible)
+                {
+                    StartupBookUI.visible = false;
                 }
             }
             inventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -529,6 +546,7 @@ namespace VampKnives
             SupportHotKey = null;
             VampDashHotKey = null;
             SupportArmorHotKey = null;
+            BookHotKey = null;
             instance = null;
             base.Unload();
         }

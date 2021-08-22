@@ -12,11 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Knifefury");
-            Tooltip.SetDefault("It's a bird! It's a plane? It's a... kni- *thwump*");
+            Tooltip.SetDefault("It's a bird! It's a plane? It's a... kni- *thwump*\nSummons knives from up above like it's swung brother");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 16; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
+            item.damage = 22; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
             item.width = 34;
             item.height = 34;
             item.useTime = 25;

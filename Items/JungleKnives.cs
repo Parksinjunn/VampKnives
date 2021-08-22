@@ -14,11 +14,11 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Viney Knives");
-			Tooltip.SetDefault("Knives made of jungle material");
+			Tooltip.SetDefault("Knives made of jungle material that poison enemies");
         }
 		public override void SafeSetDefaults()
 		{
-            item.damage = 4;    
+            item.damage = 7;    
 			item.width = 32;
 			item.height = 32;
 			item.useTime = 15;

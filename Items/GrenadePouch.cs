@@ -14,7 +14,7 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Grenade Pouch");
-			Tooltip.SetDefault("Pouch filled with Grenade stringed together");
+			Tooltip.SetDefault("Pouch filled with Grenades that are strung together");
         }
 		public override void PouchDefaults()
 		{

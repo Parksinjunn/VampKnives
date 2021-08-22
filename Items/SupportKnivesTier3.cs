@@ -15,12 +15,12 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Tier 3 Support Knives");
-            Tooltip.SetDefault("Its daggers produce orbs that heal other players");
+            Tooltip.SetDefault("Its daggers produce extremely powerful orbs that heal other players");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 12));
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 29;
+            item.damage = 38;
             item.width = 40;
             item.height = 40;
             item.useTime = 15;

@@ -11,7 +11,7 @@ namespace VampKnives.Items.Materials
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Sacrifice a bit of your own blood to get a bit of bp instantly");
+            Tooltip.SetDefault("Stops the bleeding from a sacrificial cut");
         }
 
         public override void SetDefaults()

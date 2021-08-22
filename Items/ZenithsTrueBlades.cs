@@ -16,10 +16,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Zenith's True Blades");
+            Tooltip.SetDefault("The ultimate blade that can summon any of the twenty knives that are used to craft it");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 145;
+            item.damage = 155;
             item.width = 64;
             item.height = 64;
             item.useTime = 15;

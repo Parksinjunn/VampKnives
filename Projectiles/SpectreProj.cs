@@ -12,13 +12,15 @@ namespace VampKnives.Projectiles
 {
     public class SpectreProj : KnifeProjectile
     {
+        private int NPCsHIT;
+
         public override void SafeSetDefaults()
         {
             projectile.width = 24;
             projectile.height = 34;
             projectile.friendly = true;
             Main.projFrames[projectile.type] = 6;           //this is projectile frames
-            projectile.penetrate = 2;
+            projectile.penetrate = 1;
             projectile.hostile = false;
             projectile.tileCollide = false;                 //this make that the projectile does not go thru walls
             projectile.ignoreWater = true;
@@ -63,6 +65,12 @@ namespace VampKnives.Projectiles
                     dust = Main.dust[Terraria.Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width + 5, projectile.height + 5, 106, projectile.velocity.X * -0.2f, projectile.velocity.Y * -0.2f, 0, new Color(0, 255, 142), 2f)];
                     dust.noGravity = true;
                     dust.shader = GameShaders.Armor.GetSecondaryShader(24, Main.LocalPlayer);
+            }
+            projectile.penetrate++;
+            NPCsHIT++;
+            if (NPCsHIT == 3)
+            {
+                projectile.Kill();
             }
         }
 

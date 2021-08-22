@@ -48,11 +48,11 @@ namespace VampKnives.Projectiles
             if(ProjCount.ZenithProj.Count < 6)
             {
                 SpawnTimer++;
-                if(SpawnTimer >= 2)
+                if(SpawnTimer >= 4)
                 {
                     int knifeSelect = Main.rand.Next(0, 20);
                     if (knifeSelect == 0)
-                        ProjType = ModContent.ProjectileType<Ammo.CopperProj>();
+                        ProjType = ModContent.ProjectileType<Ammo.CopperProj>(); 
                     if (knifeSelect == 1)
                         ProjType = ModContent.ProjectileType<LightandDarkProj>();
                     if (knifeSelect == 2)
@@ -64,11 +64,11 @@ namespace VampKnives.Projectiles
                     if (knifeSelect == 5)
                         ProjType = ModContent.ProjectileType<EnchantedKnivesProj>();
                     if (knifeSelect == 6)
-                        ProjType = ModContent.ProjectileType<BeeKnifeProj>();
+                        ProjType = ModContent.ProjectileType<BeeKnifeProj>(); 
                     if (knifeSelect == 7)
-                        ProjType = ModContent.ProjectileType<JungleKnivesProj>();
+                        ProjType = ModContent.ProjectileType<JungleKnivesProj>(); 
                     if (knifeSelect == 8)
-                        ProjType = ModContent.ProjectileType<FieryKnivesProj>();
+                        ProjType = ModContent.ProjectileType<FieryKnivesProj>(); 
                     if (knifeSelect == 9)
                         ProjType = ModContent.ProjectileType<ShadowProj>();
                     if (knifeSelect == 10)
@@ -80,18 +80,18 @@ namespace VampKnives.Projectiles
                     if (knifeSelect == 13)
                         ProjType = ModContent.ProjectileType<HorsemansKnivesProj>();
                     if (knifeSelect == 14)
-                        ProjType = ModContent.ProjectileType<BloomingTerrorProj>();
+                        ProjType = ModContent.ProjectileType<BloomingTerrorProj>(); 
                     if (knifeSelect == 15)
-                        ProjType = ModContent.ProjectileType<TerraKnivesProj>();
+                        ProjType = ModContent.ProjectileType<TerraKnivesProj>(); 
                     if (knifeSelect == 16)
-                        ProjType = ModContent.ProjectileType<RukasusTeslaProj>();
+                        ProjType = ModContent.ProjectileType<RukasusTeslaProj>(); 
                     if (knifeSelect == 17)
                         ProjType = ModContent.ProjectileType<WrathfulStarProj>();
                     if (knifeSelect == 18)
                         ProjType = ModContent.ProjectileType<NyivesBigProj>();
                     if (knifeSelect == 19)
                         ProjType = ModContent.ProjectileType<VampireKnifeProj>();
-                    ProjType = ModContent.ProjectileType<NyivesBigProj>();
+                    //ProjType = ModContent.ProjectileType<NyivesBigProj>();
                     int i = Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ProjType, (int)(projectile.damage * 0.75), 0, owner.whoAmI);
                     ProjCount.ZenithProj.Add(i);
                     ProjCount.ZenithType.Add(Main.projectile[i].type);
@@ -171,7 +171,7 @@ namespace VampKnives.Projectiles
                     projectile.rotation += (float)projectile.direction * 0.8f;
                 }
                 projectile.rotation += (float)projectile.direction * 0.8f;
-                projectile.velocity *= 3f;
+                projectile.velocity *= 1.4f;
             }
             else
             {

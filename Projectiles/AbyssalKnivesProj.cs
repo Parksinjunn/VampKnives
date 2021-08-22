@@ -44,16 +44,13 @@ namespace VampKnives.Projectiles
             }
         }
 
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
+        public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
             Mod Calamity = ModLoader.GetMod("CalamityMod");
             if (Calamity != null)
             {
                 n.AddBuff(Calamity.BuffType("CrushDepth"), 300); //poisoned 10
             }
-            Player owner = Main.player[projectile.owner];
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("HealProj"), (int)(projectile.damage * 0.75), 0, owner.whoAmI);
-                Hoods(n);
         }
     }
 }

@@ -12,10 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Vortex Knives");
+            Tooltip.SetDefault("Crafted out of the children of the vortex\nSummons lifestealing maggots that stick to an enemy until the enemy dies");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 64;
+            item.damage = 66;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

@@ -30,11 +30,11 @@ namespace VampKnives.Items
 
             //Defaults
             DisplayName.SetDefault("Mandible Knives");
-            Tooltip.SetDefault("Crafted from the remains of antlions");
+            Tooltip.SetDefault("Crafted from the remains of antlions, summons baby antlions that home in on enemies");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 3; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE            
+            item.damage = 6; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE            
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

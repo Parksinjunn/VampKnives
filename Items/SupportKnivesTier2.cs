@@ -14,11 +14,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Tier 2 Support Knives");
-            Tooltip.SetDefault("Its daggers produce orbs that heal other players");
+            Tooltip.SetDefault("Its daggers produce powerful orbs that heal other players");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 19;
+            item.damage = 23;
             item.width = 40;
             item.height = 40;
             item.useTime = 15;

@@ -18,7 +18,7 @@ namespace VampKnives.Items
             if (Calamity != null)
             {
                 DisplayName.SetDefault("Plague Wasp Knives");
-                Tooltip.SetDefault("Life Stealing Knives Covered in Plague Wasps");
+                Tooltip.SetDefault("Knives Covered in Plague Wasps");
             }
             else
             {

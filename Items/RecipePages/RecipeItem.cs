@@ -16,7 +16,7 @@ namespace VampKnives.Items.RecipePages
             item.useTime = 15;
             item.scale = 0.5f;
             item.useStyle = 1;
-            item.value = Item.sellPrice(0, 0, 50, 0);
+            item.value = Item.sellPrice(0, 0, 5, 0);
         }
         public override bool AltFunctionUse(Player player)
         {

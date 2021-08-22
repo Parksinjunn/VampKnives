@@ -30,7 +30,7 @@ namespace VampKnives.Items
 
             //Defaults
             DisplayName.SetDefault("Arthur's True Kaledvoulc'h");
-            Tooltip.SetDefault("Truly High-Calibur Knives");
+            Tooltip.SetDefault("Truly High-Calibur Knives\nUpon collision these blades become ethereal for a short while");
         }
         public override void SafeSetDefaults()
         {

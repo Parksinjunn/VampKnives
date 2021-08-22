@@ -13,7 +13,7 @@ namespace VampKnives.Items.MaterialKnives
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Cobalt Kunai");
-            Tooltip.SetDefault("Fires 10 Knives at once");
+            Tooltip.SetDefault("Fires 10 Knives at once\nDecreases the defense of hit enemies");
         }
         public override void SafeSetDefaults()
         {

@@ -26,7 +26,7 @@ namespace VampKnives.Items.Armor
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Cultist's Hood");
-            Tooltip.SetDefault("The hood of a true mage");
+            Tooltip.SetDefault("The hood of a true mage\nPress the hood key to pull up the hood for a stronger effect\n(set the hood key in the settings)");
         }
 
         public override void SetDefaults()
@@ -55,20 +55,6 @@ namespace VampKnives.Items.Armor
         public override bool DrawHead()
         {
             return false;
-        }
-
-        public override void UpdateVanity(Player player, EquipType type)
-        {
-            //if (Main.rand.Next(20) == 0)
-            //{
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-            //Dust.NewDust(player.position, player.width, player.height, 5);
-            if (p.Mage == true && p.HoodKeyPressed == true)
-            {
-                player.statMana += 50;
-            }
-
-            //}
         }
     }
 }

@@ -11,7 +11,7 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("True Demon's Scourge");
-            Tooltip.SetDefault("An aimed whip possessing the power of a true demon");
+            Tooltip.SetDefault("An aimed whip possessing the power of a true demon\nChanneled knives that follow the player's cursor");
         }
         public override void SafeSetDefaults()
         {

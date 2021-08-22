@@ -14,7 +14,7 @@ namespace VampKnives.Items.Materials
         {
             //Defaults
             DisplayName.SetDefault("Piercing Tip");
-            Tooltip.SetDefault("Sharp! Handle with care!");
+            Tooltip.SetDefault("Sharp! Handle with care!\nUsed in upgrading your knives");
         }
         public override void SetDefaults()
         {

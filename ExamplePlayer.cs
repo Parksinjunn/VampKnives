@@ -170,12 +170,15 @@ namespace VampKnives
         public bool VeiWingsEquipped;
         public bool VeiTransform;
 
+        public bool SpectreGlovesOn;
+
         public override void ResetEffects()
         {
             if (MagePower && HoodKeyPressed)
             {
                 player.velocity *= 0f;
                 player.gravity *= 0f;
+                player.statMana += 50;
             }
             Connor = false;
             Cobalt = false;
@@ -249,6 +252,7 @@ namespace VampKnives
             Bandaged = false;
             VeiWingsEquipped = false;
             VeiTransform = false;
+            SpectreGlovesOn = false;
             //SupportArmorKeyPressed = false;
             //Transform = false;
             for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
@@ -381,6 +385,13 @@ namespace VampKnives
         {
             if (hasMyBuff == true)
                 ApplyMyBuff(target);
+        }
+        public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+        {
+            Item item = new Item();
+            item.SetDefaults(ModContent.ItemType<VortexKnives>());
+            item.stack = 1;
+            items.Add(item);
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
@@ -1115,6 +1126,10 @@ namespace VampKnives
                 layers.Remove(PlayerLayer.Face);
                 layers.Remove(PlayerLayer.Arms);
             }
+            if(SpectreGlovesOn)
+            {
+                layers.Remove(PlayerLayer.Arms);
+            }
             base.ModifyDrawLayers(layers);
         }
         private void Nullify()
@@ -1178,6 +1193,18 @@ namespace VampKnives
             if(VampKnives.VampDashHotKey.JustPressed && HasTabletEquipped)
             {
                 DoubleTapStart = true;
+            }
+            if (VampKnives.BookHotKey.JustPressed)
+            {
+                Main.NewText("True");
+                if (UI.StartupBookUI.visible == false)
+                {
+                    UI.StartupBookUI.visible = true;
+                }
+                else
+                {
+                    UI.StartupBookUI.visible = true;
+                }
             }
             if (DoubleTapTimer > 1 && VampKnives.VampDashHotKey.JustPressed)
             {

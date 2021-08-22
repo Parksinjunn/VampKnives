@@ -14,7 +14,7 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Bee Knives");
-			Tooltip.SetDefault("Life Stealing Knives Covered in Bees");
+			Tooltip.SetDefault("Knives with an internal compartment \nfilled with bees that explode out on impact");
         }
 		public override void SafeSetDefaults()
 		{

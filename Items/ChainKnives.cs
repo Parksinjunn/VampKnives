@@ -13,28 +13,13 @@ namespace VampKnives.Items
         //Mod Calamity = ModLoader.GetMod("CalamityMod");
         public override void SetStaticDefaults()
         {
-            ////IF MOD EXCLUSIVE
-            //if (Calamity != null)
-            //{
-            //    DisplayName.SetDefault("KNIFENAME");
-            //    Tooltip.SetDefault("KNIFEDESCRIPTION");
-            //}
-            //else
-            //{
-            //    DisplayName.SetDefault("KNIFENAME");
-            //    Tooltip.SetDefault("Please enable Calamity");
-            //}
-
-            ////FOR ANIMATIONS
-            //Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 13));
-
             //Defaults
             DisplayName.SetDefault("Chain Knives");
-            Tooltip.SetDefault("Too many knives!!");
+            Tooltip.SetDefault("Blades attatched to large chains that retract upon hitting a target");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 25; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 28; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 66;
             item.height = 52;
             item.autoReuse = true;

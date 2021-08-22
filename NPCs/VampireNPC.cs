@@ -163,6 +163,8 @@ namespace VampKnives.NPCs
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {//THINK OF GOOD WAY TO MAKE RESOURCES INFINITE
+            shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Misc.StartupBook>());
+            nextSlot++; 
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.AmmoCastRecipe>());
             nextSlot++;
             shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.RecipePages.IronCastRecipe>());

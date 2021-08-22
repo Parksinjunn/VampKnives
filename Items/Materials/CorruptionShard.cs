@@ -12,7 +12,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Corruption Shard");
-            Tooltip.SetDefault("Parts to a bigger picture");
+            Tooltip.SetDefault("Parts to a bigger picture\nAutomatically combine into crystals");
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {

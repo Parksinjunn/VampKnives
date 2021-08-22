@@ -12,10 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Solar Knives");
+            Tooltip.SetDefault("Crafted out of pure solar energy\nUpon hitting an enemy, summons an explosion that burns the enemy with the heat of a sun");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 64;
+            item.damage = 72;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

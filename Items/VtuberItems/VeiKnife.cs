@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,8 +11,9 @@ namespace VampKnives.Items.VtuberItems
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Succubus's horns and tails");
+            DisplayName.SetDefault("Rod of Seduction");
             Tooltip.SetDefault("A wand possessing the power of the sorcerers of old");
+            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(10, 6));
         }
         public override void SafeSetDefaults()
         {
@@ -19,9 +21,10 @@ namespace VampKnives.Items.VtuberItems
             item.magic = true;
             item.channel = true;
             item.mana = 14;
-            item.width = 32;
-            item.height = 32;
+            item.width = 48;
+            item.height = 48;
             item.useTime = 22;
+            item.noUseGraphic = true;
             item.useAnimation = 22;
             item.useStyle = 1;
             item.noMelee = true;
@@ -31,7 +34,7 @@ namespace VampKnives.Items.VtuberItems
             //5 = Pink; 6 = Light Purple; 7 = Lime; 8 = Yellow; 9 = Cyan; 10 = Red; 11 = Purple
             //-12 = Rainbow; -2 = Amber
             item.UseSound = SoundID.Item39; //Default 39
-            item.shoot = mod.ProjectileType("SorcerersSarukhProj");
+            item.shoot = ModContent.ProjectileType<Projectiles.VtuberProj.VeiKnifeProj>();
             item.shootSpeed = 15f;
         }
 

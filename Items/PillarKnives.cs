@@ -18,10 +18,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Astronomical Singularity");
+            Tooltip.SetDefault("Shoots a random assortment of all astral knives");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 80;
+            item.damage = 86;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

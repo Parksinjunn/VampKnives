@@ -16,7 +16,8 @@ namespace VampKnives.Items.MaterialKnives
         public override void SetStaticDefaults()
         {
                 DisplayName.SetDefault("Chlorophyte Knives");
-                Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(15, 10));
+            Tooltip.SetDefault("Decreases the defense of hit enemies");
+            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(15, 10));
         }
         public override void SafeSetDefaults()
         {

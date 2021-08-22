@@ -11,11 +11,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Sorcerers Sarukh");
-            Tooltip.SetDefault("A wand possessing the power of the sorcerers of old");
+            Tooltip.SetDefault("A wand possessing the power of the sorcerers of old\nChanneled knives that follow the player's cursor");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 18;
+            item.damage = 23;
             item.magic = true;
             item.channel = true;
             item.mana = 14;

@@ -11,11 +11,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Prismatic Arcanum");
-            Tooltip.SetDefault("");
+            Tooltip.SetDefault("Magic in it's purest form\nChanneled knives that follow the player's cursor");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 42;
+            item.damage = 49;
             item.magic = true;
             item.channel = true;
             item.mana = 22;

@@ -17,12 +17,12 @@ namespace VampKnives.Items.BossDrops
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Hand of the Moon Lord");
-			Tooltip.SetDefault("Life Stealing Knives Crafted from Fragments of the Moon");
+			Tooltip.SetDefault("Life Stealing Knives Crafted from Fragments of the Moon Lord himself");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(52, 13));
         }
         public override void SafeSetDefaults()
 		{
-			item.damage = 100;            
+			item.damage = 126;            
 			item.width = 66;
 			item.height = 66;
             item.useTime = 12;

@@ -70,11 +70,6 @@ namespace VampKnives.Projectiles
                 }
             }        
         }
-
-        public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        {
-            Hoods(n);
-        }
         public override bool SafePreKill(int timeLeft)
         {
             if (Main.rand.Next(1, 10) == 6)

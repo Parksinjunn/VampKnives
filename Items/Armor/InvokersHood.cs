@@ -25,7 +25,7 @@ namespace VampKnives.Items.Armor
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Invoker's Hood");
-            Tooltip.SetDefault("Imbues the user's knives with ichor");
+            Tooltip.SetDefault("Imbues the user's knives with ichor\nPress the hood key to pull up the hood for a stronger effect\n(set the hood key in the settings)");
         }
 
         public override void SetDefaults()

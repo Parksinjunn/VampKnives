@@ -11,11 +11,11 @@ namespace VampKnives.Items.BossDrops
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Blooming Terror");
-            Tooltip.SetDefault("It's growing out of control");
+            Tooltip.SetDefault("It's growing out of control\nDrops damaging seeds upon hitting an enemy");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 32; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 38; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 68;
             item.height = 68;
             item.useTime = 15;

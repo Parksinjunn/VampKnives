@@ -10,7 +10,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Stable Crimson Crystal");
-            Tooltip.SetDefault("The life energy of a monsterous beast is sealed within this translucent crimson vessel");
+            Tooltip.SetDefault("The life energy of a monsterous beast is sealed within this translucent crimson vessel\nUsed in upgrading your knives");
         }
         public override void SetDefaults()
         {

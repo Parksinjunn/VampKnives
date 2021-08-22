@@ -12,11 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Nyives");
-            Tooltip.SetDefault("");
+            Tooltip.SetDefault("A set of three knives, two smol and one big chonker\nThe chonky knife sticks into the ground and continues \nto damage enemies that walk into it");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 160; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 180; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 64;
             item.height = 64;
             item.useTime = 15;

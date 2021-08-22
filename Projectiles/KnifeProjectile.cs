@@ -51,11 +51,12 @@ namespace VampKnives.Projectiles
             SafeSetDefaults();
             if(ZenithActive)
             {
-                RandomVelocity = 0f;
+                RandomVelocity = 1f;
                 projectile.tileCollide = false;
                 projectile.aiStyle = 0;
                 projectile.penetrate = 1;
-                projectile.timeLeft = 20;
+                projectile.timeLeft = 50;
+                projectile.scale = 1.3f;
                 HealProjChance = 3;
             }
             else
@@ -71,6 +72,7 @@ namespace VampKnives.Projectiles
             }
             return true;
         }
+        int AlphaDelay;
         public override void AI()
         {
             SafeAI();
@@ -78,36 +80,50 @@ namespace VampKnives.Projectiles
             {
                 for (int g = 0; g < ProjCount.ZenithProj.Count; g++)
                 {
-                    if (Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<HealProj>() || Main.projectile[ProjCount.ZenithProj[g]].type == ModContent.ProjectileType<ManaHeal>() || Main.projectile[ProjCount.ZenithProj[g]].type == ProjectileID.Bee)
+                    Projectile ZenithProjectiles = Main.projectile[ProjCount.ZenithProj[g]];
+                    Projectile ZenithCursorProjectile = Main.projectile[ZenithProjID];
+                    if (ZenithProjectiles.type == ModContent.ProjectileType<HealProj>() || ZenithProjectiles.type == ModContent.ProjectileType<ManaHeal>() || ZenithProjectiles.type == ProjectileID.Bee || ZenithProjectiles.type == 173 || ZenithProjectiles.type == 156 || ZenithProjectiles.type == 132)
                     {
-                        Main.projectile[ProjCount.ZenithProj[g]].Kill();
+                        ZenithProjectiles.Kill();
                     }
-                    //Main.NewText("ProjXBefore: " + Main.projectile[ProjCount.ZenithProj[g]].position.X);
                     Player p = Main.player[projectile.owner];
 
                     double deg = (double)RotationSpeed + (60*g); 
                     double rad = deg * (Math.PI / 180);
 
-                    float distX = 120f; 
-                    float distY = 120f;
+                    float distX = 0.5f; 
+                    float distY = 0.5f;
 
-                    //float a = (Main.projectile[ZenithProjID].position.X - p.position.X);
-                    //float b = (Main.projectile[ZenithProjID].position.Y - p.position.Y);
-                    float a = 1f;
-                    float b = 1f;
+                    float a = ZenithCursorProjectile.position.X - p.position.X;
+                    float b = ZenithCursorProjectile.position.Y - p.position.Y;
 
-                    Main.projectile[ProjCount.ZenithProj[g]].position.X = Main.projectile[ZenithProjID].Center.X - (float)(a * (Math.Cos(rad) * distX)) - Main.projectile[ProjCount.ZenithProj[g]].width / 2f;
-                    Main.projectile[ProjCount.ZenithProj[g]].position.Y = Main.projectile[ZenithProjID].Center.Y - (float)(b * (Math.Sin(rad) * distY)) - Main.projectile[ProjCount.ZenithProj[g]].height / 2f;
+                    float SlopeXComp1 = ZenithProjectiles.position.X;
+                    float SlopeYComp1 = ZenithProjectiles.position.Y;
 
-                    RotationSpeed += 1f;
-                    //Main.projectile[ProjCount.ZenithProj[g]].alpha+=1; //WHAT THE FUCK DID I DO
-                    //int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width - 3, projectile.height - 3, 184, projectile.velocity.X * 0f, projectile.velocity.Y * 0f, 10, Color.LightGreen, 1.5f);
-                    //Main.dust[DustID2].noGravity = false;
-                    //Main.projectile[ProjCount.ZenithProj[g]].rotation = (float)rad + MathHelper.PiOver2 + 0.5f;
+                    ZenithProjectiles.position.X = ZenithCursorProjectile.Center.X - (float)(a * (Math.Cos(rad) * distX)) - ZenithProjectiles.width / 2f;
+                    ZenithProjectiles.position.Y = ZenithCursorProjectile.Center.Y - (float)(b * (Math.Sin(rad) * distY)) - ZenithProjectiles.height / 2f;
+
+                    RotationSpeed += 1.8f;
                     projectile.netUpdate = true;
-                    //Main.NewText("ProjXAfter: " + Main.projectile[ProjCount.ZenithProj[g]].position.X);
+                    if(AlphaDelay > 1)
+                    {
+                        ZenithProjectiles.alpha += 1;
+                        AlphaDelay = 0;
+                    }
+                    float SlopeX = ZenithProjectiles.position.X - SlopeXComp1;
+                    float SlopeY = ZenithProjectiles.position.Y - SlopeYComp1;
+                    float Slope = SlopeY / SlopeX;
+                    int DustID2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, 242, 0, 0, 10, Color.LightGreen, 1.0f);
+                    Main.dust[DustID2].noGravity = false;
+                    if(ZenithProjectiles.type == ModContent.ProjectileType<Ammo.CopperProj>() || ZenithProjectiles.type == ModContent.ProjectileType<BeeKnifeProj>() || ZenithProjectiles.type == ModContent.ProjectileType<JungleKnivesProj>() || ZenithProjectiles.type == ModContent.ProjectileType<FieryKnivesProj>() || ZenithProjectiles.type == ModContent.ProjectileType<BloomingTerrorProj>() || ZenithProjectiles.type == ModContent.ProjectileType<TerraKnivesProj>() || ZenithProjectiles.type == ModContent.ProjectileType<RukasusTeslaProj>())
+                        ZenithProjectiles.rotation = (float)Math.Atan2((double)(-ZenithCursorProjectile.Center.Y + ZenithProjectiles.position.Y), (double)(-ZenithCursorProjectile.Center.X + ZenithProjectiles.position.X)) + (float)Math.PI - (1.5708f);
+                    else
+                        ZenithProjectiles.rotation = (float)Math.Atan2((double)(-ZenithCursorProjectile.Center.Y + ZenithProjectiles.position.Y), (double)(-ZenithCursorProjectile.Center.X + ZenithProjectiles.position.X)) + (float)Math.PI - (2.35619f);
+                    //Main.projectile[ProjCount.ZenithProj[g]].rotation = (float)Math.Abs(Math.Atan((double)((-Main.projectile[ZenithProjID].Center.Y + Main.projectile[ProjCount.ZenithProj[g]].position.Y) / (-Main.projectile[ZenithProjID].Center.X + Main.projectile[ProjCount.ZenithProj[g]].position.X)))) + (0.785398f - 3.141f);
+                    //Main.NewText("Rotation of " + g +": " + Main.projectile[ProjCount.ZenithProj[g]].rotation);
+                    //Main.NewText("Rotation Vector: " + Math.Atan((double)((Main.projectile[ZenithProjID].Center.Y + Main.projectile[ProjCount.ZenithProj[g]].position.Y) / (Main.projectile[ZenithProjID].Center.X + Main.projectile[ProjCount.ZenithProj[g]].position.X))));
+                    AlphaDelay++;
                 }
-                //Main.NewText("NumProj: " + countOfProj);
             }
         }
         public override bool PreKill(int timeLeft)
@@ -184,8 +200,21 @@ namespace VampKnives.Projectiles
             }
             if (p.Mage == true && p.HoodKeyPressed == false)
             {
-                int healamnt = (int)(projectile.damage * .75);
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("ManaHeal"), healamnt, projectile.knockBack, projectile.owner); //Creates a new Projectile
+                int healamnt = (int)(projectile.damage * 0.12f);
+                if (!n.boss)
+                {
+                    if (Main.rand.Next(0, HealProjChanceScale) <= VampKnives.HealProjectileSpawn)
+                    {
+                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("ManaHeal"), healamnt, projectile.knockBack, projectile.owner); //Creates a new Projectile
+                    }
+                }
+                else if (n.boss)
+                {
+                    if (Main.rand.Next(0, HealProjBossChanceScale) <= HealProjBossChance)
+                    {
+                        Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, mod.ProjectileType("ManaHeal"), healamnt, projectile.knockBack, projectile.owner); //Creates a new Projectile
+                    }
+                }
             }
             if (p.Technomancer == true && p.HoodKeyPressed == false)
             {

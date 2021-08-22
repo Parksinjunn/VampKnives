@@ -9,7 +9,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Chisel");
-            Tooltip.SetDefault("[c/FF0000:Used to chip stone into shapes]");
+            Tooltip.SetDefault("[c/FF0000:Used to chip stone into shapes]\nCan be stored in the knife workbench");
         }
         public override void SetDefaults()
         {

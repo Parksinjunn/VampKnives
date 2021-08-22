@@ -19,11 +19,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Vampiric Prism");
-            Tooltip.SetDefault("Fires knives extremely fast at the cost of life");
+            Tooltip.SetDefault("Fires knives with increasing speed at the cost of life");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 95; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 104; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 26;
             item.height = 30;
             item.useTime = 10;

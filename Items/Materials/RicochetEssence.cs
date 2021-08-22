@@ -14,7 +14,7 @@ namespace VampKnives.Items.Materials
         {
             //Defaults
             DisplayName.SetDefault("Ricochet Essence");
-            Tooltip.SetDefault("Essence of a once very bouncy thing");
+            Tooltip.SetDefault("Essence of a once very bouncy thing\nUsed in upgrading your knives");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(1, 9));
         }
         public override void SetDefaults()

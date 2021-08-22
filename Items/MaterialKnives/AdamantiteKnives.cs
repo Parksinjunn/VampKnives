@@ -12,6 +12,7 @@ namespace VampKnives.Items.MaterialKnives
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Adamantite Knives");
+            Tooltip.SetDefault("Decreases the defense of hit enemies");
         }
         public override void SafeSetDefaults()
         {

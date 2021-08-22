@@ -13,7 +13,7 @@ namespace VampKnives.Items.MaterialKnives
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Tungsten Knives");
-            Tooltip.SetDefault("Uses Throwing Knives");
+            Tooltip.SetDefault("Decreases the defense of hit enemies");
         }
         public override void SafeSetDefaults()
         {

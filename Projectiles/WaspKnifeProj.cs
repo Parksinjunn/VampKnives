@@ -49,14 +49,14 @@ namespace VampKnives.Projectiles
             n.AddBuff(20, 600); //poisoned 10
             for (int x=0; x<= random; x++)
             {
-                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, ran1, ran2, 189, 21, projectile.knockBack, Main.myPlayer);
+                Projectile.NewProjectile(projectile.position.X, projectile.position.Y, ran1, ran2, ModContent.ProjectileType<Wasp>(), 21, projectile.knockBack, Main.myPlayer);
             }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, 189, 21, projectile.knockBack, Main.myPlayer);
-            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, 189, 21, projectile.knockBack, Main.myPlayer);
+            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ModContent.ProjectileType<Wasp>(), 21, projectile.knockBack, Main.myPlayer);
+            Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, ModContent.ProjectileType<Wasp>(), 21, projectile.knockBack, Main.myPlayer);
             return true;
         }
 

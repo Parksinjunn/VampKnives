@@ -12,11 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Wrathful Star");
-            Tooltip.SetDefault("");
+            Tooltip.SetDefault("Summons large knives from up above like it's wrathful brother");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 170; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
+            item.damage = 180; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE       
             item.width = 56;
             item.height = 56;
             item.useTime = 22;

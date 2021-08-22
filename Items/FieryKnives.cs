@@ -14,11 +14,11 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Tormenting Spikes");
-			Tooltip.SetDefault("Forged from bits of hell");
+			Tooltip.SetDefault("Forged from bits of hell that set enemies on fire");
         }
 		public override void SafeSetDefaults()
 		{
-			item.damage = 18;
+			item.damage = 22;
             
 			item.width = 46;
 			item.height = 46;

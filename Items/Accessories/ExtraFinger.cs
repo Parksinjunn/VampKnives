@@ -15,7 +15,7 @@ namespace VampKnives.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Y'know what they say, five's better than four");
+            Tooltip.SetDefault("Y'know what they say, five's better than four\nAdds another knife to each strike");
         }
 
         public override void SetDefaults()

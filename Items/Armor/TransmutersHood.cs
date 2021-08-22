@@ -25,7 +25,7 @@ namespace VampKnives.Items.Armor
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Transmuter's Hood");
-            Tooltip.SetDefault("Imbues the user's knives with the powers of midas");
+            Tooltip.SetDefault("Imbues the user's knives with the powers of midas\nPress the hood key to pull up the hood for a stronger effect\n(set the hood key in the settings)");
         }
 
         public override void SetDefaults()

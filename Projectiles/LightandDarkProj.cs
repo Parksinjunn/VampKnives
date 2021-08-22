@@ -39,6 +39,8 @@ namespace VampKnives.Projectiles
                         projectile.frame = 0; //go back to the first frame
                 }
             }
+            else
+                projectile.frame = 0;
             return true;
         }
     }

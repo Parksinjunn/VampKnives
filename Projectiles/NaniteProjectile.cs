@@ -69,21 +69,6 @@ namespace VampKnives.Projectiles
                 projectile.position.Y = player.position.Y;
             }
         }
-        //public int healamnt;
-        //public override void OnHitNPC(NPC n, int damage, float knockback, bool crit)
-        //{
-        //    Player owner = Main.player[projectile.owner];
-        //    healamnt = healamnt + (int)(projectile.damage * .075);
-        //    if (healamnt >= 1)
-        //    {
-        //        Projectile.NewProjectile(projectile.position.X, projectile.position.Y, 0, 0, 305, 0, projectile.knockBack); //Creates a new Projectile
-        //        owner.statLife += healamnt; //Gives 7.5% of the damage dealt
-        //        owner.HealEffect(healamnt, true); //Shows you have healed by that amount of health
-        //        owner.statMana += healamnt; //Gives 7.5% of the damage dealt
-        //        owner.ManaEffect(healamnt);
-        //    }
-        //    //n.AddBuff(BuffID.BUFFIDHERE, 300);
-        //}
         public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens
         {
             projectile.frameCounter++; //increase the frameCounter by one

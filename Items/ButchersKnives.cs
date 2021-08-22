@@ -30,11 +30,11 @@ namespace VampKnives.Items
 
             //Defaults
             DisplayName.SetDefault("Butcher's Knives");
-            Tooltip.SetDefault("A Random Assortment of Knives");
+            Tooltip.SetDefault("A set of rusty knives that stick into their target and apply bleeding");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 13; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 15; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 50;
             item.height = 50;
             item.useTime = 30;

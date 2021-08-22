@@ -15,7 +15,7 @@ namespace VampKnives.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("They seem to move on their own...");
+            Tooltip.SetDefault("They seem to move on their own...\nAdds two more knives with every strike");
         }
 
         public override void SetDefaults()

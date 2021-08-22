@@ -14,7 +14,7 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Bomb Pouch");
-			Tooltip.SetDefault("Pouch filled with bombs stringed together");
+			Tooltip.SetDefault("Pouch filled with bombs that are strung together");
         }
 		public override void PouchDefaults()
 		{

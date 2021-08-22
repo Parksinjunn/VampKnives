@@ -14,12 +14,12 @@ namespace VampKnives.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Hallowed Knives");
-			Tooltip.SetDefault("");
+			Tooltip.SetDefault("Life and mana stealing knives that chip upon contact and fire off in random directions");
             Item.staff[item.type] = true;
         }
         public override void SafeSetDefaults()
 		{
-			item.damage = 28;
+			item.damage = 42;
 			item.width = 52;
 			item.height = 52;
 			item.useTime = 15;

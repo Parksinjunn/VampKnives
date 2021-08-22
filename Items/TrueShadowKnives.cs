@@ -30,7 +30,7 @@ namespace VampKnives.Items
 
             //Defaults
             DisplayName.SetDefault("Umbra");
-            Tooltip.SetDefault("Truly very dark");
+            Tooltip.SetDefault("Truly very dark\nThese ethereal blades pass through all objects");
         }
         public override void SafeSetDefaults()
         {

@@ -31,11 +31,11 @@ namespace VampKnives.Items
             //Defaults
             DisplayName.SetDefault("Sengos Forgotten Blades");
             Tooltip.SetDefault("Forged by Muramasa himself"
-                + "\nTakes the life of the user in exchange for random traps");
+                + "\nTakes the life of the user in exchange for keeping the knife where it hits its first target");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 7; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
+            item.damage = 10; //PUT DAMAGE, GENERALLY 1/2 OF COMPONENT'S DAMAGE
             item.width = 32;
             item.height = 32;
             item.useTime = 30;

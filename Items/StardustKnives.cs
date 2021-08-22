@@ -12,10 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Stardust Knives");
+            Tooltip.SetDefault("Crafted out of pure stardust\nSummons a stardust cell upon hitting an enemy");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 66;
+            item.damage = 69;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;

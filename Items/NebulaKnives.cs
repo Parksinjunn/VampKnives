@@ -12,10 +12,11 @@ namespace VampKnives.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Nebula Knives");
+            Tooltip.SetDefault("Crafted from pure nebula, spawns a nebula blaze upon hitting an enemy");
         }
         public override void SafeSetDefaults()
         {
-            item.damage = 65;
+            item.damage = 68;
             item.width = 32;
             item.height = 32;
             item.useTime = 15;
