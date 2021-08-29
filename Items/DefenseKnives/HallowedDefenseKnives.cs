@@ -12,8 +12,8 @@ namespace VampKnives.Items.DefenseKnives
     {
         public override void SetStaticDefaults()
         {
-                DisplayName.SetDefault("Iron Defense Knives");
-                Tooltip.SetDefault("These knives form a protective iron wall when thrown");
+                DisplayName.SetDefault("Hallowed Defense Knives");
+                Tooltip.SetDefault("These knives form a protective hallowed wall when thrown");
             PlateType = ModContent.GetInstance<Items.Materials.Plates.HallowedPlate>();
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -36,7 +36,7 @@ namespace VampKnives.Items.DefenseKnives
             item.rare = 3;
             item.UseSound = SoundID.Item39;
             item.autoReuse = true;
-            item.shoot = mod.ProjectileType("IronDefenseKnivesProj");
+            item.shoot = mod.ProjectileType("HallowedDefenseKnivesProj");
             item.shootSpeed = 6f;
         }
     }

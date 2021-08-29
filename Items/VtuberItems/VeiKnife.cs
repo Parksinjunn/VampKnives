@@ -56,38 +56,5 @@ namespace VampKnives.Items.VtuberItems
             }
             return false;
         }
-
-        public override void AddRecipes()
-        {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MagicMissile, 3);
-            recipe.AddIngredient(mod.GetItem("ManaKnivesAnimated"), 1);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MagicMissile, 2);
-            recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MagicMissile, 1);
-            recipe.AddIngredient(ItemID.Sapphire, 4);
-            recipe.AddIngredient(mod.GetItem("ManaKnivesAnimated"), 1);
-            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 2);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MagicMissile, 1);
-            recipe.AddIngredient(ItemID.Sapphire, 2);
-            recipe.AddIngredient(mod.GetItem("CorruptionCrystal"), 1);
-            recipe.AddTile(mod.GetTile("VampTableTile"));
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-        }
     }
 }

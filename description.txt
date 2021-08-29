@@ -2,6 +2,7 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Hotfix 3.6.2: Disabled a recipe for a weapon still in testing. Replaced the sprites of the defense knives, projectile sprites are placeholders and will also be unique in time.
 Hotfix 3.6.1: Fixed hotkey for book
 
 Update 3.6, The Quality Update:

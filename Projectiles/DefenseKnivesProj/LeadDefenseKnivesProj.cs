@@ -16,7 +16,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             NumProjHits = 2;
             ReflectChance = 0.5f;
             projectile.width = 60;
-            projectile.height = 28;
+            projectile.height = 14;
             projectile.knockBack = 60;
             projectile.friendly = true;
             projectile.penetrate = NumProjHits;
@@ -26,13 +26,6 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.timeLeft = 600;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 40;
-            Main.projFrames[projectile.type] = 3;           //this is projectile frames
-            FrameNum = Main.rand.Next(0, 3);
-        }
-        public override bool PreDraw(SpriteBatch sb, Color lightColor) //this is where the animation happens
-        {
-            projectile.frame = FrameNum;
-            return true;
         }
     }
 }
