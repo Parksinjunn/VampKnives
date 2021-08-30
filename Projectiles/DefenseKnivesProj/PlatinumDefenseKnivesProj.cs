@@ -16,7 +16,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             NumProjHits = 3;
             ReflectChance = 1f;
             projectile.width = 60;
-            projectile.height = 14;
+            projectile.height = 30;
             projectile.knockBack = 60;
             projectile.friendly = true;
             projectile.penetrate = NumProjHits;

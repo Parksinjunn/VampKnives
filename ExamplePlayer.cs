@@ -391,7 +391,7 @@ namespace VampKnives
         public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
             Item item = new Item();
-            item.SetDefaults(ModContent.ItemType<VortexKnives>());
+            item.SetDefaults(ModContent.ItemType<Items.Misc.StartupBook>());
             item.stack = 1;
             items.Add(item);
         }

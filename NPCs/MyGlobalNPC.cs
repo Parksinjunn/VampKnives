@@ -16,6 +16,7 @@ namespace VampKnives.NPCs
     public class MyGlobalNPC : GlobalNPC
     {
         public bool VortexBuff = false;
+        public bool IsNearAltar;
         public int Packet3 = 33;
         public int Kills;
         int NPCLastInteract;
@@ -29,11 +30,33 @@ namespace VampKnives.NPCs
         public override void NPCLoot(NPC npc)
         {
             ExamplePlayer p = Main.player[npc.lastInteraction].GetModPlayer<ExamplePlayer>();
-            if(!npc.boss && !npc.SpawnedFromStatue)
+            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            {
+                float shootToX = VampireWorld.AltarBeingUsed[iterations] - npc.Center.X;
+                float shootToY = VampireWorld.AltarBeingUsed[iterations] - npc.Center.Y;
+                float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+                if (distance <= 20)
+                {
+                    IsNearAltar = true;
+                }
+                else
+                {
+                    IsNearAltar = false;
+                }
+            }
+            if(!npc.SpawnedFromStatue && IsNearAltar)
+            {
+                p.BloodPoints += 1 + npc.lifeMax / 50;
+            }
+            else if (npc.boss && IsNearAltar)
             {
                 p.BloodPoints += 1 + npc.lifeMax / 100;
             }
-            else if(npc.boss)
+            else if(!npc.boss && !npc.SpawnedFromStatue && !IsNearAltar)
+            {
+                p.BloodPoints += 1 + npc.lifeMax / 100;
+            }
+            else if(npc.boss && !IsNearAltar)
             {
                 p.BloodPoints += 1 + npc.lifeMax / 400;
             }
@@ -393,6 +416,22 @@ namespace VampKnives.NPCs
         int DamageStore;
         bool Init;
         int VeiDelay;
+        public override bool PreAI(NPC npc)
+        {
+            if (VeiLove == true)
+            {
+                return false;
+            }
+            else
+                return true;
+        }
+        public override void AI(NPC npc)
+        {
+            if(VeiLove == true && !npc.boss)
+            {
+                
+            }
+        }
         public override void PostAI(NPC npc)
         {
             if (VeiLove == true && !npc.boss)

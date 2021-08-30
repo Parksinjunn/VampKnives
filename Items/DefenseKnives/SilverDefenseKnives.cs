@@ -15,6 +15,7 @@ namespace VampKnives.Items.DefenseKnives
                 DisplayName.SetDefault("Silver Defense Knives");
                 Tooltip.SetDefault("These knives form a protective Silver wall when thrown");
             PlateType = ModContent.GetInstance<Items.Materials.Plates.SilverPlate>();
+            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(6, 6));
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
@@ -25,8 +26,8 @@ namespace VampKnives.Items.DefenseKnives
         public override void SafeSetDefaults()
         {
             item.damage = 1;
-            item.width = 50;
-            item.height = 50;
+            item.width = 46;
+            item.height = 46;
             item.useTime = 30;
             item.useAnimation = 30;
             item.noUseGraphic = true;
