@@ -1,6 +1,6 @@
 author = LeeSeulbi
 
-version = 3.7.2
+version = 3.7.3
 displayName = Vampire Knives Expanded
 
 homepage = https://forums.terraria.org/index.php?threads/vampire-knives-expanded.69436/

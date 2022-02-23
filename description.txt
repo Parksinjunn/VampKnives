@@ -2,6 +2,7 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Hotfix 3.7.3: Included testing code that would kill you... Download errors are errors with the ModBrowser, see my Discord for more details
 Hotfix 3.7.2: Downloads should now be fixed
 Hotfix 3.7.1: Trying to fix the issue some users were having with being unable to download the mod
 
