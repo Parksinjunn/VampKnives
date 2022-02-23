@@ -30,7 +30,7 @@ namespace VampKnives.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<ExamplePlayer>().ExtraProj += 2;
+            player.GetModPlayer<VampPlayer>().ExtraProj += 2;
         }
 
         public override void AddRecipes()

@@ -164,7 +164,7 @@ namespace VampKnives.Projectiles
         }
         public void Hoods(NPC n)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             int effectLength = Main.rand.Next(300,600);
             if (p.pyro == true && p.HoodKeyPressed == false)
             {

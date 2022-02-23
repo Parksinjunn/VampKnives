@@ -57,16 +57,16 @@ namespace VampKnives.Tiles
 
         public override bool NewRightClick(int i, int j)
         {
-            if (WorkbenchSlotState.visible)
+            if (UpgradePanel.visible)
             {
                 Main.playerInventory = false;
-                WorkbenchSlotState.visible = false;
+                UpgradePanel.visible = false;
                 Main.PlaySound(SoundID.MenuClose);
             }
-            else if (WorkbenchSlotState.visible == false)
+            else if (UpgradePanel.visible == false)
             {
                 Main.playerInventory = true;
-                WorkbenchSlotState.visible = true;
+                UpgradePanel.visible = true;
                 Main.PlaySound(SoundID.MenuOpen);
             }
             return true;

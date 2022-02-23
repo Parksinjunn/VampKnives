@@ -91,7 +91,7 @@ namespace VampKnives.NPCs
 
         public override string GetChat()
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             if (p.Given == false)
                 return "Young one, interested in an old vampire relic?";
             if (p.Given == true && SkinShopClicked == false)
@@ -111,7 +111,7 @@ namespace VampKnives.NPCs
             {
                 SkinShopClicked = false;
             }
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             if (p.Given == false)
             {
                 button = "Sure?";
@@ -126,7 +126,7 @@ namespace VampKnives.NPCs
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             if (p.Given == false)
             {
                 if (firstButton)

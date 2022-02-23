@@ -10,7 +10,6 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class CopperDefenseKnivesProj : ReflectiveProj
     {
-        int FrameNum;
         public override void SafeSetDefaults()
         {
             NumProjHits = 1;

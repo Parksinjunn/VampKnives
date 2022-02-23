@@ -8,6 +8,8 @@ namespace VampKnives
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 		[Header("[c/FF0000:Difficulty Presets (Select only one at a time)]")]
 		[BackgroundColor(0, 0, 0)]
+		public bool Legacy;
+		[BackgroundColor(0, 0, 0)]
 		public bool Easy;
 		[BackgroundColor(0, 0, 0)]
 		public bool Normal;
@@ -15,8 +17,6 @@ namespace VampKnives
 		public bool Hard;
 		[BackgroundColor(0, 0, 0)]
 		public bool Expert;
-		[BackgroundColor(0, 0, 0)]
-		public bool Legacy;
 
 		[Header("[c/FF0000:Advanced Settings]")]
 		[Range(0.5f, 2f)]
@@ -62,6 +62,17 @@ namespace VampKnives
 		[SliderColor(160, 0, 0)]
 		[Label("Ammo Knives Defence-Break Multiplier")]
 		public float AmmoKnivesDefenceBreakMult = 1f;
+
+		[Range(0, 80)]
+		[Increment(1)]
+		[DrawTicks]
+		[DefaultValue(20)]
+		[Tooltip("This changes the number of possible active defense knives. WARNING: HIGHER VALUES GREATLY DECREASE PERFORMANCE")]
+		[BackgroundColor(0, 0, 0)]
+		[Slider]
+		[SliderColor(160, 0, 0)]
+		[Label("Allowed Active Defense Knives")]
+		public int ActiveDefenseKnives = 20;
 
 		public override void OnChanged()
 		{
@@ -123,6 +134,7 @@ namespace VampKnives
 			VampKnives.ConfigDamageMult = DamageMultiplier;
 			VampKnives.ConfigHealAmntMult = HealAmntMultiplier;
 			VampKnives.HealProjectileSpawn = HealProjectileSpawnChance * 100f;
+			Projectiles.DefenseKnivesProj.ProjCount.MaxActive = ActiveDefenseKnives;
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Sculpted knife ammo");
-            Tooltip.SetDefault("Parts to a bigger picture");
+            Tooltip.SetDefault("A rough sculpt of throwing knives");
         }
         public override void SetDefaults()
         {

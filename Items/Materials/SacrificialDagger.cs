@@ -33,7 +33,7 @@ namespace VampKnives.Items.Materials
             if(!player.HasBuff(ModContent.BuffType<BleedingOutDebuff>()))
             {
                 player.AddBuff(ModContent.BuffType<BleedingOutDebuff>(),18000);
-                player.GetModPlayer<ExamplePlayer>().BloodPoints += Main.rand.Next(50, 75);
+                player.GetModPlayer<VampPlayer>().BloodPoints += Main.rand.Next(50, 75);
                 item.consumable = false;
             }
             else

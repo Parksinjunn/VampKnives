@@ -69,9 +69,20 @@ namespace VampKnives.Items.Materials
 
         public override void AddRecipes()
         {
-            ChiselRecipe recipe = new ChiselRecipe(mod);
+            ChiselRecipe recipeC = new ChiselRecipe(mod);
+            recipeC.AddIngredient(ItemID.StoneBlock, 6);
+            recipeC.SetResult(this);
+            recipeC.AddRecipe();
+
+            ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.StoneBlock, 6);
             recipe.AddTile(mod.GetTile("KnifeBench"));
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.StoneBlock, 4);
+            recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

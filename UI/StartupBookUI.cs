@@ -47,7 +47,7 @@ namespace VampKnives.UI
         }
         private void DiscordButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            System.Diagnostics.Process.Start("https://discord.gg/TdVU8Nf5");
+            System.Diagnostics.Process.Start("https://discord.gg/vzQHD6PfkD");
         }
     }
 }

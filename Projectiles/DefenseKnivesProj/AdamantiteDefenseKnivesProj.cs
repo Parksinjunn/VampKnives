@@ -28,10 +28,5 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 40;
         }
-        public override bool PreKill(int timeLeft)
-        {
-            ProjCount.NumActiveAdamantite--;
-            return true;
-        }
     }
 }

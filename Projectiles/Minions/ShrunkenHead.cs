@@ -33,7 +33,7 @@ namespace VampKnives.Projectiles.Minions
         {
             delay++;
             Player player = Main.player[projectile.owner];
-            ExamplePlayer modPlayer = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer modPlayer = player.GetModPlayer<VampPlayer>();
             if (delay >= 40)
             {
                 delay = 0;

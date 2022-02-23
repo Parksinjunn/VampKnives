@@ -16,7 +16,7 @@ namespace VampKnives.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer < ExamplePlayer > ().SengosCurse = true;
+            player.GetModPlayer < VampPlayer > ().SengosCurse = true;
             base.Update(player, ref buffIndex);
         }
     }

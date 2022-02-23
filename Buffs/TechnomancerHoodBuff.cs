@@ -17,7 +17,7 @@ namespace VampKnives.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
 
             // We use blockyAccessoryPrevious here instead of blockyAccessory because UpdateBuffs happens before UpdateEquips but after ResetEffects.
             if (p.HoodIsVisible == true && p.TechnomancerAccessoryPrevious)

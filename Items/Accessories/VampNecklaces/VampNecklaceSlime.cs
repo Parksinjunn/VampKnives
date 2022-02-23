@@ -28,7 +28,7 @@ namespace VampKnives.Items.Accessories.VampNecklaces
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             tooltips.RemoveAll(x => x.Name == "Tooltip0" && x.mod == "Terraria");
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line3;
             TooltipLine line = new TooltipLine(mod, "Face", "Skin: Slime");
             line.overrideColor = new Color(210, 0, 0);

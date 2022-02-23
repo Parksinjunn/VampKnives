@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using VampKnives.Items;
@@ -17,7 +19,6 @@ namespace VampKnives.NPCs
     {
         public bool VortexBuff = false;
         public bool IsNearAltar;
-        public int Packet3 = 33;
         public int Kills;
         int NPCLastInteract;
         public override bool InstancePerEntity
@@ -27,38 +28,51 @@ namespace VampKnives.NPCs
                 return true;
             }
         }
+        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        {
+            if(type == NPCID.Cyborg)
+            {
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.ProcessingUnit>());
+                nextSlot++;
+            }
+            base.SetupShop(type, shop, ref nextSlot);
+        }
         public override void NPCLoot(NPC npc)
         {
-            ExamplePlayer p = Main.player[npc.lastInteraction].GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            VampPlayer p = Main.player[npc.lastInteraction].GetModPlayer<VampPlayer>();
+            //for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            //{
+            //    float shootToX = (VampireWorld.AltarBeingUsed[iterations] + 16) - (npc.Center.X / 16f);
+            //    float shootToY = (VampireWorld.AltarBeingUsed[iterations + 1]) - (npc.Center.Y / 16f);
+            //    float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
+            //    if (distance <= 44)
+            //    {
+            //        IsNearAltar = true;
+            //    }
+            //}
+            if (!npc.SpawnedFromStatue && IsNearAltar)
             {
-                float shootToX = VampireWorld.AltarBeingUsed[iterations] - npc.Center.X;
-                float shootToY = VampireWorld.AltarBeingUsed[iterations] - npc.Center.Y;
-                float distance = (float)System.Math.Sqrt((double)(shootToX * shootToX + shootToY * shootToY));
-                if (distance <= 20)
+                p.BloodPoints += 2 + npc.lifeMax / 50;
+                for (int x = 0; x < 50; x++)
                 {
-                    IsNearAltar = true;
+                    int DustID3 = Dust.NewDust(npc.Center, 1, 1, 5, 0f, -8f, 10, Color.Red, 1.5f);
                 }
-                else
-                {
-                    IsNearAltar = false;
-                }
-            }
-            if(!npc.SpawnedFromStatue && IsNearAltar)
-            {
-                p.BloodPoints += 1 + npc.lifeMax / 50;
             }
             else if (npc.boss && IsNearAltar)
             {
-                p.BloodPoints += 1 + npc.lifeMax / 100;
+                p.BloodPoints += 2 + npc.lifeMax / 100;
+                for (int x = 0; x < 50; x++)
+                {
+                    int DustID3 = Dust.NewDust(npc.Center, 1, 1, 5, 0f, -8f, 10, Color.Red, 1.5f);
+                }
             }
-            else if(!npc.boss && !npc.SpawnedFromStatue && !IsNearAltar)
+            else if (!npc.boss && !npc.SpawnedFromStatue && !IsNearAltar)
             {
-                p.BloodPoints += 1 + npc.lifeMax / 100;
+                p.BloodPoints += 2 + npc.lifeMax / 100;
             }
-            else if(npc.boss && !IsNearAltar)
+            else if (npc.boss && !IsNearAltar)
             {
-                p.BloodPoints += 1 + npc.lifeMax / 400;
+                p.BloodPoints += 2 + npc.lifeMax / 400;
             }
 
             if (npc.lastInteraction != 255)
@@ -72,7 +86,7 @@ namespace VampKnives.NPCs
                     else
                     {
                         ModPacket packet = mod.GetPacket();
-                        packet.Write(Packet3); // no idea what Packet3 is, but this should be the ID f the message, something that tells the receiving end what this message is about
+                        packet.Write(VampKnives.SendBloodPoints);
                         //Main.NewText("Packet3 Written");
                         packet.Send(npc.lastInteraction); // sends the packet to the killer only
                     }
@@ -99,7 +113,7 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.Plantera)
             {
-                if(Main.rand.Next(20) > 10)
+                if (Main.rand.Next(20) > 10)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<BloomingTerror>());
                 for (int x = 0; x < 5; x++)
                 {
@@ -110,9 +124,14 @@ namespace VampKnives.NPCs
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<PlantFiber>());
                 }
             }
+            if (npc.type == NPCID.MartianDrone || npc.type == NPCID.SkeletronPrime || npc.type == NPCID.TheDestroyer || npc.type == NPCID.Retinazer || npc.type == NPCID.DeadlySphere || npc.type == NPCID.MartianWalker || npc.type == NPCID.MartianEngineer || npc.type == NPCID.Cyborg || npc.type == NPCID.MartianTurret || npc.type == NPCID.MartianSaucer)
+            {
+                if (Main.rand.Next(20) > 15)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<ProcessingUnit>());
+            }
             if (npc.type == NPCID.WyvernHead)
             {
-                if(Main.rand.Next(0,101) > 88)
+                if (Main.rand.Next(0, 101) > 88)
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<WyvernHead>());
                 }
@@ -131,8 +150,8 @@ namespace VampKnives.NPCs
             }
             if (npc.type == NPCID.CultistBoss)
             {
-                if(Main.rand.Next(10) > 7)
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.MagesHood>());
+                if (Main.rand.Next(10) > 7)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.MagesHood>());
             }
             if (npc.type == NPCID.BrainofCthulhu)
             {
@@ -150,7 +169,7 @@ namespace VampKnives.NPCs
                 if (Main.rand.Next(6) == 0)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CorruptionCrystal>());
             }
-            if (npc.type == NPCID.EaterofSouls||npc.type==NPCID.Corruptor||npc.type==NPCID.CorruptSlime||npc.type==NPCID.Slimeling||npc.type==NPCID.Slimer||npc.type==NPCID.Slimer2||npc.type==NPCID.PigronCorruption||npc.type==NPCID.SandsharkCorrupt||npc.type==NPCID.DevourerHead)
+            if (npc.type == NPCID.EaterofSouls || npc.type == NPCID.Corruptor || npc.type == NPCID.CorruptSlime || npc.type == NPCID.Slimeling || npc.type == NPCID.Slimer || npc.type == NPCID.Slimer2 || npc.type == NPCID.PigronCorruption || npc.type == NPCID.SandsharkCorrupt || npc.type == NPCID.DevourerHead)
             {
                 Random random = new Random();
                 int ran = random.Next(0, 11);
@@ -178,16 +197,16 @@ namespace VampKnives.NPCs
                 if (ran == 5)
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
             }
-            if((npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera) && Main.hardMode)
+            if ((npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera) && Main.hardMode)
             {
-                if(Main.rand.Next(1,50) == 25)
+                if (Main.rand.Next(1, 50) == 25)
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonNestKnives>());
                 }
             }
-            if(npc.type == NPCID.BigMimicCrimson)
+            if (npc.type == NPCID.BigMimicCrimson)
             {
-                for(int x = 0; x < Main.rand.Next(1,7);x++)
+                for (int x = 0; x < Main.rand.Next(1, 7); x++)
                 {
                     Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrimsonShard>());
                 }
@@ -238,7 +257,7 @@ namespace VampKnives.NPCs
                     }
                 }
             }
-            if(npc.type == NPCID.WallofFlesh)
+            if (npc.type == NPCID.WallofFlesh)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CritEmblem>());
             }
@@ -258,15 +277,43 @@ namespace VampKnives.NPCs
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.BrokenHeroKnives>());
             }
-            if(npc.type == NPCID.BigMimicHallow)
+            if (npc.type == NPCID.BigMimicHallow)
             {
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.HallowedGauntlet>());
             }
-            if(npc.type == NPCID.Vampire)
+            if (npc.type == NPCID.Vampire)
             {
-                if(Main.rand.Next(0,26) == 25)
+                if (Main.rand.Next(0, 26) == 25)
                 {
-                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.AncientVampiricTablet>());
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<AncientVampiricTablet>());
+                }
+            }
+            if (npc.type == NPCID.Everscream)
+            {
+                if (Main.rand.Next(0, 25) == 5)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.SeasonalStuff.EverscreamsBranch>());
+                }
+            }
+            if (npc.type == NPCID.Pumpking)
+            {
+                if (Main.rand.Next(0, 6) == 5)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.SeasonalStuff.HarvestersSoul>());
+                }
+            }
+            if (npc.type == NPCID.Bunny || npc.type == NPCID.BunnySlimed || npc.type == NPCID.GoldBunny)
+            {
+                if (Main.rand.Next(0, 101) == 5)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.SeasonalStuff.EasterBasket>());
+                }
+            }
+            if(npc.type == NPCID.MartianEngineer || npc.type == NPCID.MartianSaucer || npc.type == NPCID.MartianDrone)
+            {
+                if (Main.rand.Next(0, 25) == 5)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Materials.ProcessingUnit>());
                 }
             }
         }
@@ -302,7 +349,7 @@ namespace VampKnives.NPCs
         public bool potentPoison = false;
         public bool ShroomitePoison = false;
         public bool VeiLove = false;
-        public int VeiLoveStack;
+        public bool MouseMilkDebuff;
 
         public override void ResetEffects(NPC npc)
         {
@@ -318,6 +365,8 @@ namespace VampKnives.NPCs
             VortexBuff = false;
             ShroomitePoison = false;
             VeiLove = false;
+            Latched = false;
+            MouseMilkDebuff = false;
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
@@ -350,6 +399,20 @@ namespace VampKnives.NPCs
                         damage = 11 + Main.rand.Next(-3,4);
                     }
                 }
+            }
+            if(MouseMilkDebuff)
+            {
+                for(int x = 0; x < 4; x++)
+                {
+                    if (npc.lifeRegen > 0)
+                        npc.lifeRegen = 0;
+                    npc.lifeRegen -= 6;
+                    if (damage < 3)
+                        damage = 3 + Main.rand.Next(-1, 4);
+                }
+                npc.velocity *= 0.98f;
+                npc.defense -= 5;
+                npc.damage = (int)(npc.damage * 0.9f);
             }
             if (bleedingOut)
             {
@@ -416,10 +479,22 @@ namespace VampKnives.NPCs
         int DamageStore;
         bool Init;
         int VeiDelay;
+        public bool Latched;
+        public bool IsFalling;
+        public int FallDamage;
+
         public override bool PreAI(NPC npc)
         {
             if (VeiLove == true)
             {
+                return false;
+            }
+            else if(Latched == true)
+            {
+                if(!Main.tile[(int)npc.Bottom.X / 16, (int)(npc.Bottom.Y) / 16].active() && !npc.noGravity)
+                {
+                    IsFalling = true;
+                }
                 return false;
             }
             else
@@ -434,6 +509,16 @@ namespace VampKnives.NPCs
         }
         public override void PostAI(NPC npc)
         {
+            if (!Latched && IsFalling && !Main.tile[(int)npc.Bottom.X / 16, (int)(npc.Bottom.Y) / 16].active())
+            {
+                FallDamage++;
+            }
+            else if (IsFalling && Main.tile[(int)npc.Bottom.X / 16, (int)(npc.Bottom.Y) / 16].active())
+            {
+                npc.StrikeNPC(FallDamage, 0, 0);
+                IsFalling = false;
+                FallDamage = 0;
+            }
             if (VeiLove == true && !npc.boss)
             {
                 if(!Init)
@@ -443,6 +528,7 @@ namespace VampKnives.NPCs
                 }
                 npc.defense = 0;
                 npc.damage = 0;
+                npc.velocity *= 0;
                 VeiDelay++;
                 if(VeiDelay >= 5)
                 {
@@ -452,6 +538,21 @@ namespace VampKnives.NPCs
                 }
             }
             else if(!VeiLove && Init == true)
+            {
+                npc.damage = DamageStore;
+                Init = false;
+            }
+            if(Latched)
+            {
+                if (!Init)
+                {
+                    Init = true;
+                    DamageStore = npc.damage;
+                }
+                npc.damage = 0;
+                npc.velocity *= 0;
+            }
+            else if(!Latched && Init)
             {
                 npc.damage = DamageStore;
                 Init = false;
@@ -469,8 +570,43 @@ namespace VampKnives.NPCs
             }
             return base.StrikeNPC(npc, ref damage, defense, ref knockback, hitDirection, ref crit);
         }
+        private bool resetBatchInPost;
+
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+        {
+            if (npc.HasBuff(ModContent.BuffType<Buffs.VTuberBuffs.ImEnsured>()) && Main.netMode != NetmodeID.Server) // The netmode check might be redundant but I can't verify whether or not it is.
+            {
+                resetBatchInPost = true; // We're using a dedicated bool for this in the *very* unlikely case your buff somehow gets purged during drawing.
+
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix); // SpriteSortMode needs to be set to Immediate for shaders to work.
+
+                GameShaders.Misc["Technique1"].Apply(); // If you need to set any parameters, you can so before Apply (e.g. Misc["EffectName'].UseColor(something).Apply() )
+            }
+
+            return true;
+        }
+
+        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
+        {
+            if (resetBatchInPost)
+            {
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                resetBatchInPost = false;
+            }
+        }
         public override void DrawEffects(NPC npc, ref Color drawColor)
         {
+            if(MouseMilkDebuff)
+            {
+                if (Main.rand.Next(0, 10) == 4)
+                {
+                    int dustIndex = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), (int)(npc.width), (int)(npc.height), 268, 0f, 0f, 100, Color.Brown, 1.4f);
+                    Main.dust[dustIndex].velocity.Y *= 1.2f;
+                }
+
+            }
             if (PenetratingPoison)
             {
                 int DustID2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 273, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 10, Color.DarkGreen, 1.8f);
@@ -503,6 +639,14 @@ namespace VampKnives.NPCs
                         int DustID2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width - 3, npc.height - 3, 268, npc.velocity.X * 0.2f, npc.velocity.Y * 0.2f, 140, Color.Red, 1f);
                         Main.dust[DustID2].noGravity = false;
                     }
+                }
+            }
+            if(Latched)
+            {
+                if(Main.rand.Next(0,12) <= 3)
+                {
+                    int DustID2 = Dust.NewDust(new Vector2(npc.Top.X, npc.Top.Y + 5), 4, 4, 261, 0f, 0f, 140, Color.White, 1f);
+                    Main.dust[DustID2].noGravity = false;
                 }
             }
             if (hellfire)

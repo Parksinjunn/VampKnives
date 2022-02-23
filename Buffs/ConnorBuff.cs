@@ -16,8 +16,8 @@ namespace VampKnives.Buffs
         public override void Update(Player player, ref int buffIndex)
         {
             player.buffTime[buffIndex] = 18000;
-            player.GetModPlayer<ExamplePlayer>().hasMyBuff = true;
-            player.GetModPlayer<ExamplePlayer>().Connor = true;
+            player.GetModPlayer<VampPlayer>().hasMyBuff = true;
+            player.GetModPlayer<VampPlayer>().Connor = true;
             bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ConnorAnim")] <= 0;
             if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
             {

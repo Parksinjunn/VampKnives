@@ -101,7 +101,7 @@ namespace VampKnives.Items.Armor
                 numProj = 12;
             }
             KnifeDamagePlayer d = Main.LocalPlayer.GetModPlayer<KnifeDamagePlayer>();
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line2 = new TooltipLine(mod, "Face", "+ " + d.KnifeCrit + "% crit chance.");
             line2.overrideColor = new Color(255, 60, 28);
             if (NPC.downedBoss2)

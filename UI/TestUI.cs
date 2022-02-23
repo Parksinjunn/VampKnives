@@ -13,7 +13,7 @@ namespace VampKnives.UI
     {
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             float percentage = (p.VampCurrent/p.VampMax);
             //Main.NewText("Percentage: "+percentage + "  VampCurrent: " + p.VampCurrent + "  VampMax: " + p.VampMax);
             var innerDimensionsRectangle = GetDimensions().ToRectangle();

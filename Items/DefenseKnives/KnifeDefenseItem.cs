@@ -13,7 +13,7 @@ namespace VampKnives.Items.DefenseKnives
         public ModItem PlateType;
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            int numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
+            int numProjectiles2 = player.GetModPlayer<VampPlayer>().NumProj + player.GetModPlayer<VampPlayer>().ExtraProj;
             Random random = new Random();
             int ran = 65;
             float spread = MathHelper.ToRadians(ran);

@@ -40,7 +40,7 @@ namespace VampKnives.Items.Armor
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             KnifeDamagePlayer d = Main.LocalPlayer.GetModPlayer<KnifeDamagePlayer>();
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line2 = new TooltipLine(mod, "Face", "Defense knives have " + p.DefenseExtraLives + " extra life");
             if(NPC.downedBoss2)
             {
@@ -124,7 +124,7 @@ namespace VampKnives.Items.Armor
                 if (Frame > 3) //if past the last frame
                     Frame = 0; //go back to the first frame
             }
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             if (NPC.downedBoss2)
             {

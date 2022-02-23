@@ -20,7 +20,7 @@ namespace VampKnives.Items.Ammo
         public short BarType;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Throwing Knives Cast");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -28,11 +28,10 @@ namespace VampKnives.Items.Ammo
         }
         public override void OnCraft(Recipe recipe)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             crafted = true;
             p.NumCrafted += 1;
             NumberCrafted = p.NumCrafted;
-            //Main.NewText("Number Crafted: " + p.NumCrafted);
         }
         public override void UpdateInventory(Player player)
         {

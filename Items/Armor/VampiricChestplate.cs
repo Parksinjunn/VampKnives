@@ -39,7 +39,7 @@ namespace VampKnives.Items.Armor
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             KnifeDamagePlayer d = Main.LocalPlayer.GetModPlayer<KnifeDamagePlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "+" + (int)(((d.knifeDamageMult*100)*0.00341)*100) + "% Knife Damage");
             line.overrideColor = new Color(160, 0, 0);
@@ -120,7 +120,7 @@ namespace VampKnives.Items.Armor
                 if (Frame > 3) //if past the last frame
                     Frame = 0; //go back to the first frame
             }
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             player.aggro += 300;
             if (NPC.downedBoss2)

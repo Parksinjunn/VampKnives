@@ -63,26 +63,23 @@ namespace VampKnives.Items
         {
             if (item.type == ItemID.CobaltOre || item.type == ItemID.PalladiumOre)
             {
-                ExamplePlayer.HasHeldTier1 = true;
+                VampPlayer.HasHeldTier1 = true;
             }
             if (item.type == ItemID.OrichalcumOre || item.type == ItemID.MythrilOre)
             {
-                ExamplePlayer.HasHeldTier1 = true;
-                ExamplePlayer.HasHeldTier2 = true;
+                VampPlayer.HasHeldTier1 = true;
+                VampPlayer.HasHeldTier2 = true;
             }
             if (item.type == ItemID.AdamantiteOre || item.type == ItemID.TitaniumOre)
             {
-                ExamplePlayer.HasHeldTier3 = true;
-                ExamplePlayer.HasHeldTier2 = true;
-                ExamplePlayer.HasHeldTier1 = true;
+                VampPlayer.HasHeldTier3 = true;
+                VampPlayer.HasHeldTier2 = true;
+                VampPlayer.HasHeldTier1 = true;
             }
             base.UpdateInventory(item, player);
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
-            //float DamageAdded = (item.damage * (1 + (DamageLevel / 10f))) - item.damage;
-            //Main.NewText("DamageAdded" + DamageAdded);
-            //add += DamageAdded;
             mult *= 1 + DamageLevel / 10f;
         }
         public override void GetWeaponCrit(Item item, Player player, ref int crit)

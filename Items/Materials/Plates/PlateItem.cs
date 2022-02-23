@@ -27,7 +27,7 @@ namespace VampKnives.Items.Materials
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line3 = new TooltipLine(mod, "Face", "Used to craft Defense Knives");
             line3.overrideColor = new Color(86, 86, 86);
             tooltips.Add(line3);
@@ -46,14 +46,20 @@ namespace VampKnives.Items.Materials
         }
         public override void AddRecipes()
         {
-            HammerRecipe recipe = new HammerRecipe(mod);
+            HammerRecipe recipeHC = new HammerRecipe(mod);
+            recipeHC.AddIngredient(BarType, 3);
+            recipeHC.anyIronBar = true;
+            recipeHC.SetResult(this);
+            recipeHC.AddRecipe();
+
+            ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(BarType, 3);
             recipe.anyIronBar = true;
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
 
-            recipe = new HammerRecipe(mod);
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(BarType, 2);
             recipe.anyIronBar = true;
             recipe.AddTile(mod.GetTile("VampTableTile"));

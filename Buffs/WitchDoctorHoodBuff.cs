@@ -19,13 +19,13 @@ namespace VampKnives.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
 
             // We use blockyAccessoryPrevious here instead of blockyAccessory because UpdateBuffs happens before UpdateEquips but after ResetEffects.
             if (p.HoodIsVisible == true && p.WitchDoctorAccessoryPrevious)
             {
                 p.WitchDoctorPower = true;
-                player.GetModPlayer<ExamplePlayer>().ShrunkenHead = true;
+                player.GetModPlayer<VampPlayer>().ShrunkenHead = true;
                 bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("ShrunkenHead")] <= 0;
                 if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
                 {

@@ -12,7 +12,7 @@ namespace VampKnives.Items.Misc
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Damaged Wyvern Head");
-            Tooltip.SetDefault("Parts to a bigger picture\nAutomatically combine into crystals");
+            //Tooltip.SetDefault("");
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {

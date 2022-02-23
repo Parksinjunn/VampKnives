@@ -70,7 +70,7 @@ namespace VampKnives.UI
         }
         public override void Update(GameTime gameTime)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             if(p.BloodPoints <= 9999)
                 BloodPointsNum.SetText("" + p.BloodPoints);
             else if (p.BloodPoints > 9999)

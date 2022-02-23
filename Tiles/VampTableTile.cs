@@ -176,12 +176,14 @@ namespace VampKnives.Tiles
             if (UpgradePanel.visible)
             {
                 Main.playerInventory = false;
+                VampKnives.CloseUpgradeUI();
                 UpgradePanel.visible = false;
                 Main.PlaySound(SoundID.MenuClose);
             }
             else if (UpgradePanel.visible == false)
             {
                 Main.playerInventory = true;
+                VampKnives.OpenUpgradeUI();
                 UpgradePanel.visible = true;
                 Main.PlaySound(SoundID.MenuOpen);
             }

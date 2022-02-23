@@ -18,7 +18,7 @@ namespace VampKnives.Buffs
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer<ExamplePlayer>().PenetratingPoison = true;
+            player.GetModPlayer<VampPlayer>().PenetratingPoison = true;
         }
 
         public override void Update(NPC npc, ref int buffIndex)

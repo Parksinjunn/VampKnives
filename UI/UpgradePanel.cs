@@ -25,6 +25,7 @@ namespace VampKnives.UI
         public EntranceBackgroundPanel Background;
         public UIFlatPanel centerTest;
         private VanillaItemSlotWrapper _vanillaItemSlot;
+        public Item ItemSlotItemLoad;
         UIText SharpnessUpgradeText1;
         UIText SharpnessUpgradeText2;
         UIText SharpnessUpgradeText3;
@@ -65,7 +66,7 @@ namespace VampKnives.UI
 
         UITextBox RenameBox;
 
-        Vector2 ButtonSize = new Vector2(120,60);
+        Vector2 ButtonSize = new Vector2(120, 60);
 
         float BackgroundWidth = 600f;
         float BackgroundHeight = 700f;
@@ -79,7 +80,6 @@ namespace VampKnives.UI
         int RicochetBuyPrice = 1;
         int PenetrateBuyPrice = 1;
         int LifeStealBuyPrice = 1;
-
 
         public override void OnInitialize()
         {
@@ -108,6 +108,22 @@ namespace VampKnives.UI
             _vanillaItemSlot.HAlign = 0.5f;
             _vanillaItemSlot.VAlign = 0.05f;
             Background.Append(_vanillaItemSlot);
+
+            Item UIItem = Main.mouseItem;
+            bool skipCheck = false;
+
+            Item UpgradeUIItem = Main.LocalPlayer.GetModPlayer<VampPlayer>().UpgradeItem;
+            if (!UpgradeUIItem.IsAir)
+            {
+                skipCheck = true;
+                UIItem = UpgradeUIItem;
+            }
+
+            if (skipCheck || !UIItem.IsAir && _vanillaItemSlot.Valid(UIItem))
+            {
+                _vanillaItemSlot.Item = UIItem.Clone();
+                UIItem.TurnToAir(); //The previous item reference (mouse item or saved item) gets cleared
+            }
 
             //RenameBox = new UITextBox("");
             //RenameBox.Width.Set(ButtonSize.X, 0f);
@@ -378,7 +394,7 @@ namespace VampKnives.UI
 
             SpecialUpgradeText2 = new UIText("+1 to number of enemies\n   the knife penetrates\n     Current number: " + Penetrate);
             SpecialUpgradeText2.TextColor = Color.Gray;
-            SpecialUpgradeText2.Top.Set(-((TextOffset * 2)+TextOffset/3), 0f);
+            SpecialUpgradeText2.Top.Set(-((TextOffset * 2) + TextOffset / 3), 0f);
             SpecialUpgradeText2.HAlign = 0.5f;
             UpgradeSpecialButton2.Append(SpecialUpgradeText2);
 
@@ -387,6 +403,10 @@ namespace VampKnives.UI
             SpecialUpgradeText3.Top.Set(-((TextOffset * 2) + TextOffset / 3), 0f);
             SpecialUpgradeText3.HAlign = 0.5f;
             UpgradeSpecialButton3.Append(SpecialUpgradeText3);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
@@ -398,11 +418,13 @@ namespace VampKnives.UI
             {
                 KnifeWeapon UpgradeItem = _vanillaItemSlot.Item.GetGlobalItem<KnifeWeapon>();
 
+                Main.LocalPlayer.GetModPlayer<VampPlayer>().UpgradeItem = _vanillaItemSlot.Item;
+
                 Lifesteal = UpgradeItem.LifeStealBonus;
                 Penetrate = UpgradeItem.PenetrationBonus;
                 Ricochet = UpgradeItem.RicochetChance;
 
-                SpecialUpgradeText1.SetText("+1% chance to shoot\na knife that ricochets\n   Current chance: " + Math.Truncate((Ricochet*100)) + "%");
+                SpecialUpgradeText1.SetText("+1% chance to shoot\na knife that ricochets\n   Current chance: " + Math.Truncate((Ricochet * 100)) + "%");
                 SpecialUpgradeText2.SetText("+1 to number of enemies\n   the knife penetrates\n     Current number: " + Penetrate);
                 SpecialUpgradeText3.SetText("+1 increase to knife\n       lifesteal\n Current increase: " + Lifesteal);
 
@@ -418,11 +440,11 @@ namespace VampKnives.UI
                 PenetratePrice.SetText("x" + (PenetrateBuyPrice));
                 LifeStealPrice.SetText("x" + (LifeStealBuyPrice));
 
-                if(DamageBuyPrice == 11)
+                if (DamageBuyPrice == 11)
                 {
                     DamagePrice.SetText("Maxed");
                 }
-                if(CritBuyPrice == 11)
+                if (CritBuyPrice == 11)
                 {
                     CritPrice.SetText("Maxed");
                 }
@@ -582,9 +604,23 @@ namespace VampKnives.UI
                 LifeStealPrice.SetText("x1");
             }
         }
+        public override void OnDeactivate()
+        {
+            base.OnDeactivate();
+            if (!Main.gameMenu)
+            {
+                Main.PlaySound(SoundID.MenuClose);
+            }
+
+            Item item = _vanillaItemSlot.Item;
+            if (!item.IsAir)
+            {
+                Main.LocalPlayer.GetModPlayer<VampPlayer>().UpgradeItem = item.Clone();
+            }
+        } 
         private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            UpgradePanel.visible = false;
+            VampKnives.CloseUpgradeUI();
         }
         private void LegacyButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {

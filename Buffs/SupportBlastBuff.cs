@@ -18,7 +18,7 @@ namespace VampKnives.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             p.SupportArmorSetBuff = true;
         }
     }

@@ -76,7 +76,7 @@ namespace VampKnives.Projectiles
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            ExamplePlayer p = Main.player[projectile.owner].GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.player[projectile.owner].GetModPlayer<VampPlayer>();
             p.SpectreGlovesOn = true;
             if (ChargeCounter < 360)
             {
@@ -115,7 +115,7 @@ namespace VampKnives.Projectiles
                     //    //Main.NewText("End1: " + End1);
                     //    //Main.NewText("End2: " + End2);
                     //}
-                    float numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
+                    float numProjectiles2 = player.GetModPlayer<VampPlayer>().NumProj + player.GetModPlayer<VampPlayer>().ExtraProj;
                     int ShootTimerAdd = (int)(1f * (ChargeCounter / (MaxCharge / ChargeDivisionFactor + numProjectiles2)));
                     if(ShootTimerAdd < 1)
                     {

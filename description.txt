@@ -2,6 +2,23 @@ Vampire Knives Extended adds many new knives and vampire-based accessories into 
 
 Also, there is optional compatibility (included in the mod) with calamity mod that adds 6 new knives to the game that *should* scale well. 
 
+Hotfix 3.7.2: Downloads should now be fixed
+Hotfix 3.7.1: Trying to fix the issue some users were having with being unable to download the mod
+
+Update 3.7, Re-write of the Altar
+----------------------------------------------------
+- Altars have been reworked so they are much more consistent and their entire netcode has been redone. Please break and replace your altars!
+- Altars are no longer claimable, but if you want to run a ritual for someone else using your blood points, just start the ritual and it will pull from your blood points rather than theirs.
+- Added the NPC ritual. 
+- Added Auto-miners for rituals, and whatever else you'd like to use them for. More rituals based around them will be made in the future!
+- Added Seasonal Knives that drop from the holiday NPC bosses (At the moment, Pumpking and Everscream. Easter basket randomly drops from bunnies (v low rate))
+- Chisel and Hammer are now only required to craft sculpts and casts by hand. Otherwise, you can simply just use them to build the workbench and stand near it.
+- Increased chain knife damage to match knife guillotine damage
+- Fixed Adamantite Defense Knives breaking the game
+- Fixed Starting with more than one startup book
+- Added items for streamers Veibae, Ironmouse, and Nyanners. At the moment these items can only be spawned in. More to come, will eventually be fully encorporated into the mod.
+- With the altar finally fixed (that's what took these past few months...) expect more updates on the way!
+
 Hotfix 3.6.3: Unique sprites finished for all defense knives. Fixed new characters starting with vortex knives.
 Hotfix 3.6.2: Disabled a recipe for a weapon still in testing. Replaced the sprites of the defense knives, projectile sprites are placeholders and will also be unique in time.
 Hotfix 3.6.1: Fixed hotkey for book

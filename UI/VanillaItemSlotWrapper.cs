@@ -24,7 +24,18 @@ namespace VampKnives.UI
             Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
             Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
         }
-
+        internal bool Valid(Item item)
+        {
+            return ValidItemFunc(item);
+        }
+        internal void HandleMouseItem()
+        {
+            if (ValidItemFunc == null || Valid(Main.mouseItem))
+            {
+                //Handles all the click and hover actions based on the context
+                ItemSlot.Handle(ref Item, _context);
+            }
+        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             float oldScale = Main.inventoryScale;

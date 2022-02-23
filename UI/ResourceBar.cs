@@ -48,7 +48,7 @@ namespace VampKnives.UI
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
 
             calc = (p.VampCurrent / p.VampMax);
             if (calc > 1)
@@ -90,7 +90,7 @@ namespace VampKnives.UI
         }
         public override void Update(GameTime gameTime)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             switch (stat)
             {
                 case ResourceBarMode.BP:

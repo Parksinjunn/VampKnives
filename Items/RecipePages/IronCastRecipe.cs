@@ -30,10 +30,6 @@ namespace VampKnives.Items.RecipePages
         }
         public override void HoldItem(Player player)
         {
-            //Main.NewText("Is Knife: " + VampKnives.IsKnifeRecipe);
-            //Main.NewText("Is KnifeState: " + RecipePageState.IsKnifeRecipe);
-            //Main.NewText("Is Ammo: " + VampKnives.IsAmmoRecipe);
-            //Main.NewText("Is AmmoState: " + RecipePageState.IsAmmoRecipe);
             VampKnives.IsAmmoRecipe = false;
             VampKnives.IsKnifeRecipe = true;
             VampKnives.IsSharpeningRodRecipe = false;

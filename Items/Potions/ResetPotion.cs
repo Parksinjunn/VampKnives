@@ -30,7 +30,7 @@ namespace VampKnives.Items.Potions
         }
         public override bool UseItem(Player player)
         {
-            player.GetModPlayer<ExamplePlayer>().BloodPoints = 0;
+            player.GetModPlayer<VampPlayer>().BloodPoints = 0;
             item.consumable = true;
             return true;
         }

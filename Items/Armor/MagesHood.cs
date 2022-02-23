@@ -40,7 +40,7 @@ namespace VampKnives.Items.Armor
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             p.MageAccessory = true;
             p.Mage = true;
             if (hideVisual)

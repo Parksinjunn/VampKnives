@@ -41,7 +41,7 @@ namespace VampKnives.Items.Accessories
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Chisel and Hammer to craft");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -57,7 +57,15 @@ namespace VampKnives.Items.Accessories
         }
         public override void AddRecipes()
         {
-            HammerAndChiselRecipe recipe = new HammerAndChiselRecipe(mod);
+            HammerAndChiselRecipe recipeHC = new HammerAndChiselRecipe(mod);
+            recipeHC.AddIngredient(ItemID.SiltBlock, 50);
+            recipeHC.AddIngredient(ItemID.SandBlock, 50);
+            recipeHC.AddIngredient(ItemID.Granite, 50);
+            recipeHC.AddIngredient(ItemID.Marble, 50);
+            recipeHC.SetResult(this);
+            recipeHC.AddRecipe();
+
+            ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.SiltBlock, 50);
             recipe.AddIngredient(ItemID.SandBlock, 50);
             recipe.AddIngredient(ItemID.Granite, 50);
@@ -66,7 +74,7 @@ namespace VampKnives.Items.Accessories
             recipe.SetResult(this);
             recipe.AddRecipe();
 
-            recipe = new HammerAndChiselRecipe(mod);
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.SiltBlock, 25);
             recipe.AddIngredient(ItemID.SandBlock, 25);
             recipe.AddIngredient(ItemID.Granite, 25);

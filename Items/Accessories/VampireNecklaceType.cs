@@ -7,78 +7,76 @@ using Terraria.ModLoader;
 
 namespace VampKnives.Items.Accessories
 {
-    public class VampireNecklaceType : ExamplePlayer
+    public class VampireNecklaceType : VampPlayer
     {
         public int PlayerProgress = 0;
         public void VampNeckBonus()
         {
             if (PlayerProgress == 1)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.02f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.02f;
             }
             if (PlayerProgress == 2)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.05f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.05f;
             }
             if (PlayerProgress == 3)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.1f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.1f;
             }
             if (PlayerProgress == 4)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.13f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.13f;
             }
             if (PlayerProgress == 5)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.2f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.2f;
             }
             if (PlayerProgress == 6)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.5f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.5f;
             }
             if (PlayerProgress == 7)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.55f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.55f;
             }
             if (PlayerProgress == 8)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.6f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.6f;
             }
             if (PlayerProgress == 9)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 1.7f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 1.7f;
             }
             if (PlayerProgress == 10)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 2;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 2;
             }
             if (PlayerProgress == 11)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 2.2f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 2.2f;
             }
             if (PlayerProgress == 12)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 2.5f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 2.5f;
             }
             if (PlayerProgress == 13)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 3;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 3;
             }
             if (PlayerProgress == 14)
             {
-                player.GetModPlayer<ExamplePlayer>().NeckAdd = 4f;
+                player.GetModPlayer<VampPlayer>().NeckAdd = 4f;
             }
         }
         public bool CheckHolding()
         {
             if (Main.mouseItem.type != 0)
             {
-                //Main.NewText("Holding item");
                 return true;
             }
             else
             {
-                //Main.NewText("Holding air");
                 return false;
             }
         }
@@ -87,72 +85,72 @@ namespace VampKnives.Items.Accessories
             if (NPC.downedMoonlord)
             {
                 PlayerProgress = 14;
-                player.GetModPlayer<ExamplePlayer>().KillText = "None";
+                player.GetModPlayer<VampPlayer>().KillText = "None";
             }
             else if (NPC.downedAncientCultist)
             {
                 PlayerProgress = 13;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Moon Lord";
+                player.GetModPlayer<VampPlayer>().KillText = "Moon Lord";
             }
             else if (NPC.downedFishron)
             {
                 PlayerProgress = 12;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Lunatic Cultist";
+                player.GetModPlayer<VampPlayer>().KillText = "Lunatic Cultist";
             }
             else if (NPC.downedGolemBoss)
             {
                 PlayerProgress = 11;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Duke Fishron";
+                player.GetModPlayer<VampPlayer>().KillText = "Duke Fishron";
             }
             else if (NPC.downedPlantBoss)
             {
                 PlayerProgress = 10;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Golem";
+                player.GetModPlayer<VampPlayer>().KillText = "Golem";
             }
             else if (NPC.downedMechBoss3)
             {
                 PlayerProgress = 9;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Plantera";
+                player.GetModPlayer<VampPlayer>().KillText = "Plantera";
             }
             else if (NPC.downedMechBoss1)
             {
                 PlayerProgress = 8;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Skeletron Prime";
+                player.GetModPlayer<VampPlayer>().KillText = "Skeletron Prime";
             }
             else if (NPC.downedMechBoss2)
             {
                 PlayerProgress = 7;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Twins";
+                player.GetModPlayer<VampPlayer>().KillText = "Twins";
             }
             else if (Main.hardMode)
             {
                 PlayerProgress = 6;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Destroyer";
+                player.GetModPlayer<VampPlayer>().KillText = "Destroyer";
             }
             else if (NPC.downedBoss3)
             {
                 PlayerProgress = 5;
-                player.GetModPlayer<ExamplePlayer>().KillText = "WoF";
+                player.GetModPlayer<VampPlayer>().KillText = "WoF";
             }
             else if (NPC.downedBoss2)
             {
                 PlayerProgress = 4;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Skeletron";
+                player.GetModPlayer<VampPlayer>().KillText = "Skeletron";
             }
             else if (NPC.downedQueenBee)
             {
                 PlayerProgress = 3;
-                player.GetModPlayer<ExamplePlayer>().KillText = "BoC or EoW";
+                player.GetModPlayer<VampPlayer>().KillText = "BoC or EoW";
             }
             else if (NPC.downedBoss1)
             {
                 PlayerProgress = 2;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Queen Bee";
+                player.GetModPlayer<VampPlayer>().KillText = "Queen Bee";
             }
             else if (NPC.downedSlimeKing)
             {
                 PlayerProgress = 1;
-                player.GetModPlayer<ExamplePlayer>().KillText = "Eye of Cthulhu";
+                player.GetModPlayer<VampPlayer>().KillText = "Eye of Cthulhu";
             }
         }
     }

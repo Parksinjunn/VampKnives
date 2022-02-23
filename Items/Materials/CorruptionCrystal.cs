@@ -31,7 +31,7 @@ namespace VampKnives.Items.Materials
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Can be turned into shards with a Hammer");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -51,6 +51,11 @@ namespace VampKnives.Items.Materials
             recipe.AddIngredient(mod.GetItem("CrimsonCrystal"), 1);
             recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe.AddIngredient(this);
+            recipe.AddTile(ModContent.TileType<Tiles.KnifeBench>());
+            recipe.SetResult(mod.GetItem("CorruptionShard"), 4);
             recipe.AddRecipe();
 
             HammerRecipe recipe2 = new HammerRecipe(mod);

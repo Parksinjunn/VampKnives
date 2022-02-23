@@ -40,6 +40,7 @@ namespace VampKnives.Projectiles.VtuberProj
         float corFactorStep;
         Color curClr;
         int rotationNumber;
+        float LightStrength;
         public override void AI()
         {
             Vector2 usePos = projectile.position; // Position to use for dusts
@@ -60,29 +61,31 @@ namespace VampKnives.Projectiles.VtuberProj
 
             //for (int i = 0; i < discreteUnits; i++)
             //{
-                correctionFactor += corFactorStep;
-                float red = (fadeTo.R - baseClr.R) * correctionFactor + baseClr.R;
-                float green = (fadeTo.G - baseClr.G) * correctionFactor + baseClr.G;
-                float blue = (fadeTo.B - baseClr.B) * correctionFactor + baseClr.B;
-                curClr = new Color((int)red, (int)green, (int)blue);
-                int num120 = Dust.NewDust(projectile.position + new Vector2(0, 5) + (Vector2.UnitY.RotatedBy(projectile.rotation) * projectile.height), 8, 8, ModContent.DustType<Dusts.HeartDust>(), 0f, 0f, 100, curClr, 0.3f) ;
-                Dust dust = Main.dust[num120];
-                
-                double deg = (double)rotationNumber; //The degrees, you can multiply projectile.ai[1] to make it orbit faster, may be choppy depending on the value
-                double rad = deg * (Math.PI / 180); //Convert degrees to radians
-                double dist = 64; //Distance away from the player
+            correctionFactor += corFactorStep;
+            float red = (fadeTo.R - baseClr.R) * correctionFactor + baseClr.R;
+            float green = (fadeTo.G - baseClr.G) * correctionFactor + baseClr.G;
+            float blue = (fadeTo.B - baseClr.B) * correctionFactor + baseClr.B;
+            curClr = new Color((int)red, (int)green, (int)blue);
+            LightStrength = Main.rand.NextFloat(220f, 255f);
+            Vector3 LightColor = new Vector3(curClr.R / LightStrength, curClr.G / LightStrength, curClr.B / LightStrength);
+            int num120 = Dust.NewDust(projectile.position + new Vector2(0, 5) + (Vector2.UnitY.RotatedBy(projectile.rotation) * projectile.height), 8, 8, ModContent.DustType<Dusts.HeartDust>(), 0f, 0f, 100, curClr, 0.3f);
+            Dust dust = Main.dust[num120];
+            Dusts.HeartDust.LightColor(LightColor, dust);
+            double deg = (double)rotationNumber; //The degrees, you can multiply projectile.ai[1] to make it orbit faster, may be choppy depending on the value
+            double rad = deg * (Math.PI / 180); //Convert degrees to radians
+            double dist = 64; //Distance away from the player
 
             /*Position the player based on where the player is, the Sin/Cos of the angle times the /
             /distance for the desired distance away from the player minus the projectile's width   /
             /and height divided by two so the center of the projectile is at the right place.     */
-                dust.position.X = (projectile.position.X) - (int)(Math.Cos(rad) * dist);
-                dust.position.Y = (projectile.position.Y + 5)- (int)(Math.Sin(rad) * dist);
+            dust.position.X = (projectile.position.X) - (int)(Math.Cos(rad) * dist);
+            dust.position.Y = (projectile.position.Y + 5) - (int)(Math.Sin(rad) * dist);
             rotationNumber += 24;
             //dust.velocity *= 0.3f;
-                                                                                                                          //dust.position.X = projectile.position.X + (float)(projectile.width / 2) + 4f + (float)Main.rand.Next(-4, 5);
-                                                                                                                          //dust.position.Y = projectile.position.Y + (float)(projectile.height / 2) + (float)Main.rand.Next(-4, 5);
-                                                                                                                          //dust.noGravity = true;
-                                                                                                                          //}
+            //dust.position.X = projectile.position.X + (float)(projectile.width / 2) + 4f + (float)Main.rand.Next(-4, 5);
+            //dust.position.Y = projectile.position.Y + (float)(projectile.height / 2) + (float)Main.rand.Next(-4, 5);
+            //dust.noGravity = true;
+            //}
 
 
             //int num4;
@@ -146,7 +149,7 @@ namespace VampKnives.Projectiles.VtuberProj
                         num148 *= num149;
                         int num150 = (int)(num147 * 1000f);
                         int num151 = (int)(projectile.velocity.X * 1000f);
-                       // projectile.rotation += (float)projectile.direction * 0.8f;
+                        // projectile.rotation += (float)projectile.direction * 0.8f;
                         int num152 = (int)(num148 * 1000f);
                         int num153 = (int)(projectile.velocity.Y * 1000f);
                         //projectile.rotation += (float)projectile.direction * 0.8f;
@@ -251,30 +254,30 @@ namespace VampKnives.Projectiles.VtuberProj
 
         public override void Kill(int timeLeft)
         {
-                //if (projectile.penetrate == 1)
-                //{
-                //    projectile.maxPenetrate = -1;
-                //    projectile.penetrate = -1;
-                //    int num590 = 60;
-                //    projectile.position.X = projectile.position.X - (float)(num590 / 2);
-                //    projectile.position.Y = projectile.position.Y - (float)(num590 / 2);
-                //    projectile.width += num590;
-                //    projectile.height += num590;
-                //    projectile.tileCollide = false;
-                //    projectile.velocity *= 0.01f;
-                //    projectile.Damage();
-                //    projectile.scale = 0.01f;
-                //}
-                //Main.PlaySound(SoundID.Item10.WithVolume(0.5f), projectile.position);
-                int num4;
-                for (int num588 = 0; num588 < 20; num588 = num4 + 1)
-                {
-                    int num589 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, ModContent.DustType<Dusts.HeartDust>(), 0f, 0f, 100, curClr, 2f);
-                    Main.dust[num589].noGravity = true;
-                    Dust dust = Main.dust[num589];
-                    dust.velocity *= 4f;
-                    num4 = num588;
-                }
+            //if (projectile.penetrate == 1)
+            //{
+            //    projectile.maxPenetrate = -1;
+            //    projectile.penetrate = -1;
+            //    int num590 = 60;
+            //    projectile.position.X = projectile.position.X - (float)(num590 / 2);
+            //    projectile.position.Y = projectile.position.Y - (float)(num590 / 2);
+            //    projectile.width += num590;
+            //    projectile.height += num590;
+            //    projectile.tileCollide = false;
+            //    projectile.velocity *= 0.01f;
+            //    projectile.Damage();
+            //    projectile.scale = 0.01f;
+            //}
+            //Main.PlaySound(SoundID.Item10.WithVolume(0.5f), projectile.position);
+            int num4;
+            for (int num588 = 0; num588 < 20; num588 = num4 + 1)
+            {
+                int num589 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, ModContent.DustType<Dusts.HeartDust>(), 0f, 0f, 100, curClr, 2f);
+                Main.dust[num589].noGravity = true;
+                Dust dust = Main.dust[num589];
+                dust.velocity *= 4f;
+                num4 = num588;
+            }
         }
         public override void SafeOnHitNPC(NPC n, int damage, float knockback, bool crit)
         {
@@ -284,11 +287,12 @@ namespace VampKnives.Projectiles.VtuberProj
             {
                 projectile.Kill();
             }
-            n.AddBuff(ModContent.BuffType<Buffs.VTuberBuffs.VeiLoveDebuff>(), 600);
-            NPCs.MyGlobalNPC AllNPCs = Main.npc[n.whoAmI].GetGlobalNPC<NPCs.MyGlobalNPC>();
-            AllNPCs.VeiLoveStack++;
+            if(Main.rand.Next(1,20) <= 5)
+            {
+                n.AddBuff(ModContent.BuffType<Buffs.VTuberBuffs.VeiLoveDebuff>(), 600);
+            }
         }
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void SafeModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
             damage = 69;
         }

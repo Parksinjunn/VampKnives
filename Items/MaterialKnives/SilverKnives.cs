@@ -44,7 +44,7 @@ namespace VampKnives.Items.MaterialKnives
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Knife Cast");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)

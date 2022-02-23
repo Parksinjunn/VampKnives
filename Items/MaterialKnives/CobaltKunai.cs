@@ -37,7 +37,7 @@ namespace VampKnives.Items.MaterialKnives
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            int numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj + 5;
+            int numProjectiles2 = player.GetModPlayer<VampPlayer>().NumProj + player.GetModPlayer<VampPlayer>().ExtraProj + 5;
             Random random = new Random();
             int ran = random.Next(10, 35);
             float spread = MathHelper.ToRadians(ran);
@@ -63,7 +63,7 @@ namespace VampKnives.Items.MaterialKnives
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Knife Cast");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)

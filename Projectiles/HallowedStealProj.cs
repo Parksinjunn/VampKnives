@@ -72,7 +72,7 @@ namespace VampKnives.Projectiles
                 if (distance < 70f && projectile.position.X < owner.position.X + owner.width && projectile.position.X + projectile.width > owner.position.X && projectile.position.Y < owner.position.Y + owner.height && projectile.position.Y + projectile.height > owner.position.Y)
                 {
                     int damage = projectile.damage;
-                    ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+                    VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
                     p.VampCurrent += (int)(damage * 0.40);
                     if (((int)(damage * 0.40)) < 1)
                         p.VampCurrent += 1f;

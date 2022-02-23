@@ -9,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using VampKnives.Items;
+using VampKnives.Items.Misc;
 using VampKnives.Tiles;
 using static Terraria.ModLoader.ModContent;
 
@@ -17,6 +18,7 @@ namespace VampKnives.UI
     internal class BloodAltarUI : UIState
     {
         public static bool visible = false;
+        internal static BloodAltarTE AltarTE = new BloodAltarTE();
         public EntranceButton ClaimButton;
         public EntranceButton CloseButton;
         public EntranceButton RitualOfStoneButton;
@@ -43,20 +45,32 @@ namespace VampKnives.UI
         public EntranceButton SilverCoinButton;
         public EntranceButton GoldCoinButton;
         public EntranceButton PlatinumCoinButton;
+        public EntranceButton RitualOfSoulsButton;
+        public EntranceButton AddDelayButton;
+        public EntranceButton SubtractDelayButton;
         public EntranceBackgroundPanel Background;
         public UIFlatPanel centerTest;
         public UIImage EarthActive;
         public UIImage MinerActive;
         public UIImage MidasActive;
+        public UIImage SoulsActive;
         public UIText OwnerActiveText;
         public UIText EarthActiveText;
         public UIText MinerActiveText;
         public UIText MidasActiveText;
+        public UIText SoulsActiveText;
+        public UIText SoulsNPC;
+        public UIText SpawnDelay;
         private VanillaItemSlotWrapper _vanillaItemSlot;
+        public UIImage BCSlot;
+        public UIImage AltarTitle;
+        public EntranceButton BCEject;
 
         string EarthText = "None";
         string MinerText = "None";
         string MidasText = "None";
+        string SoulsText = "None";
+        string SoulsDelay = "Delay = 0";
         string OwnerText = "Owner: ";
         Vector2 ButtonSize = new Vector2(256, 66);
 
@@ -69,10 +83,13 @@ namespace VampKnives.UI
         float RoMiButtonVPos = 0.5f;
         float RoMButtonsVPos1 = 0.35f;
         float RoMButtonsVPos2 = 0.4f;
+        float RoSoButtonVPos = 0.65f;
+        bool HasBeenWarned;
 
         public override void OnInitialize()
         {
             Background = new EntranceBackgroundPanel();
+            AltarTE = new BloodAltarTE();
 
             Background.BackgroundColor = Color.Black;
             Background.BorderColor = Color.DarkGray;
@@ -82,13 +99,18 @@ namespace VampKnives.UI
             Background.VAlign = 0.5f;
             base.Append(Background);
 
-            ClaimButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/ClaimButton"), "Claim this altar (you pay for the rituals performed at this altar)");
-            ClaimButton.VAlign = 0.015f;
-            ClaimButton.HAlign = 0.05f;
-            ClaimButton.Width.Set(128, 0f);
-            ClaimButton.Height.Set(33, 0f);
-            ClaimButton.OnClick += new MouseEvent(ClaimButtonClicked);
-            Background.Append(ClaimButton);
+            AltarTitle = new UIImage(ModContent.GetTexture("VampKnives/UI/BloodAltarTitle"));
+            AltarTitle.HAlign = 0.5f;
+            AltarTitle.VAlign = 0.015f;
+            Background.Append(AltarTitle);
+
+            //ClaimButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/ClaimButton"), "Claim this altar (you pay for the rituals performed at this altar)");
+            //ClaimButton.VAlign = 0.015f;
+            //ClaimButton.HAlign = 0.05f;
+            //ClaimButton.Width.Set(128, 0f);
+            //ClaimButton.Height.Set(33, 0f);
+            //ClaimButton.OnClick += new MouseEvent(ClaimButtonClicked);
+            //Background.Append(ClaimButton);
 
             CloseButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/CloseButton"), "Close the UI");
             CloseButton.VAlign = 0.015f;
@@ -278,12 +300,12 @@ namespace VampKnives.UI
             EarthActive.VAlign = RoSButtonVPos+0.01f;
             Background.Append(EarthActive);
 
-            OwnerActiveText = new UIText(OwnerText);
-            OwnerActiveText.HAlign = 0.6f;
-            OwnerActiveText.VAlign = 0.025f;
-            Background.Append(OwnerActiveText);
+            //OwnerActiveText = new UIText(OwnerText);
+            //OwnerActiveText.HAlign = 0.6f;
+            //OwnerActiveText.VAlign = 0.025f;
+            //Background.Append(OwnerActiveText);
 
-            EarthActiveText = new UIText("None");
+            EarthActiveText = new UIText("Dirt");
             EarthActiveText.HAlign = 1f;
             EarthActiveText.VAlign = RoSButtonVPos + 0.01f;
             Background.Append(EarthActiveText);
@@ -293,7 +315,7 @@ namespace VampKnives.UI
             MinerActive.VAlign = RoMButtonVPos + 0.01f;
             Background.Append(MinerActive);
 
-            MinerActiveText = new UIText("None");
+            MinerActiveText = new UIText("Copper");
             MinerActiveText.HAlign = 1f;
             MinerActiveText.VAlign = RoMButtonVPos + 0.01f;
             Background.Append(MinerActiveText);
@@ -303,7 +325,7 @@ namespace VampKnives.UI
             MidasActive.VAlign = RoMiButtonVPos - 0.01f;
             Background.Append(MidasActive);
 
-            MidasActiveText = new UIText("None");
+            MidasActiveText = new UIText("Copper");
             MidasActiveText.HAlign = 1f;
             MidasActiveText.VAlign = RoMiButtonVPos - 0.01f;
             Background.Append(MidasActiveText);
@@ -345,6 +367,73 @@ namespace VampKnives.UI
             PlatinumCoinButton.Height.Set(32, 0f);
             PlatinumCoinButton.OnClick += new MouseEvent(PlatinumCoinButtonClick);
             RitualOfMidasButton.Append(PlatinumCoinButton);
+
+            _vanillaItemSlot = new VanillaItemSlotWrapper(ItemSlot.Context.BankItem, 0.85f)
+            {
+                HoverText = "Blood Crystal Slot",
+                ValidItemFunc = item => item.IsAir || !item.IsAir && (GetModItem(item.type) is BloodCrystalSoul) && AltarTE.RoSoType == -69
+            };
+            _vanillaItemSlot.HAlign = 0.06f;
+            _vanillaItemSlot.VAlign = RoSoButtonVPos;
+            Background.Append(_vanillaItemSlot);
+
+            BCSlot = new UIImage(ModContent.GetTexture("VampKnives/UI/BCSlot"));
+            BCSlot.ImageScale = 1.45f;
+            BCSlot.HAlign = 0.46f;
+            BCSlot.VAlign = 0.49f;
+            _vanillaItemSlot.Append(BCSlot);
+
+            BCEject = new EntranceButton(ModContent.GetTexture("VampKnives/UI/EjectButton"), "Subtract from the spawn delay");
+            BCEject.HAlign = 0.06f;
+            BCEject.VAlign = RoSoButtonVPos + 0.087f;
+            BCEject.Width.Set(112, 0f);
+            BCEject.Height.Set(33, 0f);
+            BCEject.OnClick += new MouseEvent(BCEjectButtonClicked);
+            Background.Append(BCEject);
+
+            RitualOfSoulsButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/RitualOfSoulsButton"), "Perform the ritual of souls, summon any of these five materials for 1 bp each");
+            RitualOfSoulsButton.VAlign = RoSoButtonVPos;
+            RitualOfSoulsButton.HAlign = 0.56f;
+            RitualOfSoulsButton.Width.Set(ButtonSize.X, 0f);
+            RitualOfSoulsButton.Height.Set(ButtonSize.Y, 0f);
+            RitualOfSoulsButton.OnClick += new MouseEvent(SoulsRitualButtonClicked);
+            Background.Append(RitualOfSoulsButton);
+
+            SoulsActive = new UIImage(ActiveImage);
+            SoulsActive.HAlign = 0f;
+            SoulsActive.VAlign = RoSoButtonVPos - 0.003f;
+            Background.Append(SoulsActive);
+
+            SoulsActiveText = new UIText("None");
+            SoulsActiveText.HAlign = 1f;
+            SoulsActiveText.VAlign = RoSoButtonVPos - 0.01f;
+            Background.Append(SoulsActiveText);
+
+            SoulsNPC = new UIText("None");
+            SoulsNPC.HAlign = 0.5f + 0.2f;
+            SoulsNPC.VAlign = RoSoButtonVPos + 0.05f;
+            Background.Append(SoulsNPC);
+
+            SpawnDelay = new UIText("None");
+            SpawnDelay.HAlign = 0.5f + 0.2f;
+            SpawnDelay.VAlign = RoSoButtonVPos + 0.08f;
+            Background.Append(SpawnDelay);
+
+            AddDelayButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/ButtonPlus"), "Add to the spawn delay");
+            AddDelayButton.VAlign = RoSoButtonVPos + 0.087f;
+            AddDelayButton.HAlign = 0.72f + 0.16f;
+            AddDelayButton.Width.Set(32, 0f);
+            AddDelayButton.Height.Set(32, 0f);
+            AddDelayButton.OnClick += new MouseEvent(AddDelayButtonClicked);
+            Background.Append(AddDelayButton);
+
+            SubtractDelayButton = new EntranceButton(ModContent.GetTexture("VampKnives/UI/ButtonMinus"), "Subtract from the spawn delay");
+            SubtractDelayButton.VAlign = RoSoButtonVPos + 0.087f;
+            SubtractDelayButton.HAlign = 0.28f + 0.18f;
+            SubtractDelayButton.Width.Set(32, 0f);
+            SubtractDelayButton.Height.Set(32, 0f);
+            SubtractDelayButton.OnClick += new MouseEvent(SubtractDelayButtonClicked);
+            Background.Append(SubtractDelayButton);
         }
         //public override void Update(GameTime gameTime)
         //{
@@ -354,19 +443,83 @@ namespace VampKnives.UI
         //        p.UIOpen = true;
         //    }
         //}
+
+        //public static bool RepopulateItemSlot;
+        public override void OnDeactivate()
+        {
+            base.OnDeactivate();
+            if (!Main.gameMenu)
+            {
+                Main.PlaySound(SoundID.MenuClose);
+            }
+
+            //Item item = _vanillaItemSlot.Item;
+            //if (!item.IsAir)
+            //{
+            //    AltarTE.BloodCrystal = item.Clone();
+            //}
+        }
+        public override void OnActivate()
+        {
+
+            base.OnActivate();
+        }
+        string NPCNameSave;
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            Texture2D ActiveImage = ModContent.GetTexture("VampKnives/UI/ActiveButton");
-            Texture2D InActiveImage = ModContent.GetTexture("VampKnives/UI/InactiveButton");
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (!Main.playerInventory)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
+                AltarTE.CloseUI();
+            }
+            if (AltarTE.RoSoType != -69)
+            {
+                NPC n = new NPC();
+                n.SetDefaults(AltarTE.RoSoType);
+                NPCNameSave = n.FullName;
+                SoulsNPC.SetText(NPCNameSave);
+                BCSlot.SetImage(ModContent.GetTexture("VampKnives/UI/BCSlotFilled"));
+            }
+            if (!_vanillaItemSlot.Item.IsAir)
+            {
+                if (_vanillaItemSlot.Item.modItem is BloodCrystalSoul soul)
                 {
-                    identifier = iterations;
+                    if (soul.NPCID != -69)
+                    {
+                        AltarTE.RoSoType = soul.NPCID;
+                        NPCNameSave = soul.NPCName;
+                        SoulsNPC.SetText(NPCNameSave);
+                        _vanillaItemSlot.Item = new Item();
+                        AltarTE.SendSoulsRitualInfo();
+                        BCSlot.SetImage(ModContent.GetTexture("VampKnives/UI/BCSlotFilled"));
+                    }
+                    else
+                    {
+                        Main.NewText("Please insert a blood crystal");
+                        return;
+                    }
                 }
             }
-            if (!VampireWorld.RitualOfTheStone[identifier])
+
+            //if (RepopulateItemSlot)
+            //{
+            //    if (!AltarTE.BloodCrystal.IsAir && _vanillaItemSlot.Item.IsAir)
+            //    {
+            //        _vanillaItemSlot.Item = AltarTE.BloodCrystal;
+            //    }
+            //    Main.NewText("Item: " + _vanillaItemSlot.Item.whoAmI);
+            //    RepopulateItemSlot = false;
+            //}
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
+            Texture2D ActiveImage = ModContent.GetTexture("VampKnives/UI/ActiveButton");
+            Texture2D InActiveImage = ModContent.GetTexture("VampKnives/UI/InactiveButton");
+            //for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            //{
+            //    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
+            //    {
+            //        identifier = iterations;
+            //    }
+            //}
+            if (!AltarTE.RitualOfTheStone)
             {
                 EarthActive.SetImage(InActiveImage);
             }
@@ -374,7 +527,7 @@ namespace VampKnives.UI
             {
                 EarthActive.SetImage(ActiveImage);
             }
-            if(!VampireWorld.RitualOfTheMiner[identifier])
+            if (!AltarTE.RitualOfTheMiner)
             {
                 MinerActive.SetImage(InActiveImage);
             }
@@ -382,7 +535,7 @@ namespace VampKnives.UI
             {
                 MinerActive.SetImage(ActiveImage);
             }
-            if(!VampireWorld.RitualOfMidas[identifier])
+            if (!AltarTE.RitualOfMidas)
             {
                 MidasActive.SetImage(InActiveImage);
             }
@@ -390,188 +543,252 @@ namespace VampKnives.UI
             {
                 MidasActive.SetImage(ActiveImage);
             }
+            if (!AltarTE.RitualOfMidas)
+            {
+                MidasActive.SetImage(InActiveImage);
+            }
+            else
+            {
+                MidasActive.SetImage(ActiveImage);
+            }
+            if (!AltarTE.RitualOfSouls)
+            {
+                SoulsActive.SetImage(InActiveImage);
+            }
+            else
+            {
+                SoulsActive.SetImage(ActiveImage);
+            }
+            NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, AltarTE.ID);
+            //if (Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>().BloodPoints < Cost && !HasBeenWarned)
+            //{
+            //    EarthText = "None";
+            //    MinerText = "None";
+            //    MidasText = "None";
+            //    SoulsText = "None";
+            //    AltarTE.RitualOfTheStone = false;
+            //    AltarTE.RitualOfTheMiner = false;
+            //    AltarTE.RitualOfMidas = false;
+            //    AltarTE.RitualOfSouls = false;
+            //    AltarTE.RoSoType = -69;
+            //    Main.NewText("You have too few blood points!");
+            //    AltarTE.SendStoneRitualInfo();
+            //    AltarTE.SendMinerRitualInfo();
+            //    AltarTE.SendMidasRitualInfo();
+            //    HasBeenWarned = true;
+            //}
+            //if (HasBeenWarned && Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>().BloodPoints >= Cost)
+            //{
+            //    HasBeenWarned = false;
+            //}
+            if (AltarTE.RoSType == TileID.Stone)
+            {
+                EarthText = "Stone";
+            }
+            else if (AltarTE.RoSType == TileID.Mud)
+            {
+                EarthText = "Dirt"; 
+            }
+            else if(AltarTE.RoSType == TileID.Sand)
+            {
+                EarthText = "Sand";
+            }
+            else if(AltarTE.RoSType == TileID.Silt)
+            {
+                EarthText = "Silt";
+            }
+            else if (AltarTE.RoSType == TileID.SnowBlock)
+            {
+                EarthText = "Snow";
+            }
+            if(AltarTE.RoMinType == TileID.Tin)
+            {
+                MinerText = "Tin";
+            }
+            else if (AltarTE.RoMinType == TileID.Copper)
+            {
+                MinerText = "Copper";
+            }
+            else if (AltarTE.RoMinType == TileID.Lead)
+            {
+                MinerText = "Lead";
+            }
+            else if (AltarTE.RoMinType == TileID.Iron)
+            {
+                MinerText = "Iron";
+            }
+            else if (AltarTE.RoMinType == TileID.Silver)
+            {
+                MinerText = "Silver";
+            }
+            else if (AltarTE.RoMinType == TileID.Tungsten)
+            {
+                MinerText = "Tungsten";
+            }
+            else if (AltarTE.RoMinType == TileID.Gold)
+            {
+                MinerText = "Gold";
+            }
+            else if (AltarTE.RoMinType == TileID.Platinum)
+            {
+                MinerText = "Platinum";
+            }
+            else if (AltarTE.RoMinType == TileID.Demonite)
+            {
+                MinerText = "Demonite";
+            }
+            else if (AltarTE.RoMinType == TileID.Crimtane)
+            {
+                MinerText = "Crimtane";
+            }
+            else if (AltarTE.RoMinType == TileID.Hellstone)
+            {
+                MinerText = "Hellstone";
+            }
+            else if (AltarTE.RoMinType == TileID.Meteorite)
+            {
+                MinerText = "Meteorite";
+            }
+            else if (AltarTE.RoMinType == TileID.Cobalt)
+            {
+                MinerText = "Cobalt";
+            }
+            else if (AltarTE.RoMinType == TileID.Palladium)
+            {
+                MinerText = "Palladium";
+            }
+            else if (AltarTE.RoMinType == TileID.Titanium)
+            {
+                MinerText = "Titanium";
+            }
+            else if (AltarTE.RoMinType == TileID.Adamantite)
+            {
+                MinerText = "Adamantite";
+            }
+            else if (AltarTE.RoMinType == TileID.Mythril)
+            {
+                MinerText = "Mythril";
+            }
+            else if (AltarTE.RoMinType == TileID.Orichalcum)
+            {
+                MinerText = "Orichalcum";
+            }
+            else if (AltarTE.RoMinType == TileID.Chlorophyte)
+            {
+                MinerText = "Chlorophyte";
+            }
+            else if (AltarTE.RoMinType == TileID.LunarOre)
+            {
+                MinerText = "Luminite";
+            }
+            if(AltarTE.RoMidType == ItemID.CopperCoin)
+            {
+                MidasText = "Copper";
+            }
+            else if (AltarTE.RoMidType == ItemID.SilverCoin)
+            {
+                MidasText = "Silver";
+            }
+            else if (AltarTE.RoMidType == ItemID.GoldCoin)
+            {
+                MidasText = "Gold";
+            }
+            else if (AltarTE.RoMidType == ItemID.PlatinumCoin)
+            {
+                MidasText = "Platinum";
+            }
             EarthActiveText.SetText(EarthText);
             MinerActiveText.SetText(MinerText);
             MidasActiveText.SetText(MidasText);
-            for (int i = 0; i < VampireWorld.AltarBeingUsed.Count; i++)
-            {
-                if(VampireWorld.AltarBeingUsed[i] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[i+1] == VampireWorld.MostRecentClick.Y)
-                {
-                    OwnerText = "Owner: " + Main.player[VampireWorld.AltarOwner[i]].name;
-                }
-            }
-            OwnerActiveText.SetText(OwnerText);
+            SoulsActiveText.SetText(SoulsText);
+            SoulsDelay = (Math.Truncate((AltarTE.RoSoDelay / 60f) * 100) / 100).ToString() + " Seconds";
+            SpawnDelay.SetText(SoulsDelay);
+            //OwnerText = "Owner: " + Main.player[AltarTE.RitualOwner].name;
+            //OwnerActiveText.SetText(OwnerText);
 
             base.DrawSelf(spriteBatch);
 
             Main.HidePlayerCraftingMenu = false;
 
-            //if (!_vanillaItemSlot.Item.IsAir)
-            //{
-            //    KnifeWeapon UpgradeItem = _vanillaItemSlot.Item.GetGlobalItem<KnifeWeapon>();
-            //}
         }
+         
         private void ClaimButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int i = 0; i < VampireWorld.AltarBeingUsed.Count; i++)
-            {
-                if (VampireWorld.AltarBeingUsed[i] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[i + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    VampireWorld.AltarOwner[i] = Main.LocalPlayer.whoAmI;
-                }
-            }
-            if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                p.SendPackage = true;
-            }
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
+            AltarTE.RitualOwner = Main.LocalPlayer.whoAmI;
+            AltarTE.SyncOwnerSend();
         }
         private void CloseButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            BloodAltarUI.visible = false;
+            AltarTE.CloseUI();
         }
-        int identifier;
+        int Cost;
         private void StoneRitualButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            //Main.NewText("BoolListLength: " + VampireWorld.RitualOfTheStone.Count);
-            //Main.NewText("AltarListLenght: " + VampireWorld.AltarBeingUsed.Count);
-            //Main.NewText("Clicked");
-            for(int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations+=2)
-            {
-                if(VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations+1] == VampireWorld.MostRecentClick.Y)
-                {
-                    //Main.NewText("FoundAltar");
-                    identifier = iterations;
-                    //p = Main.player[VampireWorld.AltarOwner[iterations]].GetModPlayer<ExamplePlayer>();
-                    //Main.NewText("LocalPlayer: " + Main.LocalPlayer.name);
-                    //Main.NewText("AltarOwner: " + Main.player[VampireWorld.AltarOwner[iterations]]);
-                }
-                //Main.NewText("Identifier" + identifier);
-            }
-            if (VampireWorld.RitualOfTheMiner[identifier])
+            if (AltarTE.RitualOfTheMiner)
             {
                 Main.NewText("Please turn off the ritual of the Miner");
             }
-            else  if(VampireWorld.RitualOfMidas[identifier])
+            else  if(AltarTE.RitualOfMidas)
             {
                 Main.NewText("Please turn off the ritual of Midas");
             }
-            else if(VampireWorld.RitualOfTheStone[identifier])
+            else if(AltarTE.RitualOfTheStone)
             {
-                VampireWorld.RitualOfTheStone[identifier] = false;
-                if (Main.netMode == 0)
-                {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 1, false, false, true);
-                }
-                else
-                {
-                    p.SendKillPackage = true;
-                }
+                AltarTE.RitualOfTheStone = false;
+                AltarTE.SendStoneRitualInfo();
+                AltarTE.ResetRitualSpace();
+                Main.NewText("Stopped");
             }
-            else if (p.BloodPoints <= 1)
+            else if (Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>().BloodPoints < Cost)
             {
                 Main.NewText("You have too few blood points!");
             }
             else
             {
-                VampireWorld.RitualOfTheStone[identifier] = true;
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    p.SendPackage = true;
-                }
+                AltarTE.RitualOfTheStone = true;
+                AltarTE.SendStoneRitualInfo();
+                Main.NewText("Started");
             }
-
-            //Main.NewText("This altar True? : " + VampireWorld.RitualOfTheStone[identifier]);
         }
 
         private void StoneButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoEType[identifier] = TileID.Stone;
-            EarthText = "Stone";
+            AltarTE.RoSType = TileID.Stone;
+            Cost = 1;
         }
 
         private void DirtButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoEType[identifier] = TileID.Dirt;
-            EarthText = "Dirt";
+            AltarTE.RoSType = TileID.Mud;
+            Cost = 1;
         }
 
         private void SandButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoEType[identifier] = TileID.Sand;
-            EarthText = "Sand";
+            AltarTE.RoSType = TileID.Sand;
+            Cost = 1;
         }
 
         private void SiltButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoEType[identifier] = TileID.Silt;
-            EarthText = "Silt";
+            AltarTE.RoSType = TileID.Silt;
+            Cost = 1;
         }
 
         private void SnowButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoEType[identifier] = TileID.SnowBlock;
-            EarthText = "Snow";
+            AltarTE.RoSType = TileID.SnowBlock;
+            Cost = 1;
         }
 
         private void MinerRitualButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                    //p = Main.player[VampireWorld.AltarOwner[iterations]].GetModPlayer<ExamplePlayer>();
-                }
-            }
-            if (VampireWorld.RitualOfTheStone[identifier])
+            if (AltarTE.RitualOfTheStone)
             {
                 Main.NewText("Please turn off the ritual of the earth");
             }
-            else if (VampireWorld.RitualOfMidas[identifier])
+            else if (AltarTE.RitualOfMidas)
             {
                 Main.NewText("Please turn off the ritual of Midas");
             }
@@ -579,270 +796,165 @@ namespace VampKnives.UI
             {
                 Main.NewText("You need to kill a mechanical boss before performing this ritual");
             }
-            else if (p.BloodPoints <= 1)
+            else if (Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>().BloodPoints < Cost)
             {
                 Main.NewText("You have too few blood points!");
             }
-            else if(!VampireWorld.RitualOfTheMiner[identifier])
+            else if(!AltarTE.RitualOfTheMiner)
             {
-                VampireWorld.RitualOfTheMiner[identifier] = true;
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    p.SendPackage = true;
-                }
+                AltarTE.RitualOfTheMiner = true;
+                AltarTE.SendMinerRitualInfo();
             }
             else
             {
-                VampireWorld.RitualOfTheMiner[identifier] = false;
-                if (Main.netMode == 0)
-                {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 1, false, false, true);
-                }
-                else
-                {
-                    p.SendKillPackage = true;
-                }
+                AltarTE.RitualOfTheMiner = false;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void CopperTinButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (AltarTE.RoMinType == TileID.Copper)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            if (VampireWorld.RoMType[identifier] == TileID.Copper)
-            {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Tin;
-                MinerText = "Tin";
+                AltarTE.RoMinType = TileID.Tin;
             }
             else
             {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Copper;
-                MinerText = "Copper";
+                AltarTE.RoMinType = TileID.Copper;
             }
-
+            AltarTE.SendMinerRitualInfo();
+            AltarTE.ResetRitualSpace();
+            Cost = 1;
         }
         private void IronLeadButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (AltarTE.RoMinType == TileID.Iron)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            if (VampireWorld.RoMType[identifier] == TileID.Iron)
-            {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Lead;
-                MinerText = "Lead";
+                AltarTE.RoMinType = TileID.Lead;
             }
             else
             {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Iron;
-                MinerText = "Iron";
+                AltarTE.RoMinType = TileID.Iron;
             }
-
+            AltarTE.SendMinerRitualInfo();
+            AltarTE.ResetRitualSpace();
+            Cost = 2;
         }
         private void SilverTungstenButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (AltarTE.RoMinType == TileID.Silver)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            if (VampireWorld.RoMType[identifier] == TileID.Silver)
-            {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Tungsten;
-                MinerText = "Tungsten";
+                AltarTE.RoMinType = TileID.Tungsten;
             }
             else
             {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Silver;
-                MinerText = "Silver";
+                AltarTE.RoMinType = TileID.Silver;
             }
-
+            AltarTE.SendMinerRitualInfo();
+            AltarTE.ResetRitualSpace();
+            Cost = 4;
         }
         private void GoldPlatinumButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (AltarTE.RoMinType == TileID.Gold)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            if (VampireWorld.RoMType[identifier] == TileID.Gold)
-            {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Platinum;
-                MinerText = "Platinum";
+                AltarTE.RoMinType = TileID.Platinum;
             }
             else
             {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Gold;
-                MinerText = "Gold";
+                AltarTE.RoMinType = TileID.Gold;
             }
-
+            AltarTE.SendMinerRitualInfo();
+            AltarTE.ResetRitualSpace();
+            Cost = 8;
         }
         private void MeteoriteButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-            VampireWorld.RoMType[identifier] = TileID.Meteorite;
-            MinerText = "Meteorite";
-
+            AltarTE.RoMinType = TileID.Meteorite;
+            Cost = 12;
         }
         private void DemoniteCrimtaneButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            if (AltarTE.RoMinType == TileID.Demonite)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            if (VampireWorld.RoMType[identifier] == TileID.Demonite)
-            {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Crimtane;
-                MinerText = "Crimtane";
+                AltarTE.RoMinType = TileID.Crimtane;
             }
             else
             {
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Demonite;
-                MinerText = "Demonite";
+                AltarTE.RoMinType = TileID.Demonite;
             }
-
+            AltarTE.SendMinerRitualInfo();
+            AltarTE.ResetRitualSpace();
+            Cost = 16;
         }
         private void HellstoneButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-            VampireWorld.RoMType[identifier] = TileID.Hellstone;
-            MinerText = "Hellstone";
-
+            AltarTE.RoMinType = TileID.Hellstone;
+            Cost = 24;
         }
         private void CobaltPalladiumButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (!ExamplePlayer.HasHeldTier1)
+            if (!VampPlayer.HasHeldTier1)
             {
                 Main.NewText("You need to mine palladium or cobalt before performing this ritual");
             }
             else
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-                for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+                if (AltarTE.RoMinType == TileID.Cobalt)
                 {
-                    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                    {
-                        identifier = iterations;
-                    }
-                }
-                if (VampireWorld.RoMType[identifier] == TileID.Cobalt)
-                {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Palladium;
-                    MinerText = "Palladium";
+    
+                    AltarTE.RoMinType = TileID.Palladium;
                 }
                 else
                 {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Cobalt;
-                    MinerText = "Cobalt";
+    
+                    AltarTE.RoMinType = TileID.Cobalt;
                 }
+                Cost = 50;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void MythrilOrichalcumButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (!ExamplePlayer.HasHeldTier2)
+            if (!VampPlayer.HasHeldTier2)
             {
                 Main.NewText("You need to mine orichalcum or mythril before performing this ritual");
             }
             else
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-                for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+                if (AltarTE.RoMinType == TileID.Mythril)
                 {
-                    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                    {
-                        identifier = iterations;
-                    }
-                }
-                if (VampireWorld.RoMType[identifier] == TileID.Mythril)
-                {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Orichalcum;
-                    MinerText = "Orichalcum";
+                    AltarTE.RoMinType = TileID.Orichalcum;
                 }
                 else
                 {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Mythril;
-                    MinerText = "Mythril";
+                    AltarTE.RoMinType = TileID.Mythril;
                 }
+                Cost = 75;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void AdamantiteTitaniumButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            if (!ExamplePlayer.HasHeldTier3)
+            if (!VampPlayer.HasHeldTier3)
             {
                 Main.NewText("You need to mine titanium or adamantite before performing this ritual");
             }
             else
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-                for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+                if (AltarTE.RoMinType == TileID.Adamantite)
                 {
-                    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                    {
-                        identifier = iterations;
-                    }
-                }
-                if (VampireWorld.RoMType[identifier] == TileID.Adamantite)
-                {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Titanium;
-                    MinerText = "Titanium";
+                    AltarTE.RoMinType = TileID.Titanium;
                 }
                 else
                 {
-                    WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                    VampireWorld.RoMType[identifier] = TileID.Adamantite;
-                    MinerText = "Adamantite";
+                    AltarTE.RoMinType = TileID.Adamantite;
                 }
+                Cost = 100;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void ChlorophyteButtonClicked(UIMouseEvent evt, UIElement listeningElement)
@@ -853,17 +965,10 @@ namespace VampKnives.UI
             }
             else
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-                for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-                {
-                    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                    {
-                        identifier = iterations;
-                    }
-                }
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.Chlorophyte;
-                MinerText = "Chlorophyte";
+                AltarTE.RoMinType = TileID.Chlorophyte;
+                Cost = 150;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void LuminiteButtonClicked(UIMouseEvent evt, UIElement listeningElement)
@@ -874,106 +979,144 @@ namespace VampKnives.UI
             }
             else
             {
-                ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-                for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-                {
-                    if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                    {
-                        identifier = iterations;
-                    }
-                }
-                WorldGen.KillTile(VampireWorld.AltarBeingUsed[identifier] + 1, VampireWorld.AltarBeingUsed[identifier + 1] - 2);
-                VampireWorld.RoMType[identifier] = TileID.LunarOre;
-                MinerText = "Luminite";
+                AltarTE.RoMinType = TileID.LunarOre;
+                Cost = 300;
+                AltarTE.SendMinerRitualInfo();
+                AltarTE.ResetRitualSpace();
             }
         }
         private void MidasRitualButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                    //p = Main.player[VampireWorld.AltarOwner[iterations]].GetModPlayer<ExamplePlayer>();
-                }
-            }
-            if (VampireWorld.RitualOfTheStone[identifier])
+            if (AltarTE.RitualOfTheStone)
             {
                 Main.NewText("Please turn off the ritual of the earth");
             }
-            else if (VampireWorld.RitualOfTheMiner[identifier])
+            else if (AltarTE.RitualOfTheMiner)
             {
                 Main.NewText("Please turn off the ritual of the miner");
             }
-            else if (p.BloodPoints <= 1)
+            else if (Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>().BloodPoints < Cost)
             {
                 Main.NewText("You have too few blood points!");
             }
-            else if (!VampireWorld.RitualOfMidas[identifier])
+            else if (!AltarTE.RitualOfMidas)
             {
-                VampireWorld.RitualOfMidas[identifier] = true;
+                AltarTE.RitualOfMidas = true;
+                AltarTE.SendMidasRitualInfo();
             }
             else
             {
-                VampireWorld.RitualOfMidas[identifier] = false;
-            }
-            if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                p.SendPackage = true;
+                AltarTE.RitualOfMidas = false;
+                AltarTE.SendMidasRitualInfo();
             }
         }
         private void CopperCoinButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoMiType[identifier] = ItemID.CopperCoin;
-            MidasText = "Copper";
+            AltarTE.RoMidType = ItemID.CopperCoin;
+            Cost = 1;
         }
         private void SilverCoinButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoMiType[identifier] = ItemID.SilverCoin;
-            MidasText = "Silver";
+            AltarTE.RoMidType = ItemID.SilverCoin;
+            Cost = 10;
         }
         private void GoldCoinButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
-            }
-            VampireWorld.RoMiType[identifier] = ItemID.GoldCoin;
-            MidasText = "Gold";
+            AltarTE.RoMidType = ItemID.GoldCoin;
+            Cost = 100;
         }
         private void PlatinumCoinButtonClick(UIMouseEvent evt, UIElement listeningElement)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+            AltarTE.RoMidType = ItemID.PlatinumCoin;
+            Cost = 999;
+        }
+        int NPCID;
+        private void SoulsRitualButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+        {
+            VampPlayer AltarTEPlayer = Main.player[AltarTE.RitualOwner].GetModPlayer<VampPlayer>();
+            //if(!_vanillaItemSlot.Item.IsAir)
+            //{
+            //    AltarTE.BloodCrystal = _vanillaItemSlot.Item;
+            //}
+            if (AltarTE.RitualOfTheStone)
             {
-                if (VampireWorld.AltarBeingUsed[iterations] == VampireWorld.MostRecentClick.X && VampireWorld.AltarBeingUsed[iterations + 1] == VampireWorld.MostRecentClick.Y)
-                {
-                    identifier = iterations;
-                }
+                Main.NewText("Please turn off the ritual of the earth");
             }
-            VampireWorld.RoMiType[identifier] = ItemID.PlatinumCoin;
-            MidasText = "Platinum";
+            else if (AltarTE.RitualOfTheMiner)
+            {
+                Main.NewText("Please turn off the ritual of the Miner");
+            }
+            else if (AltarTE.RitualOfMidas)
+            {
+                Main.NewText("Please turn off the ritual of Midas");
+            }
+            else if (AltarTEPlayer.BloodPoints <= 1)
+            {
+                Main.NewText("You have too few blood points!");
+            }
+            else if (!AltarTE.RitualOfSouls && AltarTE.RoSoType != -69)
+            {
+                AltarTE.RitualOfSouls = true;
+                AltarTE.SendSoulsRitualInfo();
+                SoulsText = "Active";
+                //if (!AltarTE.BloodCrystal.IsAir)
+                //{
+                //    if (_vanillaItemSlot.Item.modItem is BloodCrystalSoul soul)
+                //    {
+                //        if (soul.NPCID != -69)
+                //        {
+                //            AltarTE.RoSoType = soul.NPCID;
+                //            NPCNameSave = soul.NPCName;
+                //        }
+                //        else
+                //        {
+                //            Main.NewText("Please insert a filled blood crystal");
+                //            return;
+                //        }
+                //    }
+
+                //    SoulsNPC.SetText(NPCNameSave);
+                //    _vanillaItemSlot.Item = new Item();
+                //}
+                //else
+                //{
+                //    Main.NewText("Please insert a filled blood crystal");
+                //}
+            }
+            else
+            {
+                AltarTE.RitualOfSouls = false;
+                AltarTE.SendSoulsRitualInfo();
+            }
+        }
+        private void BCEjectButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (AltarTE.RoSoType != -69)
+            {
+                AltarTE.SummonBloodCrystalProj();
+                AltarTE.RoSoType = -69;
+                AltarTE.RitualOfSouls = false;
+                AltarTE.SendSoulsRitualInfo();
+                SoulsNPC.SetText("None");
+                BCSlot.SetImage(ModContent.GetTexture("VampKnives/UI/BCSlot"));
+                SoulsText = "None";
+            }
+            else
+                Main.NewText("There is no blood crystal to eject");
+        }
+        private void AddDelayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (AltarTE.RoSoDelay < 900)
+                AltarTE.RoSoDelay += 10;
+            else
+                Main.NewText("You cannot increase the delay any further");
+        }
+        private void SubtractDelayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (AltarTE.RoSoDelay > 10)
+                AltarTE.RoSoDelay -= 10;
+            else
+                Main.NewText("You cannot decrease the delay any further");
         }
     }
 }

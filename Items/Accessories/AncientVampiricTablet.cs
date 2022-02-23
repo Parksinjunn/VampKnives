@@ -36,7 +36,7 @@ namespace VampKnives.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if(player.GetModPlayer<ExamplePlayer>().Transform == true)
+            if(player.GetModPlayer<VampPlayer>().Transform == true)
             {
                 player.wingTimeMax = 300;
             }
@@ -44,7 +44,7 @@ namespace VampKnives.Items.Accessories
             {
                 player.wingTimeMax = 0;
             }
-            player.GetModPlayer<ExamplePlayer>().HasTabletEquipped = true;
+            player.GetModPlayer<VampPlayer>().HasTabletEquipped = true;
         }
     }
 }

@@ -20,7 +20,6 @@ namespace VampKnives.Items.VtuberItems
             item.damage = 69;
             item.magic = true;
             item.channel = true;
-            item.mana = 14;
             item.width = 48;
             item.height = 48;
             item.useTime = 22;
@@ -40,7 +39,7 @@ namespace VampKnives.Items.VtuberItems
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            int numProjectiles2 = 3 + player.GetModPlayer<ExamplePlayer>().ExtraProj;
+            int numProjectiles2 = 3 + player.GetModPlayer<VampPlayer>().ExtraProj;
             Random random = new Random();
             int ran = random.Next(45, 80);
             float spread = MathHelper.ToRadians(ran);

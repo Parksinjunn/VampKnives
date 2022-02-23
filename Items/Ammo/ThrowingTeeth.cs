@@ -38,7 +38,7 @@ namespace VampKnives.Items.Ammo
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Can be crafted cheaper with a chisel");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)

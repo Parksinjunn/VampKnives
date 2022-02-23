@@ -126,7 +126,7 @@ namespace VampKnives.Projectiles
                         //Main.NewText("End1: " + End1);
                         //Main.NewText("End2: " + End2);
                     }
-                    float numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
+                    float numProjectiles2 = player.GetModPlayer<VampPlayer>().NumProj + player.GetModPlayer<VampPlayer>().ExtraProj;
                     int ShootTimerAdd = (int)(1f * (ChargeCounter / (MaxCharge / ChargeDivisionFactor + numProjectiles2)));
                     if(ShootTimerAdd < 1)
                     {
@@ -146,9 +146,13 @@ namespace VampKnives.Projectiles
                         double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
                         double deltaAngle = spread / (float)numProjectiles2;
                         double offsetAngle;
-
                         offsetAngle = startAngle + deltaAngle;
-                        Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), ProjectileType<VampiricPrismProj>(), 1 + (int)((float)projectile.damage * ((float)ShootTimerAdd /4f)), projectile.knockBack, player.whoAmI);
+                        Vector2 InitialPos = new Vector2(projectile.Center.X, projectile.Center.Y);
+                        if (player.HasBuff(ModContent.BuffType<Buffs.VTuberBuffs.MeatBicycleBuff>()))
+                        {
+                            InitialPos.Y -= 46f;
+                        }
+                        Projectile.NewProjectile(InitialPos.X, InitialPos.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), ProjectileType<VampiricPrismProj>(), 1 + (int)((float)projectile.damage * ((float)ShootTimerAdd /4f)), projectile.knockBack, player.whoAmI);
 
                         //DUST SPAWN CODE
                         float ProjectileRotationDeg = MathHelper.ToDegrees(projectile.rotation - (90f * (float)Math.PI / 180f));
@@ -211,11 +215,11 @@ namespace VampKnives.Projectiles
                         //SizeY *= 5f;
                         if (player.velocity.X == 0 && player.velocity.Y == 0)
                         {
-                            ExamplePlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false, true, new Vector2(End1, End2));
+                            VampPlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false, true, true, new Vector2(End1, End2));
                         }
                         else
                         {
-                            ExamplePlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false);
+                            VampPlayer.OvalDust(DustPosition, SizeY, SizeX, Color.Red, 15, 1f, false);
                         }
                         //END DUST SPAWN CODE
                         ShootTimer = 0;
@@ -305,9 +309,9 @@ namespace VampKnives.Projectiles
             SpriteEffects effects = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             Texture2D texture = Main.projectileTexture[projectile.type];
             int frameHeight = texture.Height / Main.projFrames[projectile.type];
-            int spriteSheetOffset = frameHeight * projectile.frame;
+            int spriteSheetOffset = frameHeight * projectile.frame; 
+            Player player = Main.player[projectile.owner];
             Vector2 sheetInsertPosition = (projectile.Center + Vector2.UnitY * projectile.gfxOffY - Main.screenPosition).Floor();
-
             // The Prism is always at full brightness, regardless of the surrounding light. This is equivalent to it being its own glowmask.
             // It is drawn in a non-white color to distinguish it from the vanilla Last Prism.
             Color drawColor = new Color(255,0,0);

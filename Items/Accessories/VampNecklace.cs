@@ -30,7 +30,7 @@ namespace VampKnives.Items.Accessories
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             tooltips.RemoveAll(x => x.Name == "Tooltip0" && x.mod == "Terraria");
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line3;
             TooltipLine line = new TooltipLine(mod, "Face", "Skin: Original");
             line.overrideColor = new Color(210, 0, 0);
@@ -92,7 +92,7 @@ namespace VampKnives.Items.Accessories
                 int maxAccessoryIndex = 5 + player.extraAccessorySlots;
                 for (int i = 3; i < 3 + maxAccessoryIndex; i++)
                 {
-                    if (player.GetModPlayer<ExamplePlayer>().VampNecklace == true)
+                    if (player.GetModPlayer<VampPlayer>().VampNecklace == true)
                     {
                         return false;
                     }
@@ -105,7 +105,7 @@ namespace VampKnives.Items.Accessories
         {
             player.GetModPlayer<VampireNecklaceType>().VampNeckProg();
             player.GetModPlayer<VampireNecklaceType>().VampNeckBonus();
-            player.GetModPlayer<ExamplePlayer>().VampNecklace = true;
+            player.GetModPlayer<VampPlayer>().VampNecklace = true;
         }
     }
 }

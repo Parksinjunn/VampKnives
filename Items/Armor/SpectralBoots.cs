@@ -43,7 +43,7 @@ namespace VampKnives.Items.Armor
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             KnifeDamagePlayer d = Main.LocalPlayer.GetModPlayer<KnifeDamagePlayer>();
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line2 = new TooltipLine(mod, "Face", "Movement adds +" + ManaRegen + " active mana regen");
             line2.overrideColor = new Color(50, 158, 194);
             if (NPC.downedBoss2)
@@ -135,7 +135,7 @@ namespace VampKnives.Items.Armor
                     Switch *= -1;
                 }
             }
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             if (NPC.downedBoss2)
             {

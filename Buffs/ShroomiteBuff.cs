@@ -19,7 +19,7 @@ namespace VampKnives.Buffs
             if (Main.rand.Next(50) == 5)
                 p.KnifeDamage = p.KnifeDamage * Main.rand.Next(1,4);
             p.KnifeCrit = (int)(p.KnifeCrit * .01);
-            player.GetModPlayer<ExamplePlayer>().ShroomiteBuff = true; 
+            player.GetModPlayer<VampPlayer>().ShroomiteBuff = true; 
         }
     }
 }

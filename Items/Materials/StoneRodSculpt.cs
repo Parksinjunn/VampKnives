@@ -11,7 +11,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Sculpted Rod ");
-            Tooltip.SetDefault("Useful for making a cast");
+            Tooltip.SetDefault("A rough sculpt of a sharpening rod");
         }
 
         public override bool CloneNewInstances
@@ -24,7 +24,7 @@ namespace VampKnives.Items.Materials
         public bool crafted;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-        ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+        VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Chisel to craft");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -40,13 +40,18 @@ namespace VampKnives.Items.Materials
         }
         public override void AddRecipes()
         {
-            ChiselRecipe recipe = new ChiselRecipe(mod);
+            ChiselRecipe recipeC = new ChiselRecipe(mod);
+            recipeC.AddIngredient(ItemID.StoneBlock, 20);
+            recipeC.SetResult(this);
+            recipeC.AddRecipe();
+
+            ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.StoneBlock, 20);
             recipe.AddTile(mod.GetTile("KnifeBench"));
             recipe.SetResult(this);
             recipe.AddRecipe();
 
-            recipe = new ChiselRecipe(mod);
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.StoneBlock, 15);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);

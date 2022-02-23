@@ -30,7 +30,7 @@ namespace VampKnives.Items.Materials
         }
         public override bool UseItem(Player player)
         {
-            player.GetModPlayer<ExamplePlayer>().BloodPoints += Main.rand.Next(150, 225);
+            player.GetModPlayer<VampPlayer>().BloodPoints += Main.rand.Next(150, 225);
             item.consumable = false;
             return true;
         }

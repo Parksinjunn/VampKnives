@@ -11,6 +11,9 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
 {
     public class ReflectiveProj : ModProjectile
     {
+        /// <summary>
+        /// /FIX ADAMANTITe
+        /// </summary>
         public float shootToX;
         public float shootToY;
         public float OwnerPositionX;
@@ -72,7 +75,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         int petalRandom;
         public override void AI()
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             if (EffectsAdded == false)
             {
                 ReflectChance += p.DefenseReflectChance;
@@ -167,6 +170,7 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
                         }
                         DistanceTarget.armorEffectDrawOutlines = true;
                         FirstAdamantiteInitializeDone = true;
+                        //Main.NewText("Active: " + ProjCount.GetActiveConut());
                     }
                 }
                 if(IsChlorophyte)
@@ -457,6 +461,8 @@ namespace VampKnives.Projectiles.DefenseKnivesProj
         }
         public override bool PreKill(int timeLeft)
         {
+            if(projectile.type == ModContent.ProjectileType<AdamantiteDefenseKnivesProj>())
+                ProjCount.NumActiveAdamantite--;
             ProjCount.NumberActive--;
             return true;
         }

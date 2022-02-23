@@ -99,7 +99,7 @@ namespace VampKnives.Projectiles
                     float distanceY = Target.position.Y - projectile.position.Y;
                     if (distance < 70f && projectile.position.X < Target.position.X + Target.width && projectile.position.X + projectile.width > Target.position.X && projectile.position.Y < Target.position.Y + Target.height && projectile.position.Y + projectile.height > Target.position.Y && Target != owner)
                     {
-                        ExamplePlayer p = owner.GetModPlayer<ExamplePlayer>();
+                        VampPlayer p = owner.GetModPlayer<VampPlayer>();
                         float damage = projectile.damage * p.TrueSupportBuff;
                         p.VampCurrent += (int)(damage * 0.40);
                         if (((int)(damage * 0.40)) < 1)
@@ -117,7 +117,7 @@ namespace VampKnives.Projectiles
                         if (Main.netMode != 0)
                         {
                             ModPacket packet = mod.GetPacket();
-                            packet.Write(55);
+                            packet.Write(VampKnives.SyncSupportHealsServer);
                             //packet.Write(HasHitTarget);
                             packet.Write(owner.whoAmI);
                             packet.Write(Target.whoAmI);
@@ -162,7 +162,7 @@ namespace VampKnives.Projectiles
                     if (distance < 70f && projectile.position.X < Target.position.X + Target.width && projectile.position.X + projectile.width > Target.position.X && projectile.position.Y < Target.position.Y + Target.height && projectile.position.Y + projectile.height > Target.position.Y)
                     {
                         int damage = projectile.damage;
-                        ExamplePlayer p = owner.GetModPlayer<ExamplePlayer>();
+                        VampPlayer p = owner.GetModPlayer<VampPlayer>();
                         p.VampCurrent += (int)(damage * 0.40);
                         if (((int)(damage * 0.40)) < 1)
                             p.VampCurrent += 1f;

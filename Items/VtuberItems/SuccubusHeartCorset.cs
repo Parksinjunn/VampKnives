@@ -1,5 +1,6 @@
 ﻿using Terraria.DataStructures;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace VampKnives.Items.VtuberItems
@@ -8,7 +9,7 @@ namespace VampKnives.Items.VtuberItems
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("What mystic energy resides in this tablet?\nDouble-tap transform key (check key config) to transform into a bat");
+            Tooltip.SetDefault("");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(8, 8));
         }
 
@@ -22,7 +23,32 @@ namespace VampKnives.Items.VtuberItems
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<ExamplePlayer>().VeiTransform = true;
+            player.GetModPlayer<VampPlayer>().VeiTransform = true;
+        }
+    }
+    public class SuccubusVanityEquipHead : EquipTexture
+    {
+        public override bool DrawHead()
+        {
+            return false;
+        }
+        public override void UpdateVanity(Player player, EquipType type)
+        {
+            player.GetModPlayer<VampPlayer>().VeiTransform = true;
+        }
+    }
+    public class SuccubusVanityEquipBody : EquipTexture
+    {
+        public override bool DrawBody()
+        {
+            return false;
+        }
+    }
+    public class SuccubusVanityEquipLegs : EquipTexture
+    {
+        public override bool DrawLegs()
+        {
+            return false;
         }
     }
 }

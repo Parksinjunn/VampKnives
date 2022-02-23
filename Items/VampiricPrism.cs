@@ -43,67 +43,7 @@ namespace VampKnives.Items
             item.shootSpeed = 30f;
             item.channel = true;
         }
-        //MAKE THIS JUST A PROJECTILE RATHER THAN USING SHOOT
-        //public override void UseStyle(Player player)
-        //{
-        //    PrismUsed = true;
-        //    player.itemRotation = 90f;
-        //}
 
-        //public override void UpdateInventory(Player player)
-        //{
-        //    if(PrismUsed)
-        //    {
-        //        if(UseTime < UseTimeMax)
-        //        {
-        //            UseTime++;
-        //        }
-        //        TimerTick = 0;
-        //    }
-        //    if(!PrismUsed)
-        //    {
-        //        TimerTick++;
-        //    }
-        //    if(TimerTick >= Timer)
-        //    {
-        //        TimerTick = 0;
-        //        UseTime = 0;
-        //        item.useTime = 10;
-        //        item.useAnimation = 10;
-        //    }
-        //    if(UseTime > 1)
-        //    {
-        //        ItemUseTimeStore = 10;
-        //        ItemAnimationTimeStore = 10;
-        //        ItemUseTimeStore *= (1f - ((float)UseTime / 1000f));
-        //        ItemAnimationTimeStore *= (1f - ((float)UseTime / 1000f));
-        //        item.useTime = (int)ItemUseTimeStore;
-        //        item.useAnimation = (int)ItemAnimationTimeStore;
-        //        Main.NewText("UseTime: " + item.useTime + "    UseAnimation: " + item.useAnimation);
-        //    }
-        //    PrismUsed = false;
-        //}
-
-        //public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-        //{
-        //    int numProjectiles2 = player.GetModPlayer<ExamplePlayer>().NumProj + player.GetModPlayer<ExamplePlayer>().ExtraProj;
-        //    Random random = new Random();
-        //    int ran = random.Next(10, 65);
-        //    float spread = MathHelper.ToRadians(ran);
-        //    float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-        //    double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
-        //    double deltaAngle = spread / (float)numProjectiles2;
-        //    double offsetAngle;
-
-        //    offsetAngle = startAngle + deltaAngle;
-        //    Projectile.NewProjectile(position.X, position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, knockBack, player.whoAmI);
-        //    return false;
-        //}
-
-        //public override Vector2? HoldoutOffset()
-        //{
-        //    return new Vector2(10, 0);
-        //}
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             return true;
@@ -130,7 +70,7 @@ namespace VampKnives.Items
             }
             if(player.statLife <= 1 && RegenedHealth)
             {
-                ExamplePlayer.OvalDust(player.position, 5f, 5f, Color.Red, 67, 1.2f);
+                VampPlayer.OvalDust(player.position, 5f, 5f, Color.Red, 67, 1.2f);
                 RegenedHealth = false;
                 return false;
             }

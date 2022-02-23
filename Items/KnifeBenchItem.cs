@@ -34,6 +34,8 @@ namespace VampKnives.Items
             recipe.anyWood = true;
             recipe.AddIngredient(ItemID.IronBar, 8);
             recipe.anyIronBar = true;
+            recipe.AddIngredient(mod.GetItem("Hammer"), 1);
+            recipe.AddIngredient(mod.GetItem("Chisel"), 1);
             recipe.AddTile(TileID.WorkBenches);
             recipe.SetResult(this);
             recipe.AddRecipe();
@@ -43,6 +45,8 @@ namespace VampKnives.Items
             recipe.anyWood = true;
             recipe.AddIngredient(ItemID.IronBar, 6);
             recipe.anyIronBar = true;
+            recipe.AddIngredient(mod.GetItem("Hammer"), 1);
+            recipe.AddIngredient(mod.GetItem("Chisel"), 1);
             recipe.AddTile(mod.GetTile("VampTableTile"));
             recipe.SetResult(this);
             recipe.AddRecipe();

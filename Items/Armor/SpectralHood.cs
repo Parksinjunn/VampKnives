@@ -39,7 +39,7 @@ namespace VampKnives.Items.Armor
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "+" + (p.SupportArmorLifeSteal) + " Support Knives Life Steal");
             line.overrideColor = new Color(50, 158, 194);
             if (NPC.downedBoss2)
@@ -100,7 +100,7 @@ namespace VampKnives.Items.Armor
 
         public override void UpdateArmorSet(Player player)
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             p.SupportArmor = true;
             player.AddBuff(ModContent.BuffType<Buffs.SupportBlastBuff>(), 10);
         }
@@ -137,7 +137,7 @@ namespace VampKnives.Items.Armor
                     Switch *= -1;
                 }
             }
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = player.GetModPlayer<VampPlayer>();
             player.aggro += 300;
             //KnifeDamagePlayer d = player.GetModPlayer<KnifeDamagePlayer>();
             if (NPC.downedBoss2)

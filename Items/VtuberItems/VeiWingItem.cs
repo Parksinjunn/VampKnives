@@ -37,7 +37,7 @@ namespace VampKnives.Items.VtuberItems
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.wingTimeMax = 300;
-            player.GetModPlayer<ExamplePlayer>().VeiWingsEquipped = true;
+            player.GetModPlayer<VampPlayer>().VeiWingsEquipped = true;
 
         }
     }

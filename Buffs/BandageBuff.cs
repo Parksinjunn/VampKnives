@@ -16,7 +16,7 @@ namespace VampKnives.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer < ExamplePlayer > ().Bandaged = true;
+            player.GetModPlayer < VampPlayer > ().Bandaged = true;
             base.Update(player, ref buffIndex);
         }
     }

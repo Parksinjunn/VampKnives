@@ -67,7 +67,7 @@ namespace VampKnives.Projectiles
                 if (projectile.owner == Main.myPlayer && !Main.player[Main.myPlayer].moonLeech)
                 {
                     int damage = projectile.damage;
-                    ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+                    VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
                     p.VampCurrent += (int)(damage * 0.40);
                     if (((int)(damage * 0.40)) < 1)
                         p.VampCurrent += 1f;

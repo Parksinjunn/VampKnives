@@ -11,7 +11,7 @@ namespace VampKnives.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Knives Cast");
-            Tooltip.SetDefault("Hmm... Maybe I could put something in this");
+            Tooltip.SetDefault("A cast used to make a metal knife fan");
         }
         public override void SetDefaults()
         {
@@ -29,7 +29,7 @@ namespace VampKnives.Items.Materials
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
+            VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
             TooltipLine line = new TooltipLine(mod, "Face", "Requires a Hammer to craft");
             line.overrideColor = new Color(86, 86, 86);
             if (crafted == false)
@@ -48,8 +48,14 @@ namespace VampKnives.Items.Materials
         }
         public override void AddRecipes()
         {
+            HammerRecipe recipeHC = new HammerRecipe(mod);
+            recipeHC.AddIngredient(mod.GetItem("StoneKnifeSculpt"), 1);
+            recipeHC.AddIngredient(ItemID.IronBar, 5);
+            recipeHC.anyIronBar = true;
+            recipeHC.SetResult(this);
+            recipeHC.AddRecipe();
 
-            HammerRecipe recipe = new HammerRecipe(mod);
+            ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("StoneKnifeSculpt"), 1);
             recipe.AddIngredient(ItemID.IronBar, 5);
             recipe.anyIronBar = true;
@@ -57,7 +63,7 @@ namespace VampKnives.Items.Materials
             recipe.SetResult(this);
             recipe.AddRecipe();
 
-            recipe = new HammerRecipe(mod);
+            recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("StoneKnifeSculpt"), 1);
             recipe.AddIngredient(ItemID.IronBar, 3);
             recipe.anyIronBar = true;

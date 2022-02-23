@@ -6,13 +6,18 @@ using VampKnives.UI;
 using Terraria.UI;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using VampKnives.Projectiles;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
+using VampKnives.Tiles;
+using Terraria.ModLoader.IO;
 
 namespace VampKnives
 {
     public class VampKnives : Mod
     {
-        internal static VampKnives instance;
+        public static VampKnives Instance { get; private set; }
         public static ModHotKey HoodUpDownHotkey;
         public static ModHotKey SupportHotKey;
         public static ModHotKey VampDashHotKey;
@@ -42,10 +47,11 @@ namespace VampKnives
         public static bool ChiselInSlot;
         public UserInterface WorkbenchSlots;
         private WorkbenchSlotState WorkbenchSlotPanel;
-        public UserInterface UpgradePanelUI;
+        internal static UserInterface UpgradePanelUI;
         private UpgradePanel UpgradePanelState;
-        internal UserInterface BloodAltarUIPanel;
+        internal static UserInterface BloodAltarUIPanel;
         private BloodAltarUI BloodAltarUIState;
+        private GameTime _lastUpdateUiGameTime;
         bool MarkForDeletion;
         public static bool UIOpenElsewhere;
         public static float ConfigDamageMult = 1f;
@@ -66,7 +72,6 @@ namespace VampKnives
         //private UserInterface VampBarInterface;
         //public VampBar vampbar;
         //private VampResource VampResource;
-
         public VampKnives()
         {
             Properties = new ModProperties()
@@ -222,116 +227,132 @@ namespace VampKnives
             ConvertRecipe.SetResult(ItemID.Granite, 5);
             ConvertRecipe.AddRecipe();
         }
-        public override void MidUpdateTimeWorld()
-        {
-            ExamplePlayer p = Main.LocalPlayer.GetModPlayer<ExamplePlayer>();
-            for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
-            {
+        int SoulsRitualDelay;
+        //public override void MidUpdateTimeWorld()
+        //{
+        //    VampPlayer p = Main.LocalPlayer.GetModPlayer<VampPlayer>();
+        //    for (int iterations = 0; iterations < VampireWorld.AltarBeingUsed.Count; iterations += 2)
+        //    {
 
-                //Main.NewText("RitualOfTheStone: " + (VampireWorld.RitualOfTheStone[iterations], VampireWorld.RitualOfTheStone[iterations + 1]));
-                //if (p.BloodPoints <= 1)
-                //{
-                //    Error = true;
-                //    ErrorMessage = "Not Enough blood points";
-                //}
-                if ((VampireWorld.RitualOfTheStone[iterations] && VampireWorld.RitualOfTheMiner[iterations]) || (VampireWorld.RitualOfTheStone[iterations] && VampireWorld.RitualOfMidas[iterations]) || (VampireWorld.RitualOfTheMiner[iterations] && VampireWorld.RitualOfMidas[iterations]))
-                {
-                    VampireWorld.RitualOfTheStone[iterations] = false;
-                    VampireWorld.RitualOfTheMiner[iterations] = false;
-                    VampireWorld.RitualOfMidas[iterations] = false;
-                    if (Main.netMode == NetmodeID.MultiplayerClient)
-                    {
-                        p.SendPackage = true;
-                    }
-                }
-                if (VampireWorld.RoEType[iterations] == TileID.AmberGemspark && VampireWorld.RitualOfTheStone[iterations] == true)
-                {
-                    Error = true;
-                    ErrorMessage = "Please choose a material";
-                }
-                if (VampireWorld.RitualOfTheStone[iterations] == true && Error != true)
-                {
-                    //Main.NewText("Working!");
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        StoneRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoEType[iterations]);
-                    }
-                    else
-                    {
-                        this.Logger.Warn("Stone Ritual Sent to server");
-                        ModPacket StoneRitualOn = this.GetPacket();
-                        StoneRitualOn.Write(StoneRitualRecieve);
-                        StoneRitualOn.Write(iterations);
-                        StoneRitualOn.Write(VampireWorld.AltarOwner[iterations]);
-                        StoneRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
-                        StoneRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
-                        StoneRitualOn.Write(VampireWorld.RoEType[iterations]);
-                        StoneRitualOn.Send();
-                    }
-                }
-                if (VampireWorld.RoMType[iterations] == TileID.AmberGemspark && VampireWorld.RitualOfTheMiner[iterations] == true)
-                {
-                    Error = true;
-                    ErrorMessage = "Please choose a material";
-                }
-                if (VampireWorld.RitualOfTheMiner[iterations] == true && Error != true)
-                {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        MinerRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoMType[iterations]);
-                    }
-                    else
-                    {
-                        ModPacket MinerRitualOn = this.GetPacket();
-                        MinerRitualOn.Write(MinerRitualRecieve);
-                        MinerRitualOn.Write(iterations);
-                        MinerRitualOn.Write(VampireWorld.AltarOwner[iterations]);
-                        MinerRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
-                        MinerRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
-                        MinerRitualOn.Write(VampireWorld.RoMType[iterations]);
-                        MinerRitualOn.Send();
-                    }
-                }
-                if (VampireWorld.RitualOfMidas[iterations] == true && Error != true)
-                {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        MidasRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoMiType[iterations]);
-                    }
-                    else
-                    {
-                        ModPacket MidasRitualOn = this.GetPacket();
-                        MidasRitualOn.Write(MidasRitualRecieve);
-                        MidasRitualOn.Write(iterations);
-                        MidasRitualOn.Write(VampireWorld.AltarOwner[iterations]);
-                        MidasRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
-                        MidasRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
-                        MidasRitualOn.Write(VampireWorld.RoMiType[iterations]);
-                        MidasRitualOn.Send();
-                    }
-                }
-
-            }
-            if (Error)
-            {
-                Main.NewText("Error!");
-            }
-            if (UI.BloodAltarUI.visible)
-                ErrorTimer++;
-            if (Error == true && ErrorTimer > 120)
-            {
-                Main.NewText("" + ErrorMessage);
-                Error = false;
-                ErrorTimer = 0;
-            }
-            if (p.BloodPoints <= 1)
-            {
-                p.TurnOffRituals(Main.LocalPlayer);
-            }
-        }
+        //        //Main.NewText("RitualOfTheStone: " + (VampireWorld.RitualOfTheStone[iterations], VampireWorld.RitualOfTheStone[iterations + 1]));
+        //        //if (p.BloodPoints <= 1)
+        //        //{
+        //        //    Error = true;
+        //        //    ErrorMessage = "Not Enough blood points";
+        //        //}
+        //        if ((VampireWorld.RitualOfTheStone[iterations] && VampireWorld.RitualOfTheMiner[iterations]) || (VampireWorld.RitualOfTheStone[iterations] && VampireWorld.RitualOfMidas[iterations]) || (VampireWorld.RitualOfTheMiner[iterations] && VampireWorld.RitualOfMidas[iterations]))
+        //        {
+        //            VampireWorld.RitualOfTheStone[iterations] = false;
+        //            VampireWorld.RitualOfTheMiner[iterations] = false;
+        //            VampireWorld.RitualOfMidas[iterations] = false;
+        //            if (Main.netMode == NetmodeID.MultiplayerClient)
+        //            {
+        //                p.SendPackage = true;
+        //            }
+        //        }
+        //        if (VampireWorld.RoEType[iterations] == TileID.AmberGemspark && VampireWorld.RitualOfTheStone[iterations] == true)
+        //        {
+        //            Error = true;
+        //            ErrorMessage = "Please choose a material";
+        //        }
+        //        if (VampireWorld.RitualOfTheStone[iterations] == true && Error != true)
+        //        {
+        //            //Main.NewText("Working!");
+        //            if (Main.netMode != NetmodeID.MultiplayerClient)
+        //            {
+        //                StoneRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoEType[iterations]);
+        //            }
+        //            else
+        //            {
+        //                this.Logger.Warn("Stone Ritual Sent to server");
+        //                ModPacket StoneRitualOn = this.GetPacket();
+        //                StoneRitualOn.Write(StoneRitualRecieve);
+        //                StoneRitualOn.Write(iterations);
+        //                StoneRitualOn.Write(VampireWorld.AltarOwner[iterations]);
+        //                StoneRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
+        //                StoneRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
+        //                StoneRitualOn.Write(VampireWorld.RoEType[iterations]);
+        //                StoneRitualOn.Send();
+        //            }
+        //        }
+        //        if (VampireWorld.RoMType[iterations] == TileID.AmberGemspark && VampireWorld.RitualOfTheMiner[iterations] == true)
+        //        {
+        //            Error = true;
+        //            ErrorMessage = "Please choose a material";
+        //        }
+        //        if (VampireWorld.RitualOfTheMiner[iterations] == true && Error != true)
+        //        {
+        //            if (Main.netMode != NetmodeID.MultiplayerClient)
+        //            {
+        //                MinerRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoMType[iterations]);
+        //            }
+        //            else
+        //            {
+        //                ModPacket MinerRitualOn = this.GetPacket();
+        //                MinerRitualOn.Write(MinerRitualRecieve);
+        //                MinerRitualOn.Write(iterations);
+        //                MinerRitualOn.Write(VampireWorld.AltarOwner[iterations]);
+        //                MinerRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
+        //                MinerRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
+        //                MinerRitualOn.Write(VampireWorld.RoMType[iterations]);
+        //                MinerRitualOn.Send();
+        //            }
+        //        }
+        //        if (VampireWorld.RitualOfMidas[iterations] == true && Error != true)
+        //        {
+        //            if (Main.netMode != NetmodeID.MultiplayerClient)
+        //            {
+        //                MidasRitual((int)VampireWorld.AltarBeingUsed[iterations], (int)VampireWorld.AltarBeingUsed[iterations + 1], Main.player[VampireWorld.AltarOwner[iterations]], VampireWorld.RoMiType[iterations]);
+        //            }
+        //            else
+        //            {
+        //                ModPacket MidasRitualOn = this.GetPacket();
+        //                MidasRitualOn.Write(MidasRitualRecieve);
+        //                MidasRitualOn.Write(iterations);
+        //                MidasRitualOn.Write(VampireWorld.AltarOwner[iterations]);
+        //                MidasRitualOn.Write(VampireWorld.AltarBeingUsed[iterations] + 1);
+        //                MidasRitualOn.Write(VampireWorld.AltarBeingUsed[iterations + 1] - 2);
+        //                MidasRitualOn.Write(VampireWorld.RoMiType[iterations]);
+        //                MidasRitualOn.Send();
+        //            }
+        //        }
+        //        if (VampireWorld.RoSoTypeAndDelay[iterations] == 69 && VampireWorld.RitualOfSouls[iterations] == true)
+        //        {
+        //            Error = true;
+        //            ErrorMessage = "The blood crystal is empty";
+        //        }
+        //        if (VampireWorld.RitualOfSouls[iterations] == true && !Error)
+        //        {
+        //            Main.NewText("Delay: " + SoulsRitualDelay);
+        //            if (SoulsRitualDelay >= VampireWorld.RoSoTypeAndDelay[iterations + 1])
+        //            {
+        //                SoulsRitualDelay = 0;
+        //                NPC.NewNPC((VampireWorld.AltarBeingUsed[iterations] + 1) * 16, (VampireWorld.AltarBeingUsed[iterations + 1] + 1) * 16, VampireWorld.RoSoTypeAndDelay[iterations]);
+        //                Main.NewText("Spawned");
+        //            }
+        //            SoulsRitualDelay++;
+        //        }
+        //    }
+        //    if (Error)
+        //    {
+        //        Main.NewText("Error!");
+        //    }
+        //    if (UI.BloodAltarUI.visible)
+        //        ErrorTimer++;
+        //    if (Error == true && ErrorTimer > 120)
+        //    {
+        //        Main.NewText("" + ErrorMessage);
+        //        Error = false;
+        //        ErrorTimer = 0;
+        //    }
+        //    if (p.BloodPoints <= 1)
+        //    {
+        //        p.TurnOffRituals(Main.LocalPlayer);
+        //    }
+        //}
         public override void Load()
         {
-            instance = this;
+            Instance = this;
             HoodUpDownHotkey = RegisterHotKey("Pull hood up or down", "P");
             SupportHotKey = RegisterHotKey("Key to add/remove support debuff", "L");
             VampDashHotKey = RegisterHotKey("Double tap to transform into a bat for a few seconds(Requires vampiric armor)", "D");
@@ -353,7 +374,15 @@ namespace VampKnives
                 AddEquipTexture(null, EquipType.Head, "BatTransformHidden", "VampKnives/Items/Armor/BatTransformHidden");
                 AddEquipTexture(null, EquipType.Wings, "BatFlyMovement", "VampKnives/Items/Armor/BatFlyMovement");
                 AddEquipTexture(null, EquipType.Wings, "BatWingsHidden", "VampKnives/Items/Armor/BatWingsHidden");
-                AddEquipTexture(null, EquipType.Head, "VeiTransform", "VampKnives/Items/VtuberItems/VeiFullTransform");
+                AddEquipTexture(null, EquipType.Head, "VeiTransformHead", "VampKnives/Items/VtuberItems/SuccubusHeartCorset_Head");
+                AddEquipTexture(null, EquipType.Body, "VeiTransformBody", "VampKnives/Items/VtuberItems/SuccubusHeartCorset_Body", "VampKnives/Items/VtuberItems/SuccubusHeartCorset_Arms");
+                AddEquipTexture(null, EquipType.Legs, "VeiTransformLegs", "VampKnives/Items/VtuberItems/SuccubusHeartCorset_Legs");
+                AddEquipTexture(null, EquipType.Head, "NyanTransformHead", "VampKnives/Items/VtuberItems/GamerHeadphones_Head");
+                AddEquipTexture(null, EquipType.Body, "NyanTransformBody", "VampKnives/Items/VtuberItems/GamerHeadphones_Body", "VampKnives/Items/VtuberItems/GamerHeadphones_Arms");
+                AddEquipTexture(null, EquipType.Legs, "NyanTransformLegs", "VampKnives/Items/VtuberItems/GamerHeadphones_Legs"); 
+                AddEquipTexture(null, EquipType.Head, "MouseTransformHead", "VampKnives/Items/VtuberItems/DemonLoli_Head");
+                AddEquipTexture(null, EquipType.Body, "MouseTransformBody", "VampKnives/Items/VtuberItems/DemonLoli_Body", "VampKnives/Items/VtuberItems/DemonLoli_Arms");
+                AddEquipTexture(null, EquipType.Legs, "MouseTransformLegs", "VampKnives/Items/VtuberItems/DemonLoli_Legs");
                 customRecources = new UserInterface();
                 customResources2 = new UserInterface();
                 FirstLoadUI = new UserInterface();
@@ -370,21 +399,44 @@ namespace VampKnives
                 WorkbenchSlots.SetState(WorkbenchSlotPanel);
 
                 UpgradePanelUI = new UserInterface();
-                UpgradePanelState = new UpgradePanel();
-                UpgradePanelUI.SetState(UpgradePanelState);
+                //UpgradePanelState = new UpgradePanel();
+                //UpgradePanelUI.SetState(UpgradePanelState);
 
                 BloodAltarUIPanel = new UserInterface();
-                BloodAltarUIState = new BloodAltarUI();
-                BloodAltarUIPanel.SetState(BloodAltarUIState);
+                //BloodAltarUIState = new BloodAltarUI();
+                //BloodAltarUIPanel.SetState(BloodAltarUIState);
 
                 StartupInterface = new UserInterface();
                 StartupState = new StartupBookUI();
                 StartupInterface.SetState(StartupState);
             }
+            if (Main.netMode != NetmodeID.Server)
+            {
+                Ref<Effect> shaderRef = new Ref<Effect>(GetEffect("Effects/MilkShader"));
+                GameShaders.Misc["Technique1"] = new MiscShaderData(shaderRef, "ArmorBasic").UseColor(new Vector3(Color.Brown.R/255f, Color.Brown.G/255f, Color.Brown.B/255f));
+            }
             base.Load();
+        }
+        public override void UpdateMusic(ref int music, ref MusicPriority priority)
+        {
+            if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active)
+            {
+                return;
+            }
+            if (Main.LocalPlayer.HeldItem.type == ModContent.ItemType<Items.VtuberItems.MaracasSound>() && Main.LocalPlayer.controlUseItem)
+                music = this.GetSoundSlot(SoundType.Music, "Sounds/Music/MaracasNormal");
         }
         public override void UpdateUI(GameTime gameTime)
         {
+            _lastUpdateUiGameTime = gameTime;
+            if (UpgradePanelUI?.CurrentState != null)
+            {
+                UpgradePanelUI.Update(gameTime);
+            }
+            if(BloodAltarUIPanel?.CurrentState != null)
+            {
+                BloodAltarUIPanel.Update(gameTime);
+            }
             VampireUserInterface?.Update(gameTime);
             VampireUserInterface2?.Update(gameTime);
             if (IsKnifeRecipe)
@@ -469,6 +521,43 @@ namespace VampKnives
             }
         }
         bool PacketWorking;
+        public override void PreSaveAndQuit()
+        {
+            //Calls Deactivate and drops the item
+            if (UpgradePanelUI.CurrentState != null)
+            {
+                UpgradePanelUI.SetState(null);
+            }
+            if (BloodAltarUIPanel.CurrentState != null)
+            {
+                BloodAltarUIPanel.SetState(null);
+            }
+        }
+        internal static void OpenUpgradeUI()
+        {
+            UpgradePanel ui = new UpgradePanel();
+            UIState state = new UIState();
+            state.Append(ui);
+            UpgradePanelUI.SetState(state);
+        }
+
+        internal static void CloseUpgradeUI()
+        {
+            UpgradePanelUI.SetState(null);
+        }
+
+        internal static void OpenBloodAltarUI()
+        {
+            BloodAltarUI ui = new BloodAltarUI();
+            UIState state = new UIState();
+            state.Append(ui);
+            BloodAltarUIPanel.SetState(state);
+        }
+
+        internal static void CloseBloodAltarUI()
+        {
+            BloodAltarUIPanel.SetState(null);
+        }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             int index = layers.FindIndex(layer => layer.Name.Contains("Vanilla: Mouse Text"));
@@ -491,15 +580,15 @@ namespace VampKnives
                         WorkbenchSlots.Update(Main._drawInterfaceGameTime);
                         WorkbenchSlotPanel.Draw(Main.spriteBatch);
                     }
-                    if (UpgradePanel.visible)
+                    if (_lastUpdateUiGameTime != null && UpgradePanelUI.CurrentState != null)
                     {
-                        UpgradePanelUI.Update(Main._drawInterfaceGameTime);
-                        UpgradePanelState.Draw(Main.spriteBatch);
+                        UpgradePanelUI.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        //UpgradePanelState.Draw(Main.spriteBatch);
                     }
-                    if (BloodAltarUI.visible)
+                    if (_lastUpdateUiGameTime != null && BloodAltarUIPanel.CurrentState != null)
                     {
-                        BloodAltarUIPanel.Update(Main._drawInterfaceGameTime);
-                        BloodAltarUIState.Draw(Main.spriteBatch);
+                        BloodAltarUIPanel.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        //BloodAltarUIState.Draw(Main.spriteBatch);
                     }
                     if (StartupBookUI.visible)
                     {
@@ -547,77 +636,100 @@ namespace VampKnives
             VampDashHotKey = null;
             SupportArmorHotKey = null;
             BookHotKey = null;
-            instance = null;
+            Instance = null;
+            if(!Main.dedServ)
+            {
+                UpgradePanelUI = null;
+                BloodAltarUIPanel = null;
+            }
             base.Unload();
         }
-        int Packet2 = 22;
-        int Packet5 = 55;
-        int Packet6 = 66;
-        int BatTransformRecieve = 88;
-        int BatTransformSend = 89;
-        int VeiTransormRecieve = 420;
-        int VeiTransformSend = 421;
-        int SupportArmorRecieve = 99;
-        int SupportArmorSend = 100;
-        int Packet4 = 44;
-        public static int AltarPressedRecieveLists = 23;
-        int AltarPressedSendLists = 24;
-        public static int RitualsRecieve = 26;
-        int RitualsSend = 27;
-        public static int KillBlocksRecieve = 34;
-        int KillsBlocksSend = 35;
-        int StoneRitualRecieve = 36;
-        int StoneRitualSend = 37;
-        int MinerRitualRecieve = 38;
-        int MinerRitualSend = 39;
-        int MidasRitualRecieve = 40;
-        int MidasRitualSend = 41;
-        int UIOpenRecieve = 28;
-        int UIOpenSend = 29;
+        public static int OwnerRecieve = 1;
+        int OwnerSend = 2;
+        public static int ResetSpaceServer = 3;
+        int ResetSpaceMPClient = 4;
+        public static int SyncBloodPoints = 5;
+        public static int RitualCostRecieveMPClient = 6;
+        public static int StoneRitualRecieveMPClient = 7;
+        public static int MinerRitualRecieveMPClient = 8;
+        public static int MidasRitualRecieveMPClient = 9;
+        public static int SoulsRitualRecieveMPClient = 10;
+        public static int SoulItemSync = 11;
+        int SoulItemSyncClient = 12;
+        public static int HoodServerRecieve = 20;
+        int HoodSendToClient = 21;
+        public static int SendBloodPoints = 22;
+        public static int SyncSupportHealsServer = 23;
+        int SyncSupportHealsClient = 24;
+        public static int BatTransformRecieve = 25;
+        int BatTransformSend = 26;
+        public static int VeiTransormRecieve = 27;
+        int VeiTransformSend = 28;
+        public static int NyanTransformRecieve = 29;
+        int NyanTransformSend = 30;
+        public static int MouseTransformRecieve = 31;
+        int MouseTransformSend = 32;
+        public static int SupportArmorRecieve = 33;
+        int SupportArmorSend = 34;
 
         int DustType;
         int DustTimer;
 
+        internal ModPacket GetPacket(MessageType type, int capacity)
+        {
+            ModPacket packet = GetPacket(capacity + 1);
+            packet.Write((byte)type);
+            return packet;
+        }
+
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
+            //MessageType message = (MessageType)reader.ReadByte();
+            //switch (message)
+            //{
+            //    case MessageType.AltarMessage:
+            //        this.GetTileEntity<Tiles.BloodAltarTE>(reader.ReadInt32())?.RecieveAltarMessage(reader, whoAmI);
+            //        //Main.NewText("Recieved on Server");
+            //        break;
+            //}
             int idVariable = reader.ReadInt32();
-            if (idVariable == 11)
+            if (idVariable == HoodServerRecieve)
             {
                 bool KeyPressed = reader.ReadBoolean();
                 int playerID = reader.ReadInt32();
                 ModPacket packet2 = this.GetPacket();
-                packet2.Write(Packet2);
+                packet2.Write(HoodSendToClient);
                 packet2.Write(KeyPressed);
                 packet2.Write(playerID);
                 packet2.Send(-1, playerID);
             }
-            if (idVariable == Packet2)
+            if (idVariable == HoodSendToClient)
             {
                 bool KeyPressed2 = reader.ReadBoolean();
 
                 int playerID = reader.ReadInt32();
-                Main.player[playerID].GetModPlayer<ExamplePlayer>().HoodIsVisible = KeyPressed2;
+                Main.player[playerID].GetModPlayer<VampPlayer>().HoodIsVisible = KeyPressed2;
             }
-            if (idVariable == 33)
+            if (idVariable == SendBloodPoints)
             {
-                Main.LocalPlayer.GetModPlayer<ExamplePlayer>().NeckProgress++;
+                Main.LocalPlayer.GetModPlayer<VampPlayer>().NeckProgress++;
             }
 
-            if (idVariable == Packet5)
+            if (idVariable == SyncSupportHealsServer)
             {
                 int Owner = reader.ReadInt32();
                 int Decision = reader.ReadInt32();
                 int SyncLifeAmount = reader.ReadInt32();
                 bool BuffState = Main.player[Owner].HasBuff(ModContent.BuffType<Buffs.TrueSupportDebuff>());
                 ModPacket packet5 = this.GetPacket();
-                packet5.Write(Packet6);
+                packet5.Write(SyncSupportHealsClient);
                 packet5.Write(Decision);
                 packet5.Write(SyncLifeAmount);
                 packet5.Write(Owner);
                 packet5.Write(BuffState);
                 packet5.Send(-1, Owner);
             }
-            if (idVariable == Packet6)
+            if (idVariable == SyncSupportHealsClient)
             {
                 int Decision = reader.ReadInt32();
                 int SyncLifeAmount = reader.ReadInt32();
@@ -646,23 +758,56 @@ namespace VampKnives
                 bool Transform = reader.ReadBoolean();
                 bool HasTablet = reader.ReadBoolean();
                 int playerID = reader.ReadInt32();
-                Main.player[playerID].GetModPlayer<ExamplePlayer>().Transform = Transform;
-                Main.player[playerID].GetModPlayer<ExamplePlayer>().HasTabletEquipped = HasTablet;
+                Main.player[playerID].GetModPlayer<VampPlayer>().Transform = Transform;
+                Main.player[playerID].GetModPlayer<VampPlayer>().HasTabletEquipped = HasTablet;
             }
-            if(idVariable == VeiTransormRecieve)
+            if (idVariable == VeiTransormRecieve)
             {
                 bool VeiTransform = reader.ReadBoolean();
                 int PlayerID = reader.ReadInt32();
                 ModPacket packet = this.GetPacket();
+                packet.Write(VeiTransformSend);
                 packet.Write(VeiTransform);
                 packet.Write(PlayerID);
                 packet.Send(-1, PlayerID);
             }
-            if(idVariable == VeiTransformSend)
+            if (idVariable == VeiTransformSend)
             {
                 bool VeiTransform = reader.ReadBoolean();
                 int playerID = reader.ReadInt32();
-                Main.player[playerID].GetModPlayer<ExamplePlayer>().VeiTransform = VeiTransform;
+                Main.player[playerID].GetModPlayer<VampPlayer>().VeiTransform = VeiTransform;
+            }
+            if (idVariable == NyanTransformRecieve)
+            {
+                bool NyanTransform = reader.ReadBoolean();
+                int PlayerID = reader.ReadInt32();
+                ModPacket packet = this.GetPacket();
+                packet.Write(NyanTransformSend);
+                packet.Write(NyanTransform);
+                packet.Write(PlayerID);
+                packet.Send(-1, PlayerID);
+            }
+            if (idVariable == NyanTransformSend)
+            {
+                bool NyanTransform = reader.ReadBoolean();
+                int PlayerID = reader.ReadInt32();
+                Main.player[PlayerID].GetModPlayer<VampPlayer>().NyanTransform = NyanTransform;
+            }
+            if (idVariable == MouseTransformRecieve)
+            {
+                bool MouseTransform = reader.ReadBoolean();
+                int PlayerID = reader.ReadInt32();
+                ModPacket packet = this.GetPacket();
+                packet.Write(MouseTransformSend);
+                packet.Write(MouseTransform);
+                packet.Write(PlayerID);
+                packet.Send(-1, PlayerID);
+            }
+            if (idVariable == MouseTransformSend)
+            {
+                bool MouseTransform = reader.ReadBoolean();
+                int PlayerID = reader.ReadInt32();
+                Main.player[PlayerID].GetModPlayer<VampPlayer>().MouseTransform = MouseTransform;
             }
             if (idVariable == SupportArmorRecieve)
             {
@@ -680,712 +825,120 @@ namespace VampKnives
                 int PlayerToBuff = reader.ReadInt32();
                 int BuffCountStore = reader.ReadInt32();
                 Main.player[PlayerToBuff].AddBuff(ModContent.BuffType<Buffs.SupportBuff>(), 600);
-                Main.player[PlayerToBuff].GetModPlayer<ExamplePlayer>().BuffCountStore = BuffCountStore;
-            }
-            if (idVariable == AltarPressedRecieveLists)
-            {
-                PacketWorking = true;
-                int Count = reader.ReadInt32();
-                List<int> AltarBeingUsedList = new List<int>();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<ushort> RoEType = new List<ushort>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<ushort> RoMType = new List<ushort>();
-                List<bool> RitualOfMidas = new List<bool>();
-                List<short> RoMiType = new List<short>();
-                List<int> AltarOwner = new List<int>();
-                for (int i = 0; i < Count; i++)
-                {
-                    AltarBeingUsedList.Add(reader.ReadInt32());
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RoEType.Add(reader.ReadUInt16());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RoMType.Add(reader.ReadUInt16());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                    RoMiType.Add(reader.ReadInt16());
-                    AltarOwner.Add(reader.ReadInt32());
-                }
-                int PlayerID = reader.ReadInt32();
-                //for (int gj = 0; gj < AltarBeingUsedList.Count; gj += 2)
-                //{
-                //    this.Logger.Warn("Server altar list: (" + AltarBeingUsedList[gj] + "," + AltarBeingUsedList[gj + 1] + ")");
-                //}
-                ModPacket packet = this.GetPacket();
-                packet.Write(AltarPressedSendLists);
-                packet.Write(Count);
-                for (int g = 0; g < Count; g++)
-                {
-                    packet.Write(AltarBeingUsedList[g]);
-                    packet.Write(RitualOfTheStone[g]);
-                    packet.Write(RoEType[g]);
-                    packet.Write(RitualOfTheMiner[g]);
-                    packet.Write(RoMType[g]);
-                    packet.Write(RitualOfMidas[g]);
-                    packet.Write(RoMiType[g]);
-                    packet.Write(AltarOwner[g]);
-                }
-                packet.Write(PlayerID);
-                packet.Send(-1, PlayerID);
-            }
-            if (idVariable == AltarPressedSendLists)
-            {
-                int Count = reader.ReadInt32();
-                List<int> AltarBeingUsedList = new List<int>();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<ushort> RoEType = new List<ushort>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<ushort> RoMType = new List<ushort>();
-                List<bool> RitualOfMidas = new List<bool>();
-                List<short> RoMiType = new List<short>();
-                List<int> AltarOwner = new List<int>();
-                for (int i = 0; i < Count; i++)
-                {
-                    AltarBeingUsedList.Add(reader.ReadInt32());
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RoEType.Add(reader.ReadUInt16());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RoMType.Add(reader.ReadUInt16());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                    RoMiType.Add(reader.ReadInt16());
-                    AltarOwner.Add(reader.ReadInt32());
-                }
-                int PlayerID = reader.ReadInt32();
-                //for (int gj = 0; gj < AltarBeingUsedList.Count; gj += 2)
-                //{
-                //    this.Logger.Info("Sent altar list: (" + AltarBeingUsedList[gj] + "," + AltarBeingUsedList[gj + 1] + ")");
-                //}
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    VampireWorld.AltarBeingUsed = AltarBeingUsedList;
-                    VampireWorld.RitualOfTheStone = RitualOfTheStone;
-                    VampireWorld.RoEType = RoEType;
-                    VampireWorld.RitualOfTheMiner = RitualOfTheMiner;
-                    VampireWorld.RoMType = RoMType;
-                    VampireWorld.RitualOfMidas = RitualOfMidas;
-                    VampireWorld.RoMiType = RoMiType;
-                    VampireWorld.AltarOwner = AltarOwner;
-                }
-            }
-            if (idVariable == RitualsRecieve)
-            {
-                int Count = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<ushort> RoEType = new List<ushort>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<ushort> RoMType = new List<ushort>();
-                List<bool> RitualOfMidas = new List<bool>();
-                List<short> RoMiType = new List<short>();
-                List<int> AltarOwner = new List<int>();
-                for (int i = 0; i < Count; i++)
-                {
-                    //AltarBeingUsedList.Add(reader.ReadInt32());
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RoEType.Add(reader.ReadUInt16());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RoMType.Add(reader.ReadUInt16());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                    RoMiType.Add(reader.ReadInt16());
-                    AltarOwner.Add(reader.ReadInt32());
-                }
-                //for (int gj = 0; gj < Count; gj += 2)
-                //{
-                //    //this.Logger.Info("AltarsR: " + new Vector2(AltarBeingUsedList[gj], AltarBeingUsedList[gj + 1]));
-                //    //this.Logger.Info("RitStoneR: " + (RitualOfTheStone[gj], RitualOfTheStone[gj + 1]));
-                //    //this.Logger.Info("StoneTypeR: " + new Vector2(RoEType[gj], RoEType[gj + 1]));
-                //    //this.Logger.Info("RitMinerR: " + (RitualOfTheMiner[gj], RitualOfTheMiner[gj + 1]));
-                //    //this.Logger.Info("MinerTypeR: " + new Vector2(RoMType[gj], RoMType[gj + 1]));
-                //    //this.Logger.Info("RitMidasR: " + (RitualOfMidas[gj], RitualOfMidas[gj + 1]));
-                //    //this.Logger.Info("MidasTypeR: " + new Vector2(RoMiType[gj], RoMiType[gj + 1]));
-                //}
-                ModPacket packet = this.GetPacket();
-                packet.Write(RitualsSend);
-                packet.Write(Count);
-                for (int g = 0; g < Count; g++)
-                {
-                    packet.Write(RitualOfTheStone[g]);
-                    packet.Write(RoEType[g]);
-                    packet.Write(RitualOfTheMiner[g]);
-                    packet.Write(RoMType[g]);
-                    packet.Write(RitualOfMidas[g]);
-                    packet.Write(RoMiType[g]);
-                    packet.Write(AltarOwner[g]);
-                }
-                packet.Send(-1, PlayerID);
+                Main.player[PlayerToBuff].GetModPlayer<VampPlayer>().BuffCountStore = BuffCountStore;
             }
 
-            if (idVariable == RitualsSend)
+            /* RITUAL NETCODE */
+            if (idVariable == OwnerRecieve)
             {
-                //this.Logger.Info("Player Recieved Changes");
-                int Count = reader.ReadInt32();
-                //List<int> AltarBeingUsedList = new List<int>();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<ushort> RoEType = new List<ushort>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<ushort> RoMType = new List<ushort>();
-                List<bool> RitualOfMidas = new List<bool>();
-                List<short> RoMiType = new List<short>();
-                List<int> AltarOwner = new List<int>();
-                for (int i = 0; i < Count; i++)
-                {
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RoEType.Add(reader.ReadUInt16());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RoMType.Add(reader.ReadUInt16());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                    RoMiType.Add(reader.ReadInt16());
-                    AltarOwner.Add(reader.ReadInt32());
-                }
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    //VampireWorld.AltarBeingUsed = AltarBeingUsedList;
-                    VampireWorld.AltarOwner = AltarOwner;
-                    VampireWorld.RitualOfTheStone = RitualOfTheStone;
-                    VampireWorld.RoEType = RoEType;
-                    VampireWorld.RitualOfTheMiner = RitualOfTheMiner;
-                    VampireWorld.RoMType = RoMType;
-                    VampireWorld.RitualOfMidas = RitualOfMidas;
-                    VampireWorld.RoMiType = RoMiType;
-                }
+                int ID = reader.ReadInt32();
+                int OwnerID = reader.ReadInt32();
+
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = OwnerID;
+                ModPacket packet = this.GetPacket();
+                packet.Write(OwnerSend);
+                packet.Write(ID);
+                packet.Write(OwnerID);
+                packet.Send(-1, OwnerID);
             }
-            if (idVariable == KillBlocksRecieve)
+            if (idVariable == OwnerSend)
             {
-                //this.Logger.Info("Server Recieved Changes for Kill");
-                int identifier = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                int Count = reader.ReadInt32();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<bool> RitualOfMidas = new List<bool>();
-                for (int i = 0; i < Count; i++)
-                {
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                }
-                WorldGen.KillTile(PosX, PosY);
-                WorldGen.KillTile(PosX, PosY + 1, false, false, true);
+                int ID = reader.ReadInt32();
+                int OwnerID = reader.ReadInt32();
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = OwnerID;
+            }
+            if (idVariable == ResetSpaceServer)
+            {
+                short PosX = reader.ReadInt16();
+                short PosY = reader.ReadInt16();
+
+                WorldGen.KillTile(PosX + 1, PosY - 2, false, false, false);
+                WorldGen.KillTile(PosX + 1, PosY - 1, false, false, true);
+
+                NetMessage.SendData(MessageID.TileChange, -1, -1, null, 0, (float)PosX + 1, (float)PosY - 1, 0f, 0, 0, 0);
+                NetMessage.SendData(MessageID.TileChange, -1, -1, null, 0, (float)PosX + 1, (float)PosY - 2, 0f, 0, 0, 0);
 
                 ModPacket packet = this.GetPacket();
-                packet.Write(KillsBlocksSend);
-                packet.Write(identifier);
+                packet.Write(ResetSpaceMPClient);
                 packet.Write(PosX);
                 packet.Write(PosY);
-                packet.Write(Count);
-                for (int g = 0; g < Count; g++)
-                {
-                    packet.Write(RitualOfTheStone[g]);
-                    packet.Write(RitualOfTheMiner[g]);
-                    packet.Write(RitualOfMidas[g]);
-                }
                 packet.Send(-1, -1);
             }
-            if (idVariable == KillsBlocksSend)
+            if (idVariable == ResetSpaceMPClient)
             {
-                int identifier = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                int Count = reader.ReadInt32();
-                List<bool> RitualOfTheStone = new List<bool>();
-                List<bool> RitualOfTheMiner = new List<bool>();
-                List<bool> RitualOfMidas = new List<bool>();
-                for (int i = 0; i < Count; i++)
-                {
-                    RitualOfTheStone.Add(reader.ReadBoolean());
-                    RitualOfTheMiner.Add(reader.ReadBoolean());
-                    RitualOfMidas.Add(reader.ReadBoolean());
-                }
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    VampireWorld.RitualOfTheStone = RitualOfTheStone;
-                    VampireWorld.RitualOfTheMiner = RitualOfTheMiner;
-                    VampireWorld.RitualOfMidas = RitualOfMidas;
-                }
-                WorldGen.KillTile(PosX, PosY);
-                WorldGen.KillTile(PosX, PosY + 1, false, false, true);
+                int PosX = reader.ReadInt16();
+                int PosY = reader.ReadInt16();
+
+                WorldGen.KillTile(PosX + 1, PosY - 2, false, false, false);
+                WorldGen.KillTile(PosX + 1, PosY - 1, false, false, true);
+
             }
-            if (idVariable == StoneRitualRecieve)
+            if (idVariable == RitualCostRecieveMPClient)
             {
-                //this.Logger.Warn("Stone Ritual Recieved");
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
+                int Cost = reader.ReadInt32();
+                int Owner = reader.ReadInt32();
+                Main.player[Owner].GetModPlayer<VampPlayer>().BloodPoints -= Cost;
+            }
+            if (idVariable == SyncBloodPoints)
+            {
+                int BloodPoints = reader.ReadInt32();
+                int Owner = reader.ReadInt32();
+
+                Main.player[Owner].GetModPlayer<VampPlayer>().BloodPoints = BloodPoints;
+            }
+            if (idVariable == StoneRitualRecieveMPClient)
+            {
+                int ID = reader.ReadInt32();
+                bool RitualOfTheStone = reader.ReadBoolean();
+                int Owner = reader.ReadInt32();
                 ushort tileid = reader.ReadUInt16();
 
-                if (tileid == TileID.Sand || tileid == TileID.Silt || tileid == TileID.SnowBlock)
-                {
-                    WorldGen.PlaceTile(PosX, PosY + 1, ModContent.TileType<Tiles.AltarPillar>());
-                }
-                WorldGen.PlaceTile(PosX, PosY, tileid);
-
-                ModPacket packet = this.GetPacket();
-                packet.Write(StoneRitualSend);
-                packet.Write(identifier);
-                packet.Write(PlayerID);
-                packet.Write(PosX);
-                packet.Write(PosY);
-                packet.Write(tileid);
-                packet.Send(-1, -1);
-                //this.Logger.Warn("Stone Ritual Sent to players");
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOfTheStone = RitualOfTheStone;
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = Owner;
+                this.GetTileEntity<BloodAltarTE>(ID).RoSType = tileid;
             }
-            if (idVariable == StoneRitualSend)
+            if(idVariable == MinerRitualRecieveMPClient)
             {
-                //this.Logger.Warn("Stone Ritual Recieved By Players");
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                ushort tileid = reader.ReadUInt16();
-                StoneRitual(PosX - 1, PosY + 2, Main.player[PlayerID], tileid);
-                if (tileid == TileID.Stone)
-                {
-                    DustType = 1;
-                }
-                else if (tileid == TileID.Dirt)
-                {
-                    DustType = 0;
-                }
-                else if (tileid == TileID.Sand)
-                {
-                    DustType = 32;
-                }
-                else if (tileid == TileID.Silt)
-                {
-                    DustType = 121;
-                }
-                else if (tileid == TileID.SnowBlock)
-                {
-                    DustType = 51;
-                }
-                DustTimer++;
-                if (DustTimer >= 2)
-                {
-                    ExamplePlayer.OvalDust(new Vector2(16 * PosX + 4.5f, 16 * (PosY + 1) + 4), 2, 0.8f, Color.White, DustType, 1f);
-                    DustTimer = 0;
-                }
-            }
-            if (idVariable == MinerRitualRecieve)
-            {
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
+                int ID = reader.ReadInt32();
+                bool RitualOfTheMiner = reader.ReadBoolean();
+                int Owner = reader.ReadInt32();
                 ushort tileid = reader.ReadUInt16();
 
-                WorldGen.PlaceTile(PosX, PosY, tileid);
-
-                ModPacket packet = this.GetPacket();
-                packet.Write(MinerRitualSend);
-                packet.Write(identifier);
-                packet.Write(PlayerID);
-                packet.Write(PosX);
-                packet.Write(PosY);
-                packet.Write(tileid);
-                packet.Send(-1, -1);
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOfTheMiner = RitualOfTheMiner;
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = Owner;
+                this.GetTileEntity<BloodAltarTE>(ID).RoMinType = tileid;
             }
-            if (idVariable == MinerRitualSend)
+            if (idVariable == MidasRitualRecieveMPClient)
             {
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                ushort tileid = reader.ReadUInt16();
-                MinerRitual(PosX - 1, PosY + 2, Main.player[PlayerID], tileid);
-                if (tileid == TileID.Copper)
-                {
-                    DustType = 9;
-                }
-                else if (tileid == TileID.Tin)
-                {
-                    DustType = 81;
-                }
-                else if (tileid == TileID.Iron)
-                {
-                    DustType = 8;
-                }
-                else if (tileid == TileID.Lead)
-                {
-                    DustType = 82;
-                }
-                else if (tileid == TileID.Silver)
-                {
-                    DustType = 11;
-                }
-                else if (tileid == TileID.Tungsten)
-                {
-                    DustType = 83;
-                }
-                else if (tileid == TileID.Gold)
-                {
-                    DustType = 10;
-                }
-                else if (tileid == TileID.Platinum)
-                {
-                    DustType = 84;
-                }
-                else if (tileid == TileID.Meteorite)
-                {
-                    DustType = 127;
-                }
-                else if (tileid == TileID.Demonite)
-                {
-                    DustType = 65;
-                }
-                else if (tileid == TileID.Crimtane)
-                {
-                    DustType = 117;
-                }
-                else if (tileid == TileID.Hellstone)
-                {
-                    DustType = 6;
-                }
-                else if (tileid == TileID.Cobalt)
-                {
-                    DustType = 48;
-                }
-                else if (tileid == TileID.Palladium)
-                {
-                    DustType = 144;
-                }
-                else if (tileid == TileID.Mythril)
-                {
-                    DustType = 49;
-                }
-                else if (tileid == TileID.Orichalcum)
-                {
-                    DustType = 145;
-                }
-                else if (tileid == TileID.Adamantite)
-                {
-                    DustType = 50;
-                }
-                else if (tileid == TileID.Titanium)
-                {
-                    DustType = 146;
-                }
-                else if (tileid == TileID.Chlorophyte)
-                {
-                    DustType = 128;
-                }
-                else if (tileid == TileID.LunarOre)
-                {
-                    DustType = 242;
-                }
-                DustTimer++;
-                if (DustTimer >= 2)
-                {
-                    ExamplePlayer.OvalDust(new Vector2(16 * PosX + 4.5f, 16 * (PosY + 1) + 4), 2, 0.8f, Color.White, DustType, 1f);
-                    DustTimer = 0;
-                }
+                int ID = reader.ReadInt32();
+                bool RitualOfMidas = reader.ReadBoolean();
+                int Owner = reader.ReadInt32();
+                short ItemID = reader.ReadInt16();
+
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOfMidas = RitualOfMidas;
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = Owner;
+                this.GetTileEntity<BloodAltarTE>(ID).RoMidType = ItemID;
             }
-            if (idVariable == MidasRitualRecieve)
+            if (idVariable == SoulsRitualRecieveMPClient)
             {
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                short tileid = reader.ReadInt16();
+                int ID = reader.ReadInt32();
+                bool RitualOfSouls = reader.ReadBoolean();
+                int Owner = reader.ReadInt32();
+                int NPCID = reader.ReadInt32();
+                int Delay = reader.ReadInt32();
+                //ItemIO.Receive(reader, true);
 
-                Item.NewItem(new Vector2(PosX * 16, PosY * 16), tileid);
-
-                ModPacket packet = this.GetPacket();
-                packet.Write(MidasRitualSend);
-                packet.Write(identifier);
-                packet.Write(PlayerID);
-                packet.Write(PosX);
-                packet.Write(PosY);
-                packet.Write(tileid);
-                packet.Send(-1, -1);
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOfSouls = RitualOfSouls;
+                this.GetTileEntity<BloodAltarTE>(ID).RitualOwner = Owner;
+                this.GetTileEntity<BloodAltarTE>(ID).RoSoType = NPCID;
+                this.GetTileEntity<BloodAltarTE>(ID).RoSoDelay = Delay;
+                //this.GetTileEntity<BloodAltarTE>(ID).BloodCrystal = ItemIO.Receive(reader, true);
             }
-            if (idVariable == MidasRitualSend)
-            {
-                int identifier = reader.ReadInt32();
-                int PlayerID = reader.ReadInt32();
-                int PosX = reader.ReadInt32();
-                int PosY = reader.ReadInt32();
-                short itemid = reader.ReadInt16();
-                MidasRitual(PosX, PosY, Main.player[PlayerID], itemid);
-                DustTimer++;
-                if (DustTimer >= 5)
-                {
-                    if (itemid == ItemID.CopperCoin)
-                    {
-                        DustType = 9;
-                    }
-                    else if (itemid == ItemID.SilverCoin)
-                    {
-                        DustType = 11;
-                    }
-                    else if (itemid == ItemID.GoldCoin)
-                    {
-                        DustType = 10;
-                    }
-                    else if (itemid == ItemID.PlatinumCoin)
-                    {
-                        DustType = 84;
-                    }
-                    ExamplePlayer.OvalDust(new Vector2(16 * PosX + 4.5f, 16 * (PosY + 1) + 4), 1, 2f, Color.White, DustType, 1f);
-                    DustTimer = 0;
-                }
-            }
-            if (idVariable == UIOpenRecieve)
-            {
-                bool UIOpen = reader.ReadBoolean();
-                UIOpenElsewhere = UIOpen;
-                //int PlayerID = reader.ReadInt32();
-                //for (int iterations = 0; iterations < Main.ActivePlayersCount - 1; iterations++)
-                //{
-
-                //}
-
-                //ModPacket packet = this.GetPacket();
-                //packet.Write(UIOpen);
-                //packet.Send(-1, PlayerID);
-            }
-            //if (idVariable == UIOpenSend)
-            //{
-            //    bool UIOpen = reader.ReadBoolean();
-            //    Main.LocalPlayer.GetModPlayer<ExamplePlayer>().UIOpenElsewhere = UIOpen;
-            //}
             base.HandlePacket(reader, whoAmI);
         }
-        public void StoneRitual(int i, int j, Player player, ushort tileid)
+        internal enum MessageType
         {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-            //Main.NewText("RitualRun");
-            //Main.NewText("Passed Coors: " + new Vector2(i, j));
-            if (p.BloodPoints > 1 && Main.netMode != NetmodeID.MultiplayerClient)
-            {
-                if (tileid == TileID.Stone)
-                {
-                    DustType = 1;
-                }
-                else if (tileid == TileID.Dirt)
-                {
-                    DustType = 0;
-                }
-                else if (tileid == TileID.Sand)
-                {
-                    DustType = 32;
-                }
-                else if (tileid == TileID.Silt)
-                {
-                    DustType = 121;
-                }
-                else if (tileid == TileID.SnowBlock)
-                {
-                    DustType = 51;
-                }
-                DustTimer++;
-                if (DustTimer >= 2)
-                {
-                    ExamplePlayer.OvalDust(new Vector2(16 * (i + 1) + 4.5f, 16 * (j - 1) + 4), 2, 0.8f, Color.White, DustType, 1f);
-                    DustTimer = 0;
-                }
-            }
-            if (Main.tile[i + 1, j - 2].type != tileid)
-            {
-                p.BloodPoints -= 1;
-            }
-            if (tileid == TileID.Sand || tileid == TileID.Silt || tileid == TileID.SnowBlock)
-            {
-                WorldGen.PlaceTile(i + 1, j - 1, ModContent.TileType<Tiles.AltarPillar>());
-            }
-            WorldGen.PlaceTile(i + 1, j - 2, tileid);
-        }
-
-        int PointCost;
-        public void MinerRitual(int i, int j, Player player, ushort tileid)
-        {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-            //Main.NewText("RitualRun");
-            //Main.NewText("Passed Coors: " + new Vector2(i, j));
-            if (p.BloodPoints > 1)
-            {
-                if (tileid == TileID.Copper || tileid == TileID.Tin)
-                {
-                    PointCost = 1;
-                }
-                else if (tileid == TileID.Iron || tileid == TileID.Lead)
-                {
-                    PointCost = 2;
-                }
-                else if (tileid == TileID.Silver || tileid == TileID.Tungsten)
-                {
-                    PointCost = 4;
-                }
-                else if (tileid == TileID.Gold || tileid == TileID.Platinum)
-                {
-                    PointCost = 8;
-                }
-                else if (tileid == TileID.Meteorite)
-                {
-                    PointCost = 12;
-                }
-                else if (tileid == TileID.Demonite || tileid == TileID.Crimtane)
-                {
-                    PointCost = 16;
-                }
-                else if (tileid == TileID.Hellstone)
-                {
-                    PointCost = 24;
-                }
-                else if (tileid == TileID.Cobalt || tileid == TileID.Palladium)
-                {
-                    PointCost = 50;
-                }
-                else if (tileid == TileID.Mythril || tileid == TileID.Orichalcum)
-                {
-                    PointCost = 75;
-                }
-                else if (tileid == TileID.Adamantite || tileid == TileID.Titanium)
-                {
-                    PointCost = 100;
-                }
-                else if (tileid == TileID.Chlorophyte)
-                {
-                    PointCost = 150;
-                }
-                else if (tileid == TileID.LunarOre)
-                {
-                    PointCost = 300;
-                }
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    if (tileid == TileID.Copper)
-                    {
-                        DustType = 9;
-                    }
-                    else if (tileid == TileID.Tin)
-                    {
-                        DustType = 81;
-                    }
-                    else if (tileid == TileID.Iron)
-                    {
-                        DustType = 8;
-                    }
-                    else if (tileid == TileID.Lead)
-                    {
-                        DustType = 82;
-                    }
-                    else if (tileid == TileID.Silver)
-                    {
-                        DustType = 11;
-                    }
-                    else if (tileid == TileID.Tungsten)
-                    {
-                        DustType = 83;
-                    }
-                    else if (tileid == TileID.Gold)
-                    {
-                        DustType = 10;
-                    }
-                    else if (tileid == TileID.Platinum)
-                    {
-                        DustType = 84;
-                    }
-                    else if (tileid == TileID.Meteorite)
-                    {
-                        DustType = 127;
-                    }
-                    else if (tileid == TileID.Demonite)
-                    {
-                        DustType = 65;
-                    }
-                    else if (tileid == TileID.Crimtane)
-                    {
-                        DustType = 117;
-                    }
-                    else if (tileid == TileID.Hellstone)
-                    {
-                        DustType = 6;
-                    }
-                    else if (tileid == TileID.Cobalt)
-                    {
-                        DustType = 48;
-                    }
-                    else if (tileid == TileID.Palladium)
-                    {
-                        DustType = 144;
-                    }
-                    else if (tileid == TileID.Mythril)
-                    {
-                        DustType = 49;
-                    }
-                    else if (tileid == TileID.Orichalcum)
-                    {
-                        DustType = 145;
-                    }
-                    else if (tileid == TileID.Adamantite)
-                    {
-                        DustType = 50;
-                    }
-                    else if (tileid == TileID.Titanium)
-                    {
-                        DustType = 146;
-                    }
-                    else if (tileid == TileID.Chlorophyte)
-                    {
-                        DustType = 128;
-                    }
-                    else if (tileid == TileID.LunarOre)
-                    {
-                        DustType = 242;
-                    }
-                    DustTimer++;
-                    if (DustTimer >= 2)
-                    {
-                        ExamplePlayer.OvalDust(new Vector2(16 * (i + 1) + 4.5f, 16 * (j - 1) + 4), 2, 0.8f, Color.White, DustType, 1f);
-                        DustTimer = 0;
-                    }
-                }
-                if (Main.tile[i + 1, j - 2].type != tileid)
-                {
-                    p.BloodPoints -= PointCost;
-                }
-                WorldGen.PlaceTile(i + 1, j - 2, tileid);
-            }
-        }
-        public void MidasRitual(int i, int j, Player player, short itemid)
-        {
-            ExamplePlayer p = player.GetModPlayer<ExamplePlayer>();
-            int PointCost = 1;
-            if (p.BloodPoints > 1)
-            {
-                DustTimer++;
-                if (DustTimer >= 5)
-                {
-                    if (itemid == ItemID.CopperCoin)
-                    {
-                        DustType = 9;
-                        PointCost = 1;
-                    }
-                    else if (itemid == ItemID.SilverCoin)
-                    {
-                        DustType = 11;
-                        PointCost = 10;
-                    }
-                    else if (itemid == ItemID.GoldCoin)
-                    {
-                        DustType = 10;
-                        PointCost = 100;
-                    }
-                    else if (itemid == ItemID.PlatinumCoin)
-                    {
-                        DustType = 11;
-                        PointCost = 999;
-                    }
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        ExamplePlayer.OvalDust(new Vector2(16 * (i + 1) + 4.5f, 16 * (j - 1) + 4), 1, 2f, Color.White, DustType, 1f);
-                    }
-                    DustTimer = 0;
-                }
-                p.BloodPoints -= PointCost;
-                Item.NewItem(new Vector2(16 * (i + 1) + 4.5f, 16 * (j - 1) + 4), 1, 1, itemid);
-            }
+            AltarMessage
         }
     }
 }
