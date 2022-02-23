@@ -649,16 +649,16 @@ namespace VampKnives
                 player.allDamage *= 0.6f;
                 
             }
-            if (Main.tile[(int)(player.TopLeft.X / 16f), (int)(player.TopLeft.Y / 16f)].active() == false || Main.tile[(int)(player.TopRight.X / 16f), (int)(player.TopRight.Y / 16f)].active() == false)
-            {
-                DrownTimer++;
-                if (DrownTimer >= 10)
-                {
-                    player.Hurt(PlayerDeathReason.ByCustomReason("Drowned"), 5, player.direction);
-                }
-            }
-            else
-                DrownTimer = 0;
+            //if (Main.tile[(int)(player.TopLeft.X / 16f), (int)(player.TopLeft.Y / 16f)].active() == false || Main.tile[(int)(player.TopRight.X / 16f), (int)(player.TopRight.Y / 16f)].active() == false)
+            //{
+            //    DrownTimer++;
+            //    if (DrownTimer >= 10)
+            //    {
+            //        player.Hurt(PlayerDeathReason.ByCustomReason("Drowned"), 5, player.direction);
+            //    }
+            //}
+            //else
+            //    DrownTimer = 0;
         }
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
